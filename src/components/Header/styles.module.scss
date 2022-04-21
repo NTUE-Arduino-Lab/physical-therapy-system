@@ -1,0 +1,11 @@
+@import '../../styles/color.scss';
+
+.container {
+  height: 10vh;
+  background-color: $background;
+  display: flex;
+  padding-left: 3vw;
+  align-items: center;
+  font-size: 1.5em;
+  gap: 2em;
+}
