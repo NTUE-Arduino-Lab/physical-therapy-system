@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { query, onSnapshot } from 'firebase/firestore';
+import { useNavigate, useParams } from 'react-router-dom';
+import { query, onSnapshot, collection } from 'firebase/firestore';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
-import { getRpmsWithPairdId } from '../../services/firebase';
+import { recordsRef } from '../../services/firebase';
 
 const MonitoringWorkout = () => {
     const navigate = useNavigate();
+    const params = useParams();
     const [rpms, setRpms] = useState([]);
 
     useEffect(() => {
@@ -16,14 +17,14 @@ const MonitoringWorkout = () => {
     }, []);
 
     const init = async () => {
-        const rpmsRef = query(await getRpmsWithPairdId('2345'));
-
-        if (rpmsRef == null) {
-            alert('the pair id not correct');
-            return;
-        }
+        const targetRecordId = params.recordId;
+        const rpmsRef = query(collection(recordsRef, targetRecordId, 'rpms'));
 
         onSnapshot(rpmsRef, (querySnapshot) => {
+            if (querySnapshot.empty) {
+                alert('出錯！');
+                return;
+            }
             const newRpms = [];
             querySnapshot.forEach((doc) => {
                 newRpms.push(doc.data());

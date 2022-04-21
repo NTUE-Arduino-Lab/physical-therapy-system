@@ -12,12 +12,19 @@ const PrepareWorkout = () => {
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
 
+    const [targetgetRecordId, setTargetRecordId] = useState();
+
+    // for functionality testing
+    // const [paridId, setPairId] = useState();
+
     const goDashboard = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
     const goMonitoring = () => {
-        navigate(ROUTE_PATH.monitoring_workout);
+        // navigate(`${ROUTE_PATH.monitoring_workout}/${targetgetRecordId}`);
+        console.log(targetgetRecordId);
+        navigate(`${ROUTE_PATH.monitoring_workout}/KlqQMArEQAF6pSRQrlYJ`);
     };
 
     const createRecord = async () => {
@@ -32,19 +39,22 @@ const PrepareWorkout = () => {
         const isAppConnected = false;
         const user = selectedUser;
 
-        const docRef = await addDoc(recordsRef, {
+        const targetRecordRef = await addDoc(recordsRef, {
             targetHeartRate,
             upperLimitHeartRate,
             pairId,
             isAppConnected,
             user,
         });
-        console.log('Document written with ID: ', docRef.id);
+        console.log('Document written with ID: ', targetRecordRef.id);
 
-        await addDoc(collection(recordsRef, docRef.id, 'rpms'), {
+        // initialize rpms collection
+        await addDoc(collection(recordsRef, targetRecordRef.id, 'rpms'), {
             rpm: 0,
             time: 0,
         });
+
+        setTargetRecordId(targetRecordRef.id);
 
         // targetHeartRate
         // upperLimitHeartRate

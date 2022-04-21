@@ -35,7 +35,7 @@ const AppRoutes = () => {
                     element={<PrepareWorkout />}
                 />
                 <Route
-                    path={ROUTE_PATH.monitoring_workout}
+                    path={`${ROUTE_PATH.monitoring_workout}/:recordId`}
                     element={<MonitoringWorkout />}
                 />
                 <Route path={ROUTE_PATH.user_list} element={<UserList />} />
