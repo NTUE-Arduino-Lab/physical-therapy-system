@@ -16,7 +16,7 @@ const MonitoringWorkout = () => {
     }, []);
 
     const init = async () => {
-        const rpmsRef = query(await getRpmsWithPairdId('12345'));
+        const rpmsRef = query(await getRpmsWithPairdId('2345'));
 
         if (rpmsRef == null) {
             alert('the pair id not correct');

@@ -47,5 +47,5 @@ export const getRpmsWithPairdId = async (pairId) => {
         });
     }
     console.log(targetRecordId);
-    return collection(db, 'records', targetRecordId, 'rpms');
+    return collection(recordsRef, targetRecordId, 'rpms');
 };
