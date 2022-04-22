@@ -7,13 +7,18 @@ import {
     doc,
     updateDoc,
     deleteDoc,
+    Timestamp,
 } from 'firebase/firestore';
 import _ from '../../util/helper';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
-import { recordsRef, generateValidPairId } from '../../services/firebase';
+import {
+    recordsRef,
+    generateValidPairId,
+    validatePairId,
+} from '../../services/firebase';
 import wait from '../../util/wait';
 
 const initialRpm = {
@@ -29,7 +34,7 @@ const PrepareWorkout = () => {
     const [selectedDiff, setSelectedDiff] = useState();
 
     const [isInitializing, setIsInitializing] = useState(false);
-    const [isPairing, setIsParing] = useState(false);
+    const [isPairing, setIsPairing] = useState(false);
 
     const [targetgetRecordId, setTargetRecordId] = useState();
 
@@ -58,7 +63,7 @@ const PrepareWorkout = () => {
             const currData = doc.data();
             console.log('Current data: ', currData);
             if (currData?.isAppConnected) {
-                setIsParing(false);
+                setIsPairing(false);
                 setIsAppConnected(true);
             }
         });
@@ -91,6 +96,9 @@ const PrepareWorkout = () => {
         const pairId = await generateValidPairId(); // later wil
         const isAppConnected = false;
         const user = selectedUser;
+        const createdTime = Timestamp.now();
+        const beginWorkoutTime = null;
+        const finishedWorkoutTime = null;
 
         const targetRecordRef = await addDoc(recordsRef, {
             targetHeartRate,
@@ -98,6 +106,9 @@ const PrepareWorkout = () => {
             pairId,
             isAppConnected,
             user,
+            createdTime,
+            beginWorkoutTime,
+            finishedWorkoutTime,
         });
         console.log('Document written with ID: ', targetRecordRef.id);
 
@@ -116,23 +127,25 @@ const PrepareWorkout = () => {
         // pairId
         // isAppConnected
         // user
+        // beginWorkoutTime
+        // finishedWorkoutTime
+        // createdTime
     };
 
     const pairWithApp = async () => {
-        console.log('pair id:' + pairId);
-        console.log('user input:' + inputPairId);
+        setIsPairing(true);
 
-        setIsParing(true);
+        const theRecordId = await validatePairId(inputPairId);
 
-        if (pairId != inputPairId) {
-            alert('配對碼有誤！');
+        if (!theRecordId) {
+            alert('配對碼有誤或非本次記錄的配對碼');
+            setIsPairing(false);
             setIsAppConnected(false);
-            setIsParing(false);
             return;
         }
 
         // update the isAppConnected Field!
-        const targetRecordRef = doc(recordsRef, targetgetRecordId);
+        const targetRecordRef = doc(recordsRef, theRecordId);
         await wait(1500);
         await updateDoc(targetRecordRef, {
             isAppConnected: true,

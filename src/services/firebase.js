@@ -32,6 +32,28 @@ export const usersRef = collection(db, 'users');
 export const recordsRef = collection(db, 'records');
 export const difficultiesRef = collection(db, 'difficulties');
 
+export const validatePairId = async (pairId) => {
+    const q = query(recordsRef, where('pairId', '==', pairId));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty || querySnapshot.size != 1) {
+        return false;
+    }
+
+    let record;
+    let recordId;
+    querySnapshot.forEach((doc) => {
+        record = doc.data();
+        recordId = doc.id;
+    });
+
+    if (record?.finishedWorkoutTime != null) {
+        return false;
+    }
+
+    return recordId;
+};
+
 export const getRpmsWithPairdId = async (pairId) => {
     let targetRecordId = null;
 
@@ -77,5 +99,5 @@ const isPairIdValid = async (pairId) => {
 };
 
 const getRandomPairId = () => {
-    return Math.floor(Math.random() * (9999 - 1000) + 1000);
+    return Math.floor(Math.random() * (9999 - 1000) + 1000).toString();
 };
