@@ -51,16 +51,16 @@ export const getRpmsWithPairdId = async (pairId) => {
 };
 
 export const generateValidPairId = async () => {
-    let isValid = false;
+    let pass = false;
     let pairId = null;
 
-    while (!isValid) {
-        const testPairId = getRandomPairId();
-        const isPass = await isPairIdValid(testPairId);
+    while (!pass) {
+        const test = getRandomPairId();
+        const validated = await isPairIdValid(test);
 
-        if (isPass) {
-            isValid = true;
-            pairId = testPairId;
+        if (validated) {
+            pass = true;
+            pairId = test;
         }
     }
 
