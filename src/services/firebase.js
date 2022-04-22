@@ -32,7 +32,7 @@ export const usersRef = collection(db, 'users');
 export const recordsRef = collection(db, 'records');
 export const difficultiesRef = collection(db, 'difficulties');
 
-export const validatePairId = async (pairId) => {
+export const validateInputPairId = async (pairId) => {
     const q = query(recordsRef, where('pairId', '==', pairId));
     const querySnapshot = await getDocs(q);
 

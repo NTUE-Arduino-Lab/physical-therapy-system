@@ -17,12 +17,17 @@ import styles from './styles.module.scss';
 import {
     recordsRef,
     generateValidPairId,
-    validatePairId,
+    validateInputPairId,
 } from '../../services/firebase';
 import wait from '../../util/wait';
 
 const initialRpm = {
     rpm: 0,
+    time: 0,
+};
+
+const initialHeartRate = {
+    heartRate: 0,
     time: 0,
 };
 
@@ -93,7 +98,7 @@ const PrepareWorkout = () => {
 
         const targetHeartRate = 100;
         const upperLimitHeartRate = 120;
-        const pairId = await generateValidPairId(); // later wil
+        const pairId = await generateValidPairId();
         const isAppConnected = false;
         const user = selectedUser;
         const createdTime = Timestamp.now();
@@ -112,10 +117,16 @@ const PrepareWorkout = () => {
         });
         console.log('Document written with ID: ', targetRecordRef.id);
 
-        // initialize rpms collection
+        // initialize sub collection - rpms
         await addDoc(
             collection(recordsRef, targetRecordRef.id, 'rpms'),
             initialRpm,
+        );
+
+        // initialize sub collection - heart rate
+        await addDoc(
+            collection(recordsRef, targetRecordRef.id, 'heartRates'),
+            initialHeartRate,
         );
 
         setIsInitializing(false);
@@ -135,7 +146,7 @@ const PrepareWorkout = () => {
     const pairWithApp = async () => {
         setIsPairing(true);
 
-        const theRecordId = await validatePairId(inputPairId);
+        const theRecordId = await validateInputPairId(inputPairId);
 
         if (!theRecordId) {
             alert('配對碼有誤或非本次記錄的配對碼');

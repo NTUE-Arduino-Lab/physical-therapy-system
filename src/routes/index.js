@@ -44,7 +44,7 @@ const AppRoutes = () => {
                     element={<DifficulityList />}
                 />
                 <Route
-                    path={ROUTE_PATH.finsished_workout}
+                    path={`${ROUTE_PATH.finsished_workout}/:recordId`}
                     element={<FinishedWorkout />}
                 />
             </Route>
