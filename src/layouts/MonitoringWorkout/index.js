@@ -123,6 +123,7 @@ const MonitoringWorkout = () => {
         await wait(2000);
         await updateDoc(recordRef, {
             finishedWorkoutTime: Timestamp.now(),
+            pairId: null,
         });
 
         setIsFinishing(false);
@@ -130,6 +131,8 @@ const MonitoringWorkout = () => {
         navigate(`${ROUTE_PATH.finsished_workout}/${params.recordId}`);
     };
 
+    // TODO:
+    // refactoring <table> to component
     return (
         <div className={styles.container}>
             <table>
@@ -169,7 +172,7 @@ const MonitoringWorkout = () => {
                 手動新增一筆 RPM, Heart Rate 資料
             </button>
             <button onClick={goFinishWorkout}>Finish workout</button>
-            {isFinishing && <p>結束中...</p>}
+            {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
         </div>
     );
 };

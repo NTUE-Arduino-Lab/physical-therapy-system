@@ -65,6 +65,8 @@ const FinishedWorkout = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
+    // TODO:
+    // add therapist, comment
     return (
         <div className={styles.container}>
             <p>This is FinishedWorkout page</p>

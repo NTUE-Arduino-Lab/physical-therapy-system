@@ -13,6 +13,7 @@ import MonitoringWorkout from '../layouts/MonitoringWorkout';
 import UserList from '../layouts/UserList';
 import DifficulityList from '../layouts/DifficulityList';
 import FinishedWorkout from '../layouts/FinishedWorkout';
+import RecordList from '../layouts/RecordList';
 
 const AppRoutes = () => {
     return (
@@ -39,6 +40,7 @@ const AppRoutes = () => {
                     element={<MonitoringWorkout />}
                 />
                 <Route path={ROUTE_PATH.user_list} element={<UserList />} />
+                <Route path={ROUTE_PATH.record_list} element={<RecordList />} />
                 <Route
                     path={ROUTE_PATH.difficulty_list}
                     element={<DifficulityList />}

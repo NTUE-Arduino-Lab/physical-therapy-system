@@ -7,5 +7,6 @@ export default {
     monitoring_workout: '/monitoring-workout',
     user_list: '/user-list',
     difficulty_list: '/difficulty-list',
+    record_list: '/record-list',
     finsished_workout: '/finished-workout',
 };

@@ -16,6 +16,10 @@ const AdminDashboard = () => {
         navigate(ROUTE_PATH.difficulty_list);
     };
 
+    const goRecordList = () => {
+        navigate(ROUTE_PATH.record_list);
+    };
+
     const goPrepareWorkout = () => {
         navigate(ROUTE_PATH.prepare_workout);
     };
@@ -24,6 +28,7 @@ const AdminDashboard = () => {
         <div className={styles.container}>
             <p>This is Admin Dashboard</p>
             <button onClick={goUserList}>User List</button>
+            <button onClick={goRecordList}>Record List</button>
             <button onClick={goDifficulityList}>Difficulity List</button>
             <button onClick={goPrepareWorkout}>Prepare Workout</button>
         </div>
