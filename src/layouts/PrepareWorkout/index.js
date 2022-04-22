@@ -5,7 +5,7 @@ import { addDoc, collection } from 'firebase/firestore';
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
-import { recordsRef } from '../../services/firebase';
+import { recordsRef, generateValidPairId } from '../../services/firebase';
 
 const PrepareWorkout = () => {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ const PrepareWorkout = () => {
     const [targetgetRecordId, setTargetRecordId] = useState();
 
     // for functionality testing
-    // const [paridId, setPairId] = useState();
+    const [pairId, setPairId] = useState('');
 
     const goDashboard = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
@@ -28,6 +28,8 @@ const PrepareWorkout = () => {
     };
 
     const createRecord = async () => {
+        console.log(pairId);
+
         if (selectedUser == null || selectedDiff == null) {
             alert('請選擇使用者及難度');
             return;
@@ -35,7 +37,7 @@ const PrepareWorkout = () => {
 
         const targetHeartRate = 100;
         const upperLimitHeartRate = 120;
-        const pairId = '2345';
+        const pairId = await generateValidPairId(); // later wil
         const isAppConnected = false;
         const user = selectedUser;
 
@@ -55,6 +57,7 @@ const PrepareWorkout = () => {
         });
 
         setTargetRecordId(targetRecordRef.id);
+        setPairId(pairId);
 
         // targetHeartRate
         // upperLimitHeartRate
@@ -84,6 +87,9 @@ const PrepareWorkout = () => {
                     清幽小徑・目標心率 100・上限心率 120
                 </option>
             </select>
+            <p>Pair id : {pairId}</p>
+            {/* <input value={pairId} onChange={onPairIdChange} /> */}
+
             <button onClick={createRecord}>開始新紀錄</button>
             <button onClick={goMonitoring}>go to monitoring</button>
         </div>

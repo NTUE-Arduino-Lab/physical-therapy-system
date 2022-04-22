@@ -49,3 +49,33 @@ export const getRpmsWithPairdId = async (pairId) => {
     console.log(targetRecordId);
     return collection(recordsRef, targetRecordId, 'rpms');
 };
+
+export const generateValidPairId = async () => {
+    let isValid = false;
+    let pairId = null;
+
+    while (!isValid) {
+        const testPairId = getRandomPairId();
+        const isPass = await isPairIdValid(testPairId);
+
+        if (isPass) {
+            isValid = true;
+            pairId = testPairId;
+        }
+    }
+
+    return pairId;
+};
+
+const isPairIdValid = async (pairId) => {
+    const q = query(recordsRef, where('pairId', '==', pairId));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+        return true;
+    } else return false;
+};
+
+const getRandomPairId = () => {
+    return Math.floor(Math.random() * (9999 - 1000) + 1000);
+};
