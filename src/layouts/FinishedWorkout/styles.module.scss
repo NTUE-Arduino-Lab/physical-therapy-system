@@ -3,3 +3,13 @@
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+.form input {
+  width: 10em;
+  display: block;
+}
+
+.form .submit {
+  width: 8em;
+  margin-bottom: 2em;
+}

@@ -1,34 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    updateDoc,
+} from 'firebase/firestore';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
+import _ from '../../util/helper';
 
-import { recordsRef } from '../../services/firebase';
+import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 
 const FinishedWorkout = () => {
     const navigate = useNavigate();
     const params = useParams();
 
-    const [rpms, setRpms] = useState([]);
-    const [heartRates, setHeartRates] = useState([]);
-    const [record, setRecord] = useState({});
+    const [user, setUser] = useState();
+    const [record, setRecord] = useState();
+    const [packets, setPackets] = useState([]);
+    const [difficulty, setDifficulty] = useState();
 
     const [isDone, setIsDone] = useState(false);
+    const [isCommented, setIsCommented] = useState(false);
 
     useEffect(() => {
         init();
     }, []);
 
     const init = async () => {
-        const rpmsRef = collection(recordsRef, params.recordId, 'rpms');
         const recordRef = doc(recordsRef, params.recordId);
-        const heartRatesRef = collection(
-            recordsRef,
-            params.recordId,
-            'heartRates',
-        );
+        const packetsRef = collection(recordsRef, params.recordId, 'packets');
 
         // record
         const recordSnapshot = await getDoc(recordRef);
@@ -47,26 +51,47 @@ const FinishedWorkout = () => {
             finishedWorkoutTime: recordData.finishedWorkoutTime.toDate(),
         };
 
-        // rpms
-        const rpms = [];
-        const rpmsSnapshot = await getDocs(rpmsRef);
-        rpmsSnapshot.forEach((doc) => {
-            rpms.push(doc.data());
+        // packets
+        const packets = [];
+        const packetsSnapshot = await getDocs(packetsRef);
+        packetsSnapshot.forEach((doc) => {
+            packets.push(doc.data());
         });
-        rpms.sort((a, b) => a.time - b.time);
+        packets.sort((a, b) => a.time - b.time);
 
-        // heart rates
-        const heartRates = [];
-        const hrSnapshot = await getDocs(heartRatesRef);
-        hrSnapshot.forEach((doc) => {
-            heartRates.push(doc.data());
-        });
-        heartRates.sort((a, b) => a.time - b.time);
+        // user
+        const userRef = doc(usersRef, recordData.user);
+        const userSnapshot = await getDoc(userRef);
+        const user = userSnapshot.data();
 
+        // difficulty
+        const difficultyRef = doc(difficultiesRef, recordData.difficulty);
+        const diffSnapshot = await getDoc(difficultyRef);
+        const difficulty = diffSnapshot.data();
+
+        setUser(user);
         setRecord(record);
-        setRpms(rpms);
-        setHeartRates(heartRates);
+        setPackets(packets);
+        setDifficulty(difficulty);
         setIsDone(true);
+    };
+
+    const onFormSubmit = async (e) => {
+        // e.validateForm();
+        e.preventDefault();
+        const { therapist, comment } = e.target;
+
+        if (_.isEmpty(therapist.value)) {
+            alert('請填上治療師名稱');
+            return;
+        }
+        const recordRef = doc(recordsRef, params.recordId);
+        await updateDoc(recordRef, {
+            therapist: therapist.value,
+            comment: comment.value,
+        });
+
+        setIsCommented(true);
     };
 
     const goDashboard = () => {
@@ -77,52 +102,67 @@ const FinishedWorkout = () => {
         return <div>紀錄資料讀取中...</div>;
     }
 
-    // TODO:
-    // add therapist, comment
     return (
         <div className={styles.container}>
-            <p>This is FinishedWorkout page</p>
-
-            <h3>RPMS</h3>
+            <h1>已結束騎乘，本次騎乘數據統計</h1>
+            <p>騎乘者：{user?.name}</p>
+            <p>騎乘者身體年齡：{user?.age}</p>
+            <p>
+                騎乘關卡：{difficulty.name}・目標心率{' '}
+                {difficulty.targetHeartRate}・上限心率{' '}
+                {difficulty.upperLimitHeartRate}
+            </p>
+            <p>開始騎乘時間：{record.beginWorkoutTime.toLocaleString()}</p>
+            <p>
+                結束騎乘時間：
+                {record.finishedWorkoutTime.toLocaleString()}
+            </p>
             <table>
                 <thead>
                     <tr>
                         <th>時間</th>
                         <th>rpm</th>
+                        <th>心率</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {rpms.map((el) => (
+                    {packets.map((el) => (
                         <tr key={el.time}>
                             <td>{el.time}</td>
                             <td>{el.rpm}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <h3>Heart Rates</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>時間</th>
-                        <th>rpm</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {heartRates.map((el) => (
-                        <tr key={el.time}>
-                            <td>{el.time}</td>
                             <td>{el.heartRate}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <h3>開始騎乘時間：{record.beginWorkoutTime.toLocaleString()}</h3>
-            <h3>
-                結束騎乘時間：
-                {record.finishedWorkoutTime.toLocaleString()}
-            </h3>
-            <button onClick={goDashboard}>go to dashboard</button>
+            <h3>請具填以下資料，方可返回主選單</h3>
+            {/* 
+                TODO:
+                after UI library added, change back to controll mode 
+            */}
+            <form onSubmit={onFormSubmit} className={styles.form}>
+                <label htmlFor="therapist">物理治療師名稱</label>
+                <br />
+                <input
+                    type="text"
+                    id="therapist"
+                    name="therapist"
+                    required
+                ></input>
+                <br />
+                <label htmlFor="comment">治療結果評語</label>
+                <br />
+                <textarea id="comment" name="comment"></textarea>
+                <input
+                    type="submit"
+                    value="Submit"
+                    className={styles.submit}
+                ></input>
+            </form>
+
+            <button onClick={goDashboard} disabled={!isCommented}>
+                返回主選單
+            </button>
         </div>
     );
 };

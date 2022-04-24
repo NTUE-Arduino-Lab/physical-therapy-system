@@ -23,6 +23,9 @@ button {
   -webkit-font-smoothing: antialiased;
   font-family: 'Noto Sans TC', 'PingFangTC-Regular', 'Microsoft JhengHei',
     sans-serif;
+
+  overscroll-behavior-x: none; // 避免左右滑動 上下頁
+  // checkout: https://stackoverflow.com/questions/15829172/stop-chrome-back-forward-two-finger-swipe
 }
 
 body {

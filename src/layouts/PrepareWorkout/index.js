@@ -21,14 +21,10 @@ import {
 } from '../../services/firebase';
 import wait from '../../util/wait';
 
-const initialRpm = {
+const initialPacket = {
     rpm: 0,
     time: 0,
-};
-
-const initialHeartRate = {
     heartRate: 0,
-    time: 0,
 };
 
 let unsubscribe = null;
@@ -56,18 +52,14 @@ const PrepareWorkout = () => {
     }, []);
 
     useEffect(() => {
-        console.log(
-            'use effect received [targerRecordId] change: ' + targetgetRecordId,
-        );
-        if (targetgetRecordId == null) {
+        if (_.isEmpty(targetgetRecordId)) {
             return;
         }
 
         const targetRecordRef = doc(recordsRef, targetgetRecordId);
         unsubscribe = onSnapshot(targetRecordRef, (doc) => {
             const currData = doc.data();
-            console.log('Current data: ', currData);
-            if (currData?.isAppConnected) {
+            if (currData?.isAppConnected && doc.id === targetgetRecordId) {
                 setIsPairing(false);
                 setIsAppConnected(true);
             }
@@ -85,7 +77,9 @@ const PrepareWorkout = () => {
     };
 
     const goMonitoring = () => {
-        navigate(`${ROUTE_PATH.monitoring_workout}/${targetgetRecordId}`);
+        navigate(`${ROUTE_PATH.monitoring_workout}/${targetgetRecordId}`, {
+            replace: true,
+        });
     };
 
     const createRecord = async () => {
@@ -96,11 +90,14 @@ const PrepareWorkout = () => {
 
         setIsInitializing(true);
 
-        const targetHeartRate = 100;
-        const upperLimitHeartRate = 120;
+        // will changed
+        const targetHeartRate = 100; // careful the type
+        const upperLimitHeartRate = 120; // careful the type
+        // constant
+        const user = selectedUser;
+        const difficulty = selectedDiff;
         const pairId = await generateValidPairId();
         const isAppConnected = false;
-        const user = selectedUser;
         const createdTime = Timestamp.now();
         const beginWorkoutTime = null;
         const finishedWorkoutTime = null;
@@ -114,19 +111,14 @@ const PrepareWorkout = () => {
             createdTime,
             beginWorkoutTime,
             finishedWorkoutTime,
+            difficulty,
         });
         console.log('Document written with ID: ', targetRecordRef.id);
 
         // initialize sub collection - rpms
         await addDoc(
-            collection(recordsRef, targetRecordRef.id, 'rpms'),
-            initialRpm,
-        );
-
-        // initialize sub collection - heart rate
-        await addDoc(
-            collection(recordsRef, targetRecordRef.id, 'heartRates'),
-            initialHeartRate,
+            collection(recordsRef, targetRecordRef.id, 'packets'),
+            initialPacket,
         );
 
         setIsInitializing(false);
@@ -141,8 +133,10 @@ const PrepareWorkout = () => {
         // beginWorkoutTime
         // finishedWorkoutTime
         // createdTime
+        // difficulty
     };
 
+    // for functionality testing
     const pairWithApp = async () => {
         setIsPairing(true);
 
@@ -193,7 +187,7 @@ const PrepareWorkout = () => {
 
             {pairId && (
                 <div className={styles.pairing}>
-                    <describe>模擬在 App 端的操作</describe>
+                    <p className={styles.caption}>模擬在 App 端的操作</p>
                     <label>請輸入四位數配對碼：</label>
                     <input
                         value={inputPairId}
