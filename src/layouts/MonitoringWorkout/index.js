@@ -28,6 +28,8 @@ const MonitoringWorkout = () => {
     const [heartRates, setHeartRates] = useState([]);
     const [isFinishing, setIsFinishing] = useState(false);
 
+    const [isInitDone, setIsInitDone] = useState(false);
+
     useEffect(() => {
         init();
 
@@ -38,6 +40,16 @@ const MonitoringWorkout = () => {
     }, []);
 
     const init = async () => {
+        // check if a valid record
+        const recordRef = doc(recordsRef, params.recordId);
+        const recordSnapshot = await getDoc(recordRef);
+        const record = recordSnapshot.data();
+        if (record.finishedWorkoutTime != null) {
+            alert('此筆紀錄已完成，將自動導回首頁！');
+            navigate(ROUTE_PATH.admin_dashbaord);
+            return;
+        }
+
         const rpmsRef = collection(recordsRef, params.recordId, 'rpms');
         const heartRatesRef = collection(
             recordsRef,
@@ -78,6 +90,8 @@ const MonitoringWorkout = () => {
 
             setHeartRates(newHeartRates);
         });
+
+        setIsInitDone(true);
     };
 
     // for prototype testing
@@ -130,6 +144,10 @@ const MonitoringWorkout = () => {
 
         navigate(`${ROUTE_PATH.finsished_workout}/${params.recordId}`);
     };
+
+    if (!isInitDone) {
+        return <div>監控畫面初始化中...</div>;
+    }
 
     // TODO:
     // refactoring <table> to component

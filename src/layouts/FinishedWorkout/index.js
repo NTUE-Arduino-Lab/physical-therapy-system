@@ -30,6 +30,23 @@ const FinishedWorkout = () => {
             'heartRates',
         );
 
+        // record
+        const recordSnapshot = await getDoc(recordRef);
+        const recordData = recordSnapshot.data();
+        if (
+            recordData.pairId != null ||
+            recordData.finishedWorkoutTime == null
+        ) {
+            alert('此筆紀錄尚未完成，將自動導回首頁！');
+            navigate(ROUTE_PATH.admin_dashbaord);
+            return;
+        }
+        const record = {
+            ...recordData,
+            beginWorkoutTime: recordData.beginWorkoutTime.toDate(),
+            finishedWorkoutTime: recordData.finishedWorkoutTime.toDate(),
+        };
+
         // rpms
         const rpms = [];
         const rpmsSnapshot = await getDocs(rpmsRef);
@@ -46,15 +63,6 @@ const FinishedWorkout = () => {
         });
         heartRates.sort((a, b) => a.time - b.time);
 
-        // record
-        const recordSnapshot = await getDoc(recordRef);
-        const recordData = recordSnapshot.data();
-        const record = {
-            ...recordData,
-            beginWorkoutTime: recordData.beginWorkoutTime.toDate(),
-            finishedWorkoutTime: recordData.finishedWorkoutTime.toDate(),
-        };
-
         setRecord(record);
         setRpms(rpms);
         setHeartRates(heartRates);
@@ -65,58 +73,56 @@ const FinishedWorkout = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
+    if (!isDone) {
+        return <div>紀錄資料讀取中...</div>;
+    }
+
     // TODO:
     // add therapist, comment
     return (
         <div className={styles.container}>
             <p>This is FinishedWorkout page</p>
-            {!isDone && <div>資料讀取中...</div>}
-            {isDone && (
-                <>
-                    <h3>RPMS</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>時間</th>
-                                <th>rpm</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {rpms.map((el) => (
-                                <tr key={el.time}>
-                                    <td>{el.time}</td>
-                                    <td>{el.rpm}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <h3>Heart Rates</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>時間</th>
-                                <th>rpm</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {heartRates.map((el) => (
-                                <tr key={el.time}>
-                                    <td>{el.time}</td>
-                                    <td>{el.heartRate}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    <h3>
-                        開始騎乘時間：{record.beginWorkoutTime.toLocaleString()}
-                    </h3>
-                    <h3>
-                        結束騎乘時間：
-                        {record.finishedWorkoutTime.toLocaleString()}
-                    </h3>
-                    <button onClick={goDashboard}>go to dashboard</button>
-                </>
-            )}
+
+            <h3>RPMS</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>rpm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rpms.map((el) => (
+                        <tr key={el.time}>
+                            <td>{el.time}</td>
+                            <td>{el.rpm}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <h3>Heart Rates</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>時間</th>
+                        <th>rpm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {heartRates.map((el) => (
+                        <tr key={el.time}>
+                            <td>{el.time}</td>
+                            <td>{el.heartRate}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <h3>開始騎乘時間：{record.beginWorkoutTime.toLocaleString()}</h3>
+            <h3>
+                結束騎乘時間：
+                {record.finishedWorkoutTime.toLocaleString()}
+            </h3>
+            <button onClick={goDashboard}>go to dashboard</button>
         </div>
     );
 };
