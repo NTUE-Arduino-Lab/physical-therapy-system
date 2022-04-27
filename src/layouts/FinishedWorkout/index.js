@@ -7,6 +7,7 @@ import {
     getDocs,
     updateDoc,
 } from 'firebase/firestore';
+import moment from 'moment';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
@@ -98,6 +99,15 @@ const FinishedWorkout = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
+    const calWorkoutTime = () => {
+        const begin = moment(record.beginWorkoutTime);
+        const end = moment(record.finishedWorkoutTime);
+
+        const diff = moment.duration(end.diff(begin)).asMilliseconds();
+
+        return moment.utc(diff).format('h 小時 mm 分');
+    };
+
     if (!isDone) {
         return <div>紀錄資料讀取中...</div>;
     }
@@ -111,6 +121,10 @@ const FinishedWorkout = () => {
                 騎乘關卡：{difficulty.name}・目標心率{' '}
                 {difficulty.targetHeartRate}・上限心率{' '}
                 {difficulty.upperLimitHeartRate}
+            </p>
+            <p>
+                實際騎乘時間／目標騎乘時間：{calWorkoutTime()}／
+                {difficulty.targetWorkoutTime} 分
             </p>
             <p>開始騎乘時間：{record.beginWorkoutTime.toLocaleString()}</p>
             <p>

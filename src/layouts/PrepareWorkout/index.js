@@ -210,7 +210,7 @@ const PrepareWorkout = () => {
             <select value={selectedDiff} onChange={onDiffChange}>
                 <option>選擇騎乘難度</option>
                 <option value="MOFmaft3pG7ECZoTsweR">
-                    清幽小徑・目標心率 100・上限心率 120
+                    清幽小徑・25 分鐘・目標心率 100・上限心率 120
                 </option>
             </select>
             <button onClick={createRecord}>確定完成，下一步</button>
