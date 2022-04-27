@@ -9,8 +9,10 @@ import {
     deleteDoc,
     Timestamp,
 } from 'firebase/firestore';
+import { Statistic } from 'antd';
 import _ from '../../util/helper';
 
+// import { ROUTE_PATH, VALID_MIN } from '../../constants';
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
@@ -20,6 +22,8 @@ import {
     validateInputPairId,
 } from '../../services/firebase';
 import wait from '../../util/wait';
+
+const { Countdown } = Statistic;
 
 const initialPacket = {
     rpm: 0,
@@ -41,6 +45,7 @@ const PrepareWorkout = () => {
 
     const [pairId, setPairId] = useState(); // 產生的不重複配對碼
     const [isAppConnected, setIsAppConnected] = useState(false);
+    const [pairDeadline, setPairDeadline] = useState();
 
     // for functionality testing
     const [inputPairId, setInputPairId] = useState(''); // 輸入的配對碼
@@ -57,11 +62,21 @@ const PrepareWorkout = () => {
         }
 
         const targetRecordRef = doc(recordsRef, targetgetRecordId);
-        unsubscribe = onSnapshot(targetRecordRef, (doc) => {
+        unsubscribe = onSnapshot(targetRecordRef, async (doc) => {
             const currData = doc.data();
-            if (currData?.isAppConnected && doc.id === targetgetRecordId) {
-                setIsPairing(false);
-                setIsAppConnected(true);
+            if (currData?.pairId == null) {
+                // App 端連線後，會將 pairId 設成 null
+                // 藉由監聽是否為 null，判斷是否連上
+                // 若連上更新 record 的 [isAppConnected] 為 true
+                if (currData?.isAppConnected == false) {
+                    await updateDoc(targetRecordRef, {
+                        isAppConnected: true,
+                    });
+
+                    setPairDeadline(null);
+                    setIsPairing(false);
+                    setIsAppConnected(true);
+                }
             }
         });
 
@@ -70,8 +85,7 @@ const PrepareWorkout = () => {
 
     const goDashboard = async () => {
         if (targetgetRecordId && confirm('確定離開，將刪除此筆新增的紀錄')) {
-            const targetRecordRef = doc(recordsRef, targetgetRecordId);
-            await deleteDoc(targetRecordRef);
+            await deleteRecord();
         }
         navigate(ROUTE_PATH.admin_dashbaord);
     };
@@ -125,6 +139,10 @@ const PrepareWorkout = () => {
         setTargetRecordId(targetRecordRef.id);
         setPairId(pairId);
 
+        // start a count-down
+        const deadline = Date.now() + 1000 * 10;
+        setPairDeadline(deadline);
+
         // targetHeartRate
         // upperLimitHeartRate
         // pairId
@@ -134,6 +152,11 @@ const PrepareWorkout = () => {
         // finishedWorkoutTime
         // createdTime
         // difficulty
+    };
+
+    const deleteRecord = async () => {
+        const targetRecordRef = doc(recordsRef, targetgetRecordId);
+        await deleteDoc(targetRecordRef);
     };
 
     // for functionality testing
@@ -153,8 +176,21 @@ const PrepareWorkout = () => {
         const targetRecordRef = doc(recordsRef, theRecordId);
         await wait(1500);
         await updateDoc(targetRecordRef, {
-            isAppConnected: true,
+            pairId: null,
         });
+    };
+
+    const onDeadlineExpired = async () => {
+        alert('連結過期，請重新選擇！');
+
+        await wait(5000);
+        await deleteRecord();
+        setTargetRecordId(null);
+        setPairId(null);
+        setSelectedUser('');
+        setSelectedDiff('');
+        setPairDeadline(null);
+        setInputPairId(null);
     };
 
     const onUserChange = (e) => setSelectedUser(e.target.value);
@@ -184,7 +220,13 @@ const PrepareWorkout = () => {
             <h2>
                 配對碼: {pairId} {pairId && <span>(稍待與 App 的配對)</span>}
             </h2>
-
+            {pairDeadline && (
+                <Countdown
+                    title="有效時間"
+                    value={pairDeadline}
+                    onFinish={onDeadlineExpired}
+                />
+            )}
             {pairId && (
                 <div className={styles.pairing}>
                     <p className={styles.caption}>模擬在 App 端的操作</p>
