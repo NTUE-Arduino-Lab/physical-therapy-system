@@ -5,8 +5,8 @@ const WARN = {
 };
 
 const WARN_THRESHOLD = {
-    Slight: 110,
-    Medium: 113,
+    Slight: 105,
+    Medium: 115,
     High: 120,
 };
 

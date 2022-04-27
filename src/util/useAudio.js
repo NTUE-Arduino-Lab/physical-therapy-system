@@ -4,7 +4,7 @@ import warn_slight_url from '../assets/sounds/warn-slight.wav';
 import warn_medium_url from '../assets/sounds/warn-medium.wav';
 import warn_high_url from '../assets/sounds/warn-high.mp3';
 import other_notification_url from '../assets/sounds/notification.mp3';
-import other_archieved_url from '../assets/sounds/notification.mp3';
+import other_archieved_url from '../assets/sounds/goal-archieved.wav';
 
 const OTHER_SOUND = {
     Notification: 'notification',

@@ -48,6 +48,9 @@ const MonitoringWorkout = () => {
     }, []);
 
     useEffect(() => {
+        if (_.isEmpty(record)) return;
+        if (!isInitRecordDone || !isInitPacketsDone) return;
+
         evaluateCurrPacket(packets[packets.length - 1]);
     }, [packets]);
 
@@ -109,43 +112,34 @@ const MonitoringWorkout = () => {
     };
 
     const evaluateCurrPacket = (packet) => {
-        // console.log(record);
-        // console.log('isInitRecordDone: ' + isInitRecordDone);
-        // console.log('isInitPacketsDone: ' + isInitPacketsDone);
-
-        if (_.isEmpty(record)) {
-            return;
-        }
-        if (!isInitRecordDone || !isInitPacketsDone) {
-            return;
-        }
-
         console.log(packet);
 
         const targetHeartRate = record.targetHeartRate;
         const upperLimitHeartRate = record.upperLimitHeartRate;
 
         const calBase = upperLimitHeartRate / 100;
+        const overHigh = Math.floor(calBase * WARN_THRESHOLD.High);
+        const overMedium = Math.floor(calBase * WARN_THRESHOLD.Medium);
+        const overSlight = Math.floor(calBase * WARN_THRESHOLD.Slight);
 
-        const currHearRate = packet.heartRate;
-        if (currHearRate > calBase * WARN_THRESHOLD.High) {
+        if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
             playWarnSound(WARN.High);
         } else if (
-            currHearRate < calBase * WARN_THRESHOLD.High &&
-            currHearRate > calBase * WARN_THRESHOLD.Medium
+            packet.heartRate < overHigh &&
+            packet.heartRate >= overMedium
         ) {
             console.log('playing: medium warn');
             playWarnSound(WARN.Medium);
         } else if (
-            currHearRate < calBase * WARN_THRESHOLD.Medium &&
-            currHearRate > calBase * WARN_THRESHOLD.Slight
+            packet.heartRate < overMedium &&
+            packet.heartRate >= overSlight
         ) {
             console.log('playing: slight warn');
             playWarnSound(WARN.Slight);
         } else if (
-            currHearRate > targetHeartRate &&
-            currHearRate < upperLimitHeartRate
+            packet.heartRate >= targetHeartRate &&
+            packet.heartRate < overSlight
         ) {
             console.log('playing: archieved');
             playOtherSound(OTHER_SOUND.Archieved);
