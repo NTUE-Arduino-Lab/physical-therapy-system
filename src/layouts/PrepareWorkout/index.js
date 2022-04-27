@@ -12,8 +12,7 @@ import {
 import { Statistic } from 'antd';
 import _ from '../../util/helper';
 
-// import { ROUTE_PATH, VALID_MIN } from '../../constants';
-import { ROUTE_PATH } from '../../constants';
+import { ROUTE_PATH, VALID_MIN } from '../../constants';
 import styles from './styles.module.scss';
 
 import {
@@ -140,7 +139,7 @@ const PrepareWorkout = () => {
         setPairId(pairId);
 
         // start a count-down
-        const deadline = Date.now() + 1000 * 10;
+        const deadline = Date.now() + 1000 * 60 * VALID_MIN;
         setPairDeadline(deadline);
 
         // targetHeartRate

@@ -1,4 +1,4 @@
-export default {
+const ROUTE_PATH = {
     home: '/',
     sign_in: '/sign-in',
     unauthorized: '/unauthorized',
@@ -10,3 +10,5 @@ export default {
     record_list: '/record-list',
     finsished_workout: '/finished-workout',
 };
+
+export default ROUTE_PATH;

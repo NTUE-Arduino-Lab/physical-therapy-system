@@ -10,12 +10,13 @@ import {
     getDoc,
 } from 'firebase/firestore';
 
-import { ROUTE_PATH } from '../../constants';
+import { ROUTE_PATH, WARN } from '../../constants';
 import styles from './styles.module.scss';
 import _ from '../../util/helper';
 
 import { recordsRef, usersRef } from '../../services/firebase';
 import wait from '../../util/wait';
+import useWarnAudio from '../../util/useWarnAudio';
 
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
@@ -31,6 +32,8 @@ const MonitoringWorkout = () => {
 
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
+
+    const [playWarnSound] = useWarnAudio();
 
     useEffect(() => {
         init();
@@ -82,7 +85,8 @@ const MonitoringWorkout = () => {
         const packetsRef = collection(recordsRef, params.recordId, 'packets');
         unsubscribePackets = onSnapshot(packetsRef, (querySnapshot) => {
             if (querySnapshot.empty) {
-                alert('出錯！');
+                alert('監測數據有誤，請重新配對，即將退回選擇畫面！');
+                navigate(ROUTE_PATH.prepare_workout, { replace: true });
                 return;
             }
             const newRpms = [];
@@ -125,6 +129,7 @@ const MonitoringWorkout = () => {
         };
 
         await addDoc(packetsRef, nextPacket);
+        playWarnSound(WARN.Slight);
     };
 
     const goFinishWorkout = async () => {
