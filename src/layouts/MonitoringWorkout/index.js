@@ -10,13 +10,13 @@ import {
     getDoc,
 } from 'firebase/firestore';
 
-import { ROUTE_PATH, WARN } from '../../constants';
+import { ROUTE_PATH, WARN, WARN_THRESHOLD } from '../../constants';
 import styles from './styles.module.scss';
 import _ from '../../util/helper';
 
 import { recordsRef, usersRef } from '../../services/firebase';
 import wait from '../../util/wait';
-import useWarnAudio from '../../util/useWarnAudio';
+import useAudio from '../../util/useAudio';
 
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
@@ -33,7 +33,10 @@ const MonitoringWorkout = () => {
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
 
-    const [playWarnSound] = useWarnAudio();
+    const { playWarnSound, playOtherSound, OTHER_SOUND } = useAudio();
+
+    // for prototype
+    const [nextHeartRateVal, setNextHeartRateVal] = useState('');
 
     useEffect(() => {
         init();
@@ -43,6 +46,10 @@ const MonitoringWorkout = () => {
             if (_.isFunction(unsubscribePackets)) unsubscribePackets();
         };
     }, []);
+
+    useEffect(() => {
+        evaluateCurrPacket(packets[packets.length - 1]);
+    }, [packets]);
 
     const init = async () => {
         checkIntegrity();
@@ -63,9 +70,7 @@ const MonitoringWorkout = () => {
         const userRef = doc(usersRef, recordData.user);
         const userSnapshot = await getDoc(userRef);
         const user = userSnapshot.data();
-        setRecord(record);
         setUser(user);
-        setIsInitRecordDone(true);
     };
 
     const listenRecordChange = async () => {
@@ -78,30 +83,73 @@ const MonitoringWorkout = () => {
             };
 
             setRecord(record);
+            setIsInitRecordDone(true);
         });
     };
 
     const listenPacketsChange = () => {
         const packetsRef = collection(recordsRef, params.recordId, 'packets');
+
         unsubscribePackets = onSnapshot(packetsRef, (querySnapshot) => {
             if (querySnapshot.empty) {
                 alert('監測數據有誤，請重新配對，即將退回選擇畫面！');
                 navigate(ROUTE_PATH.prepare_workout, { replace: true });
                 return;
             }
-            const newRpms = [];
+            const newPackets = [];
             querySnapshot.forEach((doc) => {
-                newRpms.push(doc.data());
+                newPackets.push(doc.data());
             });
 
-            newRpms.sort((a, b) => a.time - b.time);
+            newPackets.sort((a, b) => a.time - b.time);
 
-            // TODO:
-            // if the latest hit the limit value
-            // show alarm
-            setPackets(newRpms);
+            setPackets(newPackets);
             setIsInitPacketsDone(true);
         });
+    };
+
+    const evaluateCurrPacket = (packet) => {
+        // console.log(record);
+        // console.log('isInitRecordDone: ' + isInitRecordDone);
+        // console.log('isInitPacketsDone: ' + isInitPacketsDone);
+
+        if (_.isEmpty(record)) {
+            return;
+        }
+        if (!isInitRecordDone || !isInitPacketsDone) {
+            return;
+        }
+
+        console.log(packet);
+
+        const targetHeartRate = record.targetHeartRate;
+        const upperLimitHeartRate = record.upperLimitHeartRate;
+
+        const calBase = upperLimitHeartRate / 100;
+
+        const currHearRate = packet.heartRate;
+        if (currHearRate > calBase * WARN_THRESHOLD.High) {
+            console.log('playing: high warn');
+            playWarnSound(WARN.High);
+        } else if (
+            currHearRate < calBase * WARN_THRESHOLD.High &&
+            currHearRate > calBase * WARN_THRESHOLD.Medium
+        ) {
+            console.log('playing: medium warn');
+            playWarnSound(WARN.Medium);
+        } else if (
+            currHearRate < calBase * WARN_THRESHOLD.Medium &&
+            currHearRate > calBase * WARN_THRESHOLD.Slight
+        ) {
+            console.log('playing: slight warn');
+            playWarnSound(WARN.Slight);
+        } else if (
+            currHearRate > targetHeartRate &&
+            currHearRate < upperLimitHeartRate
+        ) {
+            console.log('playing: archieved');
+            playOtherSound(OTHER_SOUND.Archieved);
+        }
     };
 
     // for prototype testing
@@ -119,17 +167,19 @@ const MonitoringWorkout = () => {
         const packetsRef = collection(recordsRef, params.recordId, 'packets');
 
         const time = (packets.length + 1) * 5;
+        const heartRate = _.isNotEmpty(nextHeartRateVal)
+            ? parseInt(nextHeartRateVal)
+            : 95 + packets.length;
 
         // simulate incoming rpm & heart rate
         const rpm = 30;
         const nextPacket = {
             time,
             rpm: rpm + packets.length,
-            heartRate: 95 + packets.length,
+            heartRate: heartRate,
         };
 
         await addDoc(packetsRef, nextPacket);
-        playWarnSound(WARN.Slight);
     };
 
     const goFinishWorkout = async () => {
@@ -166,6 +216,14 @@ const MonitoringWorkout = () => {
             <p>騎乘者：{user?.name}</p>
             <p>騎乘者身體年齡：{user?.age}</p>
             <p>騎乘開始時間：{record?.beginWorkoutTime?.toLocaleString()}</p>
+            <label>下個心率？</label>
+            <input
+                value={nextHeartRateVal}
+                onChange={(e) => setNextHeartRateVal(e.target.value)}
+            />
+            <button onClick={addRpmAndHeartRate}>
+                手動新增一筆 RPM, Heart Rate 資料
+            </button>
             <table>
                 <thead>
                     <tr>
@@ -184,9 +242,6 @@ const MonitoringWorkout = () => {
                     ))}
                 </tbody>
             </table>
-            <button onClick={addRpmAndHeartRate}>
-                手動新增一筆 RPM, Heart Rate 資料
-            </button>
             <button onClick={goFinishWorkout}>結束騎乘</button>
             {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
         </div>
