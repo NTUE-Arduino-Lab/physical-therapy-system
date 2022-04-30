@@ -18,6 +18,8 @@ import { recordsRef, usersRef } from '../../services/firebase';
 import wait from '../../util/wait';
 import useAudio from '../../util/useAudio';
 
+import Timer from '../../components/Timer';
+
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
 
@@ -35,6 +37,9 @@ const MonitoringWorkout = () => {
 
     const { playWarnSound, playOtherSound, OTHER_SOUND } = useAudio();
 
+    // 騎乘計時碼表時間
+    const [beginStopWatch, setBeginStopWatch] = useState(false);
+
     // for prototype
     const [nextHeartRateVal, setNextHeartRateVal] = useState('');
 
@@ -46,6 +51,22 @@ const MonitoringWorkout = () => {
             if (_.isFunction(unsubscribePackets)) unsubscribePackets();
         };
     }, []);
+
+    useEffect(() => {
+        if (_.isEmpty(record?.beginWorkoutTime)) {
+            return;
+        }
+
+        const begin = record.beginWorkoutTime;
+        const end = record.finishedWorkoutTime;
+
+        if (_.isNotEmpty(begin)) {
+            setBeginStopWatch(true);
+        }
+        if (_.isNotEmpty(end)) {
+            setBeginStopWatch(false);
+        }
+    }, [record]);
 
     useEffect(() => {
         if (_.isEmpty(record)) return;
@@ -182,6 +203,7 @@ const MonitoringWorkout = () => {
         }
 
         setIsFinishing(true);
+        setBeginStopWatch(false);
 
         const recordRef = doc(recordsRef, params.recordId);
 
@@ -209,7 +231,9 @@ const MonitoringWorkout = () => {
             <h1>騎乘監控畫面</h1>
             <p>騎乘者：{user?.name}</p>
             <p>騎乘者身體年齡：{user?.age}</p>
-            <p>騎乘開始時間：{record?.beginWorkoutTime?.toLocaleString()}</p>
+            <p>騎乘開始時間：{record.beginWorkoutTime?.toLocaleString()}</p>
+            <p>騎乘進行了多久：</p>
+            <Timer start={beginStopWatch} />
             <label>下個心率？</label>
             <input
                 value={nextHeartRateVal}
