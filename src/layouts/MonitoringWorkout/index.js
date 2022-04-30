@@ -129,14 +129,13 @@ const MonitoringWorkout = () => {
             querySnapshot.forEach((doc) => {
                 newPackets.push({
                     ...doc.data(),
-                    time: doc.data().time.toString(),
+                    time: `${doc.data().time.toString()} 秒`,
+                    timeValue: doc.data().time.toString(),
                 });
             });
 
-            newPackets.sort((a, b) => a.time - b.time);
+            newPackets.sort((a, b) => a.timeValue - b.timeValue);
             newPackets.splice(0, 1);
-
-            // console.table(newPackets);
 
             setPackets(newPackets);
             setIsInitPacketsDone(true);
@@ -147,14 +146,7 @@ const MonitoringWorkout = () => {
         console.log(packet);
 
         const targetHeartRate = record.targetHeartRate;
-        // const upperLimitHeartRate = record.upperLimitHeartRate;
-
         const [overSlight, overMedium, overHigh] = getExactThresholdValue();
-
-        // const calBase = upperLimitHeartRate / 100;
-        // const overHigh = Math.floor(calBase * WARN_THRESHOLD.High);
-        // const overMedium = Math.floor(calBase * WARN_THRESHOLD.Medium);
-        // const overSlight = Math.floor(calBase * WARN_THRESHOLD.Slight);
 
         if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
@@ -329,106 +321,102 @@ const MonitoringWorkout = () => {
     );
 };
 
-const configLineChart = (data) => {
-    const dataClone = JSON.parse(JSON.stringify(data));
-    console.table(dataClone);
-    return {
-        data: [dataClone, dataClone],
-        xField: 'time',
-        yField: ['rpm', 'heartRate'],
-        yAxis: {
-            rpm: {
-                title: {
-                    text: 'RPM',
-                },
-            },
-            heartRate: {
-                title: {
-                    text: '心率',
-                },
-            },
-        },
-        xAxis: {
+const configLineChart = (data) => ({
+    data: [data, data],
+    xField: 'time',
+    yField: ['rpm', 'heartRate'],
+    yAxis: {
+        rpm: {
             title: {
-                text: '時間（秒）',
+                text: 'RPM',
             },
         },
-        legend: {
-            itemName: {
-                formatter: (text, item) => {
-                    return item.value === 'rpm'
-                        ? 'RPM值(單位？)'
-                        : '心率(單位？)';
-                },
+        heartRate: {
+            title: {
+                text: '心率',
             },
         },
-        meta: {
-            rpm: {
-                alias: 'RPM值 ',
-                formatter: (value) => {
-                    return `${value} 單位？`;
-                },
-            },
-            heartRate: {
-                alias: '心率',
-                formatter: (value) => {
-                    return `${value} 單位？`;
-                    // return Number((v / 100).toFixed(1));
-                },
+    },
+    xAxis: {
+        title: {
+            text: '時間（秒）',
+        },
+    },
+    legend: {
+        itemName: {
+            formatter: (text, item) => {
+                return item.value === 'rpm' ? 'RPM值(單位？)' : '心率(單位？)';
             },
         },
-        geometryOptions: [
-            {
-                geometry: 'line',
-                color: '#5B8FF9',
-                lineStyle: {
-                    lineWidth: 2,
-                    lineDash: [5, 5],
-                },
+    },
+    meta: {
+        rpm: {
+            alias: 'RPM值 ',
+            formatter: (value) => {
+                return `${value} 單位？`;
             },
-            {
-                geometry: 'line',
-                color: '#5AD8A6',
-                smooth: true,
-                lineStyle: {
-                    lineWidth: 4,
+        },
+        heartRate: {
+            alias: '心率',
+            formatter: (value) => {
+                return `${value} 單位？`;
+                // return Number((v / 100).toFixed(1));
+            },
+        },
+    },
+    geometryOptions: [
+        {
+            geometry: 'line',
+            color: '#5B8FF9',
+            lineStyle: {
+                lineWidth: 2,
+                lineDash: [5, 5],
+            },
+        },
+        {
+            geometry: 'line',
+            color: '#5AD8A6',
+            smooth: true,
+            lineStyle: {
+                lineWidth: 4,
+                opacity: 0.5,
+            },
+            point: {
+                shape: 'circle',
+                size: 4,
+                style: {
                     opacity: 0.5,
+                    stroke: '#5AD8A6',
+                    fill: '#fff',
                 },
-                point: {
-                    shape: 'circle',
-                    size: 4,
+            },
+        },
+    ],
+    annotations: {
+        heartRate: [
+            {
+                type: 'line',
+                start: ['min', 138], // TODO: change [138] to 目標心率
+                end: ['max', 138], // TODO: change [138] to 目標心率
+                style: {
+                    lineWidth: 2,
+                    lineDash: [3, 3],
+                    stroke: '#F4664A',
+                },
+                text: {
+                    content: '目標心率',
+                    offsetY: -4,
+                    position: 'end',
                     style: {
-                        opacity: 0.5,
-                        stroke: '#5AD8A6',
-                        fill: '#fff',
+                        textAlign: 'end',
                     },
                 },
             },
         ],
-        annotations: {
-            heartRate: [
-                {
-                    type: 'line',
-                    // top: true,
-                    start: ['min', 138],
-                    end: ['max', 138],
-                    style: {
-                        lineWidth: 2,
-                        lineDash: [3, 3],
-                        stroke: '#F4664A',
-                    },
-                    text: {
-                        content: '目標心率',
-                        offsetY: -4,
-                        position: 'end',
-                        style: {
-                            textAlign: 'end',
-                        },
-                    },
-                },
-            ],
-        },
-    };
-};
+    },
+    tooltip: {
+        showTitle: true,
+    },
+});
 
 export default MonitoringWorkout;
