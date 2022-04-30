@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
+import { ConfigProvider } from 'antd';
+import 'moment/locale/zh-tw';
+import locale from 'antd/lib/locale/zh_TW';
 import React, { useEffect, useState } from 'react';
 import { useStore } from '../../store';
 import { SET_AUTH } from '../../store/actions';
-// import moment from 'moment';
 import _ from '../../util/helper';
+// import moment from 'moment';
 
 // import styles from './styles.module.scss';
+import '@ant-design/flowchart/dist/index.css';
 
 /*
     expect: 
@@ -22,10 +26,10 @@ const AppProvider = ({ children }) => {
     }, []);
 
     const attempLogin = () => {
-        console.log('executing attemp login');
-        const expiredIn = window.localStorage.getItem(
-            'inventory-system-expired-in',
-        );
+        // console.log('executing attemp login');
+        // const expiredIn = window.localStorage.getItem(
+        //     'inventory-system-expired-in',
+        // );
         setInitializedDone(true);
 
         // Example Down Below
@@ -49,7 +53,7 @@ const AppProvider = ({ children }) => {
         return null;
     }
 
-    return <div>{children}</div>;
+    return <ConfigProvider locale={locale}>{children}</ConfigProvider>;
 };
 
 export default AppProvider;

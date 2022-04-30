@@ -1,7 +1,14 @@
 .container {
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.2);
+
+  // grid-setup
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-gap: 10px;
+  padding: 10px;
 
   // overscroll-behavior: none;
   overflow-y: auto;
@@ -11,3 +18,30 @@
 // TODO:
 // also checkout:
 // https://stackoverflow.com/questions/69261011/disable-pull-to-refresh-in-ios-15-safari
+
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border: 1px solid;
+  font-size: 1.5em;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+
+.mainCol {
+  grid-column: span 3;
+  grid-row: span 2;
+  border: 3px solid red;
+}
+
+.difficulty {
+  p {
+    font-size: 1em;
+  }
+  caption {
+    color: gray;
+  }
+}
