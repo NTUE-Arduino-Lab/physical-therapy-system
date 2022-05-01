@@ -19,6 +19,7 @@ import _ from '../../util/helper';
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 import wait from '../../util/wait';
 import useAudio from '../../util/useAudio';
+import formatWithMoment from '../../util/formatSeconds';
 
 import Timer from '../../components/Timer';
 
@@ -48,6 +49,8 @@ const MonitoringWorkout = () => {
 
     useEffect(() => {
         init();
+
+        console.log(formatWithMoment(500));
 
         return () => {
             if (_.isFunction(unsubscribeRecord)) unsubscribeRecord();
@@ -129,12 +132,11 @@ const MonitoringWorkout = () => {
             querySnapshot.forEach((doc) => {
                 newPackets.push({
                     ...doc.data(),
-                    time: `${doc.data().time.toString()} 秒`,
-                    timeValue: doc.data().time.toString(),
+                    timeLabel: formatWithMoment(doc.data().time),
                 });
             });
 
-            newPackets.sort((a, b) => a.timeValue - b.timeValue);
+            newPackets.sort((a, b) => a.time - b.time);
             newPackets.splice(0, 1);
 
             setPackets(newPackets);
@@ -323,7 +325,7 @@ const MonitoringWorkout = () => {
 
 const configLineChart = (data) => ({
     data: [data, data],
-    xField: 'time',
+    xField: 'timeLabel',
     yField: ['rpm', 'heartRate'],
     yAxis: {
         rpm: {
@@ -337,11 +339,11 @@ const configLineChart = (data) => ({
             },
         },
     },
-    xAxis: {
-        title: {
-            text: '時間（秒）',
-        },
-    },
+    // xAxis: {
+    //     title: {
+    //         text: '時間',
+    //     },
+    // },
     legend: {
         itemName: {
             formatter: (text, item) => {
