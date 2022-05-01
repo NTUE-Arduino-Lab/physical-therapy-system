@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore';
 // import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
+import { Modal } from 'antd';
 
 import { ROUTE_PATH, WARN, WARN_THRESHOLD } from '../../constants';
 import styles from './styles.module.scss';
@@ -39,7 +40,12 @@ const MonitoringWorkout = () => {
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
 
-    const { playWarnSound, playOtherSound, OTHER_SOUND } = useAudio();
+    const {
+        playWarnSound,
+        playOtherSound,
+        OTHER_SOUND,
+        getAudioPermission,
+    } = useAudio();
 
     // 騎乘計時碼表
     const [beginStopWatch, setBeginStopWatch] = useState(false);
@@ -49,8 +55,7 @@ const MonitoringWorkout = () => {
 
     useEffect(() => {
         init();
-
-        console.log(formatWithMoment(500));
+        grantAudioPerssion();
 
         return () => {
             if (_.isFunction(unsubscribeRecord)) unsubscribeRecord();
@@ -79,6 +84,17 @@ const MonitoringWorkout = () => {
         checkIntegrity();
         listenRecordChange();
         listenPacketsChange();
+    };
+
+    const grantAudioPerssion = () => {
+        Modal.info({
+            title: '提示：監控過程會產生提示聲響，請確保聲音打開！',
+            // content: <button onClick={getAudioPermission}>點我測試;</button>,
+            onOk() {
+                getAudioPermission();
+            },
+            maskClosable: false,
+        });
     };
 
     const checkIntegrity = async () => {

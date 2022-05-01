@@ -10,6 +10,7 @@ import _ from '../../util/helper';
 // import moment from 'moment';
 
 // import styles from './styles.module.scss';
+import 'antd/dist/antd.css';
 import '@ant-design/flowchart/dist/index.css';
 
 /*
