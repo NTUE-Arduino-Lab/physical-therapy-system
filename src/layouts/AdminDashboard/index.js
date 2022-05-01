@@ -22,6 +22,7 @@ const AdminDashboard = () => {
 
     const goPrepareWorkout = () => {
         navigate(ROUTE_PATH.prepare_workout);
+        // navigate(ROUTE_PATH.prepare_workout, { replace: true }); // 若要防止左滑上一頁
     };
 
     return (

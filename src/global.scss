@@ -23,16 +23,22 @@ button {
   -webkit-font-smoothing: antialiased;
   font-family: 'Noto Sans TC', 'PingFangTC-Regular', 'Microsoft JhengHei',
     sans-serif;
-
-  overscroll-behavior-x: none; // 避免左右滑動 上下頁
-  // checkout: https://stackoverflow.com/questions/15829172/stop-chrome-back-forward-two-finger-swipe
+    
 }
-
+  
 body {
   margin: 0;
   overflow-x: hidden;
   width: 100%;
   background-color: #f9f7f2;
+
+  // 防止在 touch-based 裝置滑動
+  touch-action: none;
+
+  // 其他外部資源參考：
+  // overscroll-behavior-x: none; // 避免左右滑動 上下頁
+  // checkout: https://stackoverflow.com/questions/15829172/stop-chrome-back-forward-two-finger-swipe
+  // -webkit-overflow-scrolling: touch;
 }
 
 textarea,
