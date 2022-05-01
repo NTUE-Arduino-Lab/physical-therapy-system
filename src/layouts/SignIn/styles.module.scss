@@ -3,3 +3,13 @@
   width: 100vw;
   background-color: rgba(0, 0, 0, 0.2);
 }
+
+.scroll {
+  width: 100px;
+  display: block;
+  height: 120vh;
+  background-color:aqua;
+  overflow-y: scroll;
+  margin-left: auto;
+  // touch-action: none; // once this line open, iPad won't scroll.
+}

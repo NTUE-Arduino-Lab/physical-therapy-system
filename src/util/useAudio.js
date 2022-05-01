@@ -11,6 +11,12 @@ const OTHER_SOUND = {
     Archieved: 'goal-archieved',
 };
 
+// To Address Safari on iPad issue:
+// Checkout: https://stackoverflow.com/questions/31776548/why-cant-javascript-play-audio-files-on-iphone-safari
+// ======>> "iOS disables autoplay, instead requiring that
+//            play be initiated as part of a user interaction
+//           (e.g., you can start playback within a touchstart listener)."
+// ======>> 透過只啟動一個 Audio 用更換來源網址達成播放不同聲音！！
 const useAudio = () => {
     const [audioPlayer] = useState(new Audio(other_notification_url));
 
@@ -34,20 +40,6 @@ const useAudio = () => {
                 break;
         }
     };
-
-    // const playWarnSound = (warn) => {
-    //     switch (warn) {
-    //         case WARN.Slight:
-    //             warn_slight.play();
-    //             break;
-    //         case WARN.Medium:
-    //             warn_medium.play();
-    //             break;
-    //         case WARN.High:
-    //             warn_high.play();
-    //             break;
-    //     }
-    // };
 
     const playOtherSound = (sound) => {
         switch (sound) {

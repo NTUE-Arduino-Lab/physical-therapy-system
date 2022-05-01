@@ -17,6 +17,7 @@ const SignIn = () => {
             {/* <Header /> */}
             <p>Sign In Page</p>
             <button onClick={goDashboard}>Navigate To Admin Dashboard</button>
+            <div className={styles.scroll}>a</div>
         </div>
     );
 };
