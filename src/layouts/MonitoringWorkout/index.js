@@ -24,7 +24,7 @@ import wait from '../../util/wait';
 import useAudio from '../../util/useAudio';
 import formatWithMoment from '../../util/formatSeconds';
 
-import Timer from '../../components/Timer';
+import StopWatch from '../../components/StopWatch';
 
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
@@ -211,22 +211,6 @@ const MonitoringWorkout = () => {
         return [overSlight, overMedium, overHigh];
     };
 
-    // 重整後取得累計的時間 未完
-    // const getAccumlatedTime = () => {
-    //     if (_.isEmpty(record?.beginWorkoutTime)) {
-    //         return 0;
-    //     }
-
-    //     const begin = moment(record.beginWorkoutTime);
-    //     const accumlated = moment
-    //         .duration(refreshTime.diff(begin))
-    //         .asMilliseconds();
-
-    //     console.log('trigger get acum');
-    //     console.log(accumlated);
-    //     return accumlated;
-    // };
-
     // for prototype testing
     const addRpmAndHeartRate = async () => {
         // set the begin time
@@ -280,6 +264,18 @@ const MonitoringWorkout = () => {
         });
     };
 
+    const getStopWatchInitialValue = () => {
+        if (_.isEmpty(record?.beginWorkoutTime)) {
+            return 0;
+        }
+
+        const begin = moment(record.beginWorkoutTime);
+        const now = moment();
+        const accumlated = moment.duration(now.diff(begin)).asMilliseconds();
+
+        return accumlated;
+    };
+
     if (!isInitRecordDone || !isInitPacketsDone || _.isEmpty(difficulty)) {
         return <div className={styles.container}>監控畫面初始化中...</div>;
     }
@@ -310,9 +306,12 @@ const MonitoringWorkout = () => {
                     <span>騎乘者身體年齡：{user?.age}</span>
                 </div>
                 <div className={`${styles.col} ${styles.col2}`}>
-                    <div className={styles.timerWrapper}>
+                    <div className={styles.stopWatchWrapper}>
                         <span>騎乘進行了：</span>
-                        <Timer start={beginStopWatch} />
+                        <StopWatch
+                            start={beginStopWatch}
+                            initialValue={getStopWatchInitialValue()}
+                        />
                     </div>
                     <caption>(開始於 {formatBeginWorkoutTime()})</caption>
                 </div>
@@ -428,7 +427,7 @@ const configLineChart = (data) => ({
                     stroke: '#F4664A',
                 },
                 text: {
-                    content: '目標心率',
+                    content: '目標心率(138)', // TODO: change [138] to 目標心率
                     offsetY: -4,
                     position: 'end',
                     style: {
