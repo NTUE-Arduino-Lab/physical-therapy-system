@@ -1,14 +1,30 @@
 .container {
   height: 100vh;
   width: 100vw;
-  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    106.37deg,
+    #ffe1bc 29.63%,
+    #ffcfd1 51.55%,
+    #f3c6f1 90.85%
+  );
+}
+
+.glass {
+  height: 97%;
+  width: 98%;
+  background: rgba(255, 255, 255, 0.54);
+  border-radius: 1.5rem;
 
   // grid-setup
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  grid-gap: 10px;
-  padding: 10px;
+  grid-gap: 1em;
+  padding: 1.5rem;
+  
 
   // overscroll-behavior: none;
   // overflow-y: auto;
@@ -25,23 +41,85 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  border: 1px solid;
   font-size: 1.5em;
-  font-weight: bold;
+  font-weight: bolder;
   box-sizing: border-box;
+  color: white;
+  border-radius: 0.7em;
+  height: 85%;
+  align-self: center;
+  padding-left: 0.3em;
+
+  span {
+    line-height: 1.8em;
+  }
 }
 
 .mainCol {
   grid-column: span 3;
   grid-row: span 2;
-  border: 3px solid red;
+  background: white;
+  box-shadow: 0px 13px 20px 0px #80808029;
+  padding: 1em;
+  border-radius: 0.7em;
+  display: flex;
+  justify-content: stretch;
+  align-items: center;
+
+  div:nth-child(1) {
+    width: 100%;
+    height: 90%;
+  }
+}
+
+.col1 {
+  background: linear-gradient(180deg, #bb67ff 0%, #c484f3 100%);
+  box-shadow: 0px 10px 20px 0px #e0c6f5;
+}
+
+.col2 {
+  background: linear-gradient(180deg, #FF919D 0%, #FC929D 100%);
+  box-shadow: 0px 10px 20px 0px #FDC0C7;
+
+  caption {
+    padding-top: 0.75em;
+    font-size: 0.8em;
+  }
+}
+
+.col3 {
+  background: linear-gradient(rgb(248, 212, 154) -146.42%, rgb(255, 202, 113) -46.42%);
+  box-shadow: 0px 10px 20px 0px #F9D59B;
+}
+
+.timerWrapper {
+  display: flex;
+
+  span {
+    flex: 2;
+  }
+
+  div:nth-child(1) {
+    flex: 1;
+  }
 }
 
 .difficulty {
-  p {
+  background: linear-gradient(180deg, #85ccc3 0%, #8cd6ce 100%);
+  box-shadow: 0px 10px 20px 0px #8fdbd2;
+
+  span {
     font-size: 1em;
+    font-weight: 900;
+    line-height: 1.5em;
   }
   caption {
-    color: gray;
+    padding-top: 0.2em;
+    font-size: 0.8em;
   }
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }

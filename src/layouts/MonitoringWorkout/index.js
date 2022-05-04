@@ -9,7 +9,7 @@ import {
     Timestamp,
     getDoc,
 } from 'firebase/firestore';
-// import moment from 'moment';
+import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
 import { Modal } from 'antd';
 
@@ -95,6 +95,14 @@ const MonitoringWorkout = () => {
             },
             maskClosable: false,
         });
+    };
+
+    const formatBeginWorkoutTime = () => {
+        if (_.isEmpty(record.beginWorkoutTime)) {
+            return '';
+        }
+
+        return moment(record.beginWorkoutTime).format('YYYY/MM/DD HH:mm');
     };
 
     const checkIntegrity = async () => {
@@ -278,62 +286,50 @@ const MonitoringWorkout = () => {
     // refactoring <table> to component
     return (
         <div className={styles.container}>
-            {/* <h1>騎乘監控畫面</h1> */}
-            <div className={styles.col}>
-                <p>騎乘者：{user?.name}</p>
-                <p>騎乘者身體年齡：{user?.age}</p>
-            </div>
-            <div className={styles.col}>
-                <p>騎乘進行了多久：</p>
-                <Timer start={beginStopWatch} />
-                <caption>
-                    (開始於 {record.beginWorkoutTime?.toLocaleString()})
-                </caption>
-            </div>
-            <div className={styles.col}>平均速率／心率</div>
-            <div className={`${styles.col} ${styles.difficulty}`}>
-                <p>騎乘關卡：{difficulty.name}</p>
-                <p>目標心率:{difficulty.targetHeartRate}</p>
-                <p>上限心率：{difficulty.upperLimitHeartRate}</p>
-                <caption>一階警示心率：{getExactThresholdValue()[0]}</caption>
-                <caption>二階警示心率：{getExactThresholdValue()[1]}</caption>
-                <caption>三階警示心率：{getExactThresholdValue()[2]}</caption>
-            </div>
-            <div className={styles.mainCol}>
-                {/* <table>
-                    <thead>
-                        <tr>
-                            <th>時間</th>
-                            <th>rpm</th>
-                            <th>心率</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {packets.map((el) => (
-                            <tr key={el.time}>
-                                <td>{el.time}</td>
-                                <td>{el.rpm}</td>
-                                <td>{el.heartRate}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table> */}
-                <LineChart {...configLineChart(packets)} />
-            </div>
-            <div className={styles.col}>
-                <label>下個心率？</label>
-                <input
-                    value={nextHeartRateVal}
-                    onChange={(e) => setNextHeartRateVal(e.target.value)}
-                />
-                <button onClick={addRpmAndHeartRate}>
-                    手動新增一筆 RPM, Heart Rate 資料
-                </button>
-            </div>
-            <div className={styles.col}>
-                {' '}
-                <button onClick={goFinishWorkout}>結束騎乘</button>
-                {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
+            <div className={styles.glass}>
+                {/* <h1>騎乘監控畫面</h1> */}
+                <div className={`${styles.col} ${styles.col1}`}>
+                    <span>騎乘者：{user?.name}</span>
+                    <span>騎乘者身體年齡：{user?.age}</span>
+                </div>
+                <div className={`${styles.col} ${styles.col2}`}>
+                    <div className={styles.timerWrapper}>
+                        <span>騎乘進行了：</span>
+                        <Timer start={beginStopWatch} />
+                    </div>
+                    <caption>(開始於 {formatBeginWorkoutTime()})</caption>
+                </div>
+                <div className={`${styles.col} ${styles.col3}`}>
+                    平均速率／心率
+                </div>
+                <div className={`${styles.col} ${styles.difficulty}`}>
+                    <span>騎乘關卡：{difficulty.name}</span>
+                    <span>目標心率：{difficulty.targetHeartRate}</span>
+                    <span>上限心率：{difficulty.upperLimitHeartRate}</span>
+                    <caption>
+                        分階警示心率：{getExactThresholdValue()[0]}/
+                        {getExactThresholdValue()[1]}/
+                        {getExactThresholdValue()[2]}
+                    </caption>
+                </div>
+                <div className={styles.mainCol}>
+                    <LineChart {...configLineChart(packets)} />
+                </div>
+                <div className={styles.col}>
+                    <label>下個心率？</label>
+                    <input
+                        value={nextHeartRateVal}
+                        onChange={(e) => setNextHeartRateVal(e.target.value)}
+                    />
+                    <button onClick={addRpmAndHeartRate}>
+                        手動新增一筆 RPM, Heart Rate 資料
+                    </button>
+                </div>
+                <div className={styles.col}>
+                    {' '}
+                    <button onClick={goFinishWorkout}>結束騎乘</button>
+                    {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
+                </div>
             </div>
         </div>
     );
