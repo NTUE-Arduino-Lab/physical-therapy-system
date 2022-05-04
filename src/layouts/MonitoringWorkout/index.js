@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
@@ -11,7 +12,8 @@ import {
 } from 'firebase/firestore';
 import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
-import { Modal } from 'antd';
+import { Modal, Popover, Button, Input } from 'antd';
+import { SettingOutlined } from '@ant-design/icons';
 
 import { ROUTE_PATH, WARN, WARN_THRESHOLD } from '../../constants';
 import styles from './styles.module.scss';
@@ -282,6 +284,21 @@ const MonitoringWorkout = () => {
         return <div className={styles.container}>監控畫面初始化中...</div>;
     }
 
+    const popoverContent = (
+        <>
+            <Input.Search
+                placeholder="下個心率是？"
+                allowClear
+                enterButton="新增"
+                size="Large"
+                onChange={(e) => setNextHeartRateVal(e.target.value)}
+                onSearch={addRpmAndHeartRate}
+            />
+            <Button onClick={goFinishWorkout}>結束騎乘</Button>
+            {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
+        </>
+    );
+
     // TODO:
     // refactoring <table> to component
     return (
@@ -303,6 +320,14 @@ const MonitoringWorkout = () => {
                     平均速率／心率
                 </div>
                 <div className={`${styles.col} ${styles.difficulty}`}>
+                    <Popover
+                        content={popoverContent}
+                        placement="bottomRight"
+                        title="更多操作"
+                        trigger="click"
+                    >
+                        <SettingOutlined width={'1em'} />
+                    </Popover>
                     <span>騎乘關卡：{difficulty.name}</span>
                     <span>目標心率：{difficulty.targetHeartRate}</span>
                     <span>上限心率：{difficulty.upperLimitHeartRate}</span>
@@ -314,21 +339,6 @@ const MonitoringWorkout = () => {
                 </div>
                 <div className={styles.mainCol}>
                     <LineChart {...configLineChart(packets)} />
-                </div>
-                <div className={styles.col}>
-                    <label>下個心率？</label>
-                    <input
-                        value={nextHeartRateVal}
-                        onChange={(e) => setNextHeartRateVal(e.target.value)}
-                    />
-                    <button onClick={addRpmAndHeartRate}>
-                        手動新增一筆 RPM, Heart Rate 資料
-                    </button>
-                </div>
-                <div className={styles.col}>
-                    {' '}
-                    <button onClick={goFinishWorkout}>結束騎乘</button>
-                    {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
                 </div>
             </div>
         </div>
