@@ -134,7 +134,7 @@ const FinishedWorkout = () => {
         message.success({ content: '已提交！自動跳轉至選單畫面' });
 
         await wait(1000);
-        // navigate(ROUTE_PATH.admin_dashbaord, { replace: true });
+        navigate(ROUTE_PATH.admin_dashbaord, { replace: true });
     };
 
     const calWorkoutTime = () => {
@@ -143,7 +143,7 @@ const FinishedWorkout = () => {
 
         const diff = moment.duration(end.diff(begin)).asMilliseconds();
 
-        console.log(diff); // 494714637
+        console.log(diff);
 
         const h = ('0' + Math.floor(diff / 3600000)).slice(-2);
         const m = ('0' + Math.floor((diff / 60000) % 60)).slice(-2);

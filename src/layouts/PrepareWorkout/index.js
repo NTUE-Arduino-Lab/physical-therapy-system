@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -9,7 +10,19 @@ import {
     deleteDoc,
     Timestamp,
 } from 'firebase/firestore';
-import { Statistic } from 'antd';
+import {
+    Statistic,
+    Layout,
+    Form,
+    PageHeader,
+    Input,
+    Button,
+    message,
+    Modal,
+    Select,
+    Divider,
+} from 'antd';
+import { UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import _ from '../../util/helper';
 
 import { ROUTE_PATH, VALID_MIN } from '../../constants';
@@ -23,6 +36,8 @@ import {
 import wait from '../../util/wait';
 
 const { Countdown } = Statistic;
+const { Content } = Layout;
+const { Option } = Select;
 
 const initialPacket = {
     rpm: 0,
@@ -34,6 +49,8 @@ let unsubscribe = null;
 
 const PrepareWorkout = () => {
     const navigate = useNavigate();
+    const [form] = Form.useForm();
+
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
 
@@ -83,10 +100,16 @@ const PrepareWorkout = () => {
     }, [targetgetRecordId]);
 
     const goDashboard = async () => {
-        if (targetgetRecordId && confirm('確定離開，將刪除此筆新增的紀錄')) {
-            await deleteRecord();
+        if (targetgetRecordId) {
+            Modal.confirm({
+                title: '即將離開！',
+                icon: <ExclamationCircleOutlined />,
+                content: '將刪除所選資訊',
+                onOk: () => deleteRecord(),
+            });
+        } else {
+            navigate(ROUTE_PATH.admin_dashbaord);
         }
-        navigate(ROUTE_PATH.admin_dashbaord);
     };
 
     const goMonitoring = () => {
@@ -95,9 +118,21 @@ const PrepareWorkout = () => {
         });
     };
 
+    const confirmUserAndDiff = async () => {
+        const valid = await form.validateFields();
+
+        console.log(valid);
+
+        Modal.confirm({
+            title: '即將產生配對碼！',
+            icon: <ExclamationCircleOutlined />,
+            content: '資料一旦輸入將無法進行修改，請確認無誤！',
+            onOk: () => createRecord(),
+        });
+    };
+
     const createRecord = async () => {
         if (selectedUser == null || selectedDiff == null) {
-            alert('請選擇使用者及難度');
             return;
         }
 
@@ -128,7 +163,7 @@ const PrepareWorkout = () => {
         });
         console.log('Document written with ID: ', targetRecordRef.id);
 
-        // initialize sub collection - rpms
+        // initialize sub collection - packets
         await addDoc(
             collection(recordsRef, targetRecordRef.id, 'packets'),
             initialPacket,
@@ -141,6 +176,8 @@ const PrepareWorkout = () => {
         // start a count-down
         const deadline = Date.now() + 1000 * 60 * VALID_MIN;
         setPairDeadline(deadline);
+
+        message.info({ content: '配對碼已生成！請在時間內進行配對！' });
 
         // targetHeartRate
         // upperLimitHeartRate
@@ -156,6 +193,7 @@ const PrepareWorkout = () => {
     const deleteRecord = async () => {
         const targetRecordRef = doc(recordsRef, targetgetRecordId);
         await deleteDoc(targetRecordRef);
+        navigate(ROUTE_PATH.admin_dashbaord);
     };
 
     // for functionality testing
@@ -192,62 +230,131 @@ const PrepareWorkout = () => {
         setInputPairId(null);
     };
 
-    const onUserChange = (e) => setSelectedUser(e.target.value);
-    const onDiffChange = (e) => setSelectedDiff(e.target.value);
+    const onUserChange = (value) => setSelectedUser(value);
+    const onDiffChange = (value) => setSelectedDiff(value);
 
     return (
-        <div className={styles.container}>
-            <h1>準備騎車車囉！</h1>
-            <button onClick={goDashboard}>回去選單</button>
-            <label>現在是誰在騎：</label>
-            <select value={selectedUser} onChange={onUserChange}>
-                <option>請選擇騎乘者</option>
-                <option value="9928ZTdBUebNeUoe2Gj2">Murphy</option>
-                <option value="azFwPlEh6L9kRnxQtZM8">Allen</option>
-            </select>
-            <br />
-            <label>騎乘難度是：</label>
-            <select value={selectedDiff} onChange={onDiffChange}>
-                <option>選擇騎乘難度</option>
-                <option value="MOFmaft3pG7ECZoTsweR">
-                    清幽小徑・25 分鐘・目標心率 100・上限心率 120
-                </option>
-            </select>
-            <button onClick={createRecord}>確定完成，下一步</button>
-
-            {isInitializing && <p>初始化生成配對碼中...</p>}
-            <h2>
-                配對碼: {pairId} {pairId && <span>(稍待與 App 的配對)</span>}
-            </h2>
-            {pairDeadline && (
-                <Countdown
-                    title="有效時間"
-                    value={pairDeadline}
-                    onFinish={onDeadlineExpired}
-                />
-            )}
-            {pairId && (
-                <div className={styles.pairing}>
-                    <p className={styles.caption}>模擬在 App 端的操作</p>
-                    <label>請輸入四位數配對碼：</label>
-                    <input
-                        value={inputPairId}
-                        onChange={(e) => setInputPairId(e.target.value)}
+        <Layout>
+            <Content className="site-layout" style={{ padding: '24px' }}>
+                <div className={styles.container}>
+                    <PageHeader
+                        className={styles.PageHeader}
+                        title="準備騎乘！進行騎乘設定"
+                        subTitle="選擇騎乘者及關卡資訊"
+                        onBack={goDashboard}
                     />
-                    <button onClick={pairWithApp} disabled={isAppConnected}>
-                        我要配對
-                    </button>
-                    {isPairing && <p>配對中...</p>}
+
+                    <Form {...formLayout} form={form} style={{ marginTop: 36 }}>
+                        <Form.Item
+                            name="user"
+                            label="騎乘者"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '請選擇騎乘者',
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="選擇騎乘者"
+                                onChange={onUserChange}
+                            >
+                                <Option value="9928ZTdBUebNeUoe2Gj2">
+                                    Murphy
+                                </Option>
+                                <Option value="azFwPlEh6L9kRnxQtZM8">
+                                    Allen
+                                </Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item
+                            name="difficulty"
+                            label="關卡資訊"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: '請選擇關卡資訊',
+                                },
+                            ]}
+                        >
+                            <Select
+                                placeholder="選擇關卡資訊"
+                                onChange={onDiffChange}
+                            >
+                                <Option value="MOFmaft3pG7ECZoTsweR">
+                                    清幽小徑・25 分鐘・目標心率 100・上限心率
+                                    120
+                                </Option>
+                            </Select>
+                        </Form.Item>
+                        <Form.Item {...tailLayout}>
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                onClick={confirmUserAndDiff}
+                            >
+                                下一步，生成配對碼
+                            </Button>
+                        </Form.Item>
+                    </Form>
+
+                    {isInitializing && <p>初始化生成配對碼中...</p>}
+                    <h2>
+                        配對碼: {pairId}{' '}
+                        {pairId && <span>(稍待與 App 的配對)</span>}
+                    </h2>
+                    {pairDeadline && (
+                        <Countdown
+                            title="有效時間"
+                            value={pairDeadline}
+                            onFinish={onDeadlineExpired}
+                        />
+                    )}
+                    {pairId && (
+                        <div className={styles.pairing}>
+                            <p className={styles.caption}>
+                                模擬在 App 端的操作
+                            </p>
+                            <label>請輸入四位數配對碼：</label>
+                            <input
+                                value={inputPairId}
+                                onChange={(e) => setInputPairId(e.target.value)}
+                            />
+                            <button
+                                onClick={pairWithApp}
+                                disabled={isAppConnected}
+                            >
+                                我要配對
+                            </button>
+                            {isPairing && <p>配對中...</p>}
+                        </div>
+                    )}
+                    {isAppConnected && (
+                        <div className={styles.success}>
+                            <h3>APP 配對成功!!</h3>
+                            <button onClick={goMonitoring}>前往監視畫面</button>
+                        </div>
+                    )}
                 </div>
-            )}
-            {isAppConnected && (
-                <div className={styles.success}>
-                    <h3>APP 配對成功!!</h3>
-                    <button onClick={goMonitoring}>前往監視畫面</button>
-                </div>
-            )}
-        </div>
+            </Content>
+        </Layout>
     );
+};
+
+const formLayout = {
+    labelCol: {
+        span: 8,
+    },
+    wrapperCol: {
+        span: 10,
+    },
+};
+
+const tailLayout = {
+    wrapperCol: {
+        offset: 8,
+        span: 16,
+    },
 };
 
 export default PrepareWorkout;
