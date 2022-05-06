@@ -21,8 +21,15 @@ import {
     Modal,
     Select,
     Divider,
+    Popover,
+    Spin,
 } from 'antd';
-import { UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+    LoadingOutlined,
+    ExclamationCircleOutlined,
+    SettingOutlined,
+    ArrowRightOutlined,
+} from '@ant-design/icons';
 import _ from '../../util/helper';
 
 import { ROUTE_PATH, VALID_MIN } from '../../constants';
@@ -54,7 +61,6 @@ const PrepareWorkout = () => {
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
 
-    const [isInitializing, setIsInitializing] = useState(false);
     const [isPairing, setIsPairing] = useState(false);
 
     const [targetgetRecordId, setTargetRecordId] = useState();
@@ -92,6 +98,7 @@ const PrepareWorkout = () => {
                     setPairDeadline(null);
                     setIsPairing(false);
                     setIsAppConnected(true);
+                    message.success('配對成功，您可以前往監視畫面了！');
                 }
             }
         });
@@ -136,8 +143,6 @@ const PrepareWorkout = () => {
             return;
         }
 
-        setIsInitializing(true);
-
         // will changed
         const targetHeartRate = 100; // careful the type
         const upperLimitHeartRate = 120; // careful the type
@@ -169,7 +174,6 @@ const PrepareWorkout = () => {
             initialPacket,
         );
 
-        setIsInitializing(false);
         setTargetRecordId(targetRecordRef.id);
         setPairId(pairId);
 
@@ -232,6 +236,23 @@ const PrepareWorkout = () => {
 
     const onUserChange = (value) => setSelectedUser(value);
     const onDiffChange = (value) => setSelectedDiff(value);
+
+    const simulateAppCotent = (
+        <div className={styles.pairing}>
+            <Input.Search
+                placeholder="手動輸入配對碼"
+                allowClear
+                value={inputPairId}
+                onChange={(e) => setInputPairId(e.target.value)}
+                onSearch={pairWithApp}
+                disabled={isAppConnected}
+                loading={isPairing}
+            />
+            {/* <Button onClick={pairWithApp} disabled={isAppConnected}>
+                我要配對
+            </Button> */}
+        </div>
+    );
 
     return (
         <Layout>
@@ -298,43 +319,115 @@ const PrepareWorkout = () => {
                         </Form.Item>
                     </Form>
 
-                    {isInitializing && <p>初始化生成配對碼中...</p>}
-                    <h2>
-                        配對碼: {pairId}{' '}
-                        {pairId && <span>(稍待與 App 的配對)</span>}
-                    </h2>
-                    {pairDeadline && (
-                        <Countdown
-                            title="有效時間"
-                            value={pairDeadline}
-                            onFinish={onDeadlineExpired}
-                        />
-                    )}
                     {pairId && (
-                        <div className={styles.pairing}>
-                            <p className={styles.caption}>
-                                模擬在 App 端的操作
-                            </p>
-                            <label>請輸入四位數配對碼：</label>
-                            <input
-                                value={inputPairId}
-                                onChange={(e) => setInputPairId(e.target.value)}
+                        <>
+                            <Divider
+                                dashed={true}
+                                style={{
+                                    minWidth: '90%',
+                                    width: '90%',
+                                    borderWidth: '2px',
+                                    margin: 'auto',
+                                    marginRight: 'auto',
+                                    marginTop: '4em',
+                                    marginBottom: '4em',
+                                }}
                             />
-                            <button
-                                onClick={pairWithApp}
-                                disabled={isAppConnected}
-                            >
-                                我要配對
-                            </button>
-                            {isPairing && <p>配對中...</p>}
-                        </div>
+                            <Form {...formLayout}>
+                                <Form.Item
+                                    label={
+                                        <>
+                                            配對碼
+                                            <Popover
+                                                content={simulateAppCotent}
+                                                placement="bottomRight"
+                                                title="更多操作"
+                                                trigger="click"
+                                            >
+                                                <SettingOutlined
+                                                    width={'1em'}
+                                                />
+                                            </Popover>
+                                        </>
+                                    }
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <div className={styles.pairIdWrapper}>
+                                        {pairId.split('').map((c, i) => (
+                                            <pre key={c + i}>{c}</pre>
+                                        ))}
+
+                                        {/* <Countdown
+                                            title="有效時間"
+                                            value={Date.now() + 1000 * 60 * 10}
+                                            onFinish={onDeadlineExpired}
+                                        /> */}
+                                        {pairDeadline && (
+                                            <Countdown
+                                                title="有效時間"
+                                                value={pairDeadline}
+                                                onFinish={onDeadlineExpired}
+                                            />
+                                        )}
+                                    </div>
+                                </Form.Item>
+                                {!isAppConnected && (
+                                    <Form.Item
+                                        label=" "
+                                        colon={false}
+                                        style={{ marginTop: '3em' }}
+                                    >
+                                        <Spin
+                                            indicator={
+                                                <LoadingOutlined
+                                                    style={{
+                                                        fontSize: 24,
+                                                        marginRight: '1em',
+                                                    }}
+                                                    spin
+                                                />
+                                            }
+                                        />
+                                        等待配對中...
+                                    </Form.Item>
+                                )}
+
+                                <Form.Item
+                                    label=" "
+                                    colon={false}
+                                    style={{ marginTop: '5em' }}
+                                >
+                                    <Button
+                                        onClick={goMonitoring}
+                                        type={
+                                            isAppConnected
+                                                ? 'primary'
+                                                : 'dashed'
+                                        }
+                                        disabled={!isAppConnected}
+                                        icon={
+                                            isAppConnected && (
+                                                <ArrowRightOutlined />
+                                            )
+                                        }
+                                        size="large"
+                                    >
+                                        前往監視畫面
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </>
                     )}
-                    {isAppConnected && (
+
+                    {/* {isAppConnected && (
                         <div className={styles.success}>
                             <h3>APP 配對成功!!</h3>
                             <button onClick={goMonitoring}>前往監視畫面</button>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </Content>
         </Layout>
