@@ -1,15 +1,24 @@
 .container {
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
+  min-height: calc(100vh - 48px);
+  width: 100%;
+  background-color: #fff;
+  padding: 24px;
+  overflow-y: scroll;
 }
 
-.form input {
-  width: 10em;
-  display: block;
+.pageHeader {
+  margin-right: 12px;
+  margin-bottom: 0;
+  color: #000000d9;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.form .submit {
-  width: 8em;
-  margin-bottom: 2em;
+.descriptions, 
+.form {
+  padding: 16px 24px;
 }

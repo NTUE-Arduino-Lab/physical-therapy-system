@@ -12,8 +12,8 @@ import {
 } from 'firebase/firestore';
 import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
-import { Modal, Popover, Button, Input } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { Modal, Popover, Button, Input, message } from 'antd';
+import { SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
 import { ROUTE_PATH, WARN, WARN_THRESHOLD } from '../../constants';
 import styles from './styles.module.scss';
@@ -37,7 +37,6 @@ const MonitoringWorkout = () => {
     const [user, setUser] = useState();
     const [difficulty, setDifficulty] = useState();
     const [packets, setPackets] = useState([]);
-    const [isFinishing, setIsFinishing] = useState(false);
 
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
@@ -241,24 +240,28 @@ const MonitoringWorkout = () => {
         await addDoc(packetsRef, nextPacket);
     };
 
-    const goFinishWorkout = async () => {
-        if (!confirm('確定結束本次騎乘？')) {
-            return;
-        }
+    const confirmFinish = () => {
+        Modal.confirm({
+            title: '即將結束！',
+            icon: <ExclamationCircleOutlined />,
+            content: '確定結束本次騎乘？',
+            onOk: () => goFinishWorkout(),
+        });
+    };
 
-        setIsFinishing(true);
+    const goFinishWorkout = async () => {
         setBeginStopWatch(false);
 
-        const recordRef = doc(recordsRef, params.recordId);
-
         await wait(2000);
+        const recordRef = doc(recordsRef, params.recordId);
         await updateDoc(recordRef, {
             finishedWorkoutTime: Timestamp.now(),
             pairId: null,
         });
 
-        setIsFinishing(false);
+        message.success({ content: '已結束！自動跳轉至統計畫面' });
 
+        await wait(1000);
         navigate(`${ROUTE_PATH.finsished_workout}/${params.recordId}`, {
             replace: true,
         });
@@ -290,8 +293,7 @@ const MonitoringWorkout = () => {
                 onChange={(e) => setNextHeartRateVal(e.target.value)}
                 onSearch={addRpmAndHeartRate}
             />
-            <Button onClick={goFinishWorkout}>結束騎乘</Button>
-            {isFinishing && <p>結束中...記得填上相關騎乘資訊！</p>}
+            <Button onClick={confirmFinish}>結束騎乘</Button>
         </>
     );
 

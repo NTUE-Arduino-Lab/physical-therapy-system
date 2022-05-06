@@ -29,6 +29,7 @@ const StopWatch = ({ start, initialValue }) => {
 
         return () => {
             clearInterval(interval);
+            clearInterval(displayInterval);
         };
     }, [start]);
 
