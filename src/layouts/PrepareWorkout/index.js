@@ -112,7 +112,7 @@ const PrepareWorkout = () => {
                 title: '即將離開！',
                 icon: <ExclamationCircleOutlined />,
                 content: '將刪除所選資訊',
-                onOk: () => deleteRecord(),
+                onOk: () => deleteRecord('leave'),
             });
         } else {
             navigate(ROUTE_PATH.admin_dashbaord);
@@ -181,7 +181,7 @@ const PrepareWorkout = () => {
         const deadline = Date.now() + 1000 * 60 * VALID_MIN;
         setPairDeadline(deadline);
 
-        message.info({ content: '配對碼已生成！請在時間內進行配對！' });
+        message.info({ content: '配對碼已生成！請在時間內進行配對！' }, 5);
 
         // targetHeartRate
         // upperLimitHeartRate
@@ -194,10 +194,10 @@ const PrepareWorkout = () => {
         // difficulty
     };
 
-    const deleteRecord = async () => {
+    const deleteRecord = async (leave = false) => {
         const targetRecordRef = doc(recordsRef, targetgetRecordId);
         await deleteDoc(targetRecordRef);
-        navigate(ROUTE_PATH.admin_dashbaord);
+        if (leave) navigate(ROUTE_PATH.admin_dashbaord);
     };
 
     // for functionality testing
@@ -222,16 +222,17 @@ const PrepareWorkout = () => {
     };
 
     const onDeadlineExpired = async () => {
-        alert('連結過期，請重新選擇！');
+        message.warn('連結過期，請重新選擇！', 3);
 
-        await wait(5000);
+        await wait(1000);
         await deleteRecord();
         setTargetRecordId(null);
         setPairId(null);
-        setSelectedUser('');
-        setSelectedDiff('');
+        setSelectedUser();
+        setSelectedDiff();
         setPairDeadline(null);
         setInputPairId(null);
+        form.resetFields();
     };
 
     const onUserChange = (value) => setSelectedUser(value);
@@ -279,6 +280,7 @@ const PrepareWorkout = () => {
                             <Select
                                 placeholder="選擇騎乘者"
                                 onChange={onUserChange}
+                                disabled={pairId}
                             >
                                 <Option value="9928ZTdBUebNeUoe2Gj2">
                                     Murphy
@@ -301,6 +303,7 @@ const PrepareWorkout = () => {
                             <Select
                                 placeholder="選擇關卡資訊"
                                 onChange={onDiffChange}
+                                disabled={pairId}
                             >
                                 <Option value="MOFmaft3pG7ECZoTsweR">
                                     清幽小徑・25 分鐘・目標心率 100・上限心率
@@ -313,6 +316,7 @@ const PrepareWorkout = () => {
                                 type="primary"
                                 htmlType="submit"
                                 onClick={confirmUserAndDiff}
+                                disabled={pairId}
                             >
                                 下一步，生成配對碼
                             </Button>
@@ -421,13 +425,6 @@ const PrepareWorkout = () => {
                             </Form>
                         </>
                     )}
-
-                    {/* {isAppConnected && (
-                        <div className={styles.success}>
-                            <h3>APP 配對成功!!</h3>
-                            <button onClick={goMonitoring}>前往監視畫面</button>
-                        </div>
-                    )} */}
                 </div>
             </Content>
         </Layout>
