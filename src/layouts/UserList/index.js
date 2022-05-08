@@ -1,6 +1,6 @@
 /* eslint-disable react/display-name */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDocs, updateDoc, doc, addDoc } from 'firebase/firestore';
 import {
@@ -38,6 +38,7 @@ const UserList = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]); // 全部使用者資料
     const [filteredUser, setFilterUser] = useState([]); // 過濾的使用者資料
+    const searchBarRef = useRef();
     const [isDone, setIsDone] = useState(false);
 
     const [currUser, setCurrUser] = useState(); // used by: edit, view
@@ -81,6 +82,8 @@ const UserList = () => {
     const onSearch = async () => {
         const values = await searchForm.validateFields();
         const filteredUser = users.filter((u) => u.name.includes(values.name));
+
+        searchBarRef.current.blur();
 
         setFilterUser(filteredUser);
     };
@@ -243,6 +246,7 @@ const UserList = () => {
                                                 />
                                             ),
                                         }}
+                                        ref={searchBarRef}
                                     />
                                 </Form.Item>
                             </Col>
