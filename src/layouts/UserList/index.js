@@ -37,7 +37,7 @@ const { Content } = Layout;
 const UserList = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]); // 全部使用者資料
-    const [filteredUser, setFilterUser] = useState([]); // 過濾的使用者資料
+    const [filteredUser, setFilteredUser] = useState([]); // 過濾的使用者資料
     const searchBarRef = useRef();
     const [isDone, setIsDone] = useState(false);
 
@@ -76,7 +76,7 @@ const UserList = () => {
         });
 
         setUsers(users);
-        setFilterUser(users);
+        setFilteredUser(users);
     };
 
     const onSearch = async () => {
@@ -85,7 +85,7 @@ const UserList = () => {
 
         searchBarRef.current.blur();
 
-        setFilterUser(filteredUser);
+        setFilteredUser(filteredUser);
     };
 
     const onCreateUser = async () => {
@@ -100,7 +100,7 @@ const UserList = () => {
 
             await fetchUsers();
             setLoading(false);
-            setCreateModalVisible(false);
+            closeAllModals();
             createForm.resetFields();
 
             message.success(`成功新增騎乘者！`);
@@ -123,7 +123,7 @@ const UserList = () => {
 
             await fetchUsers();
             setLoading(false);
-            setEditModalVisible(false);
+            closeAllModals();
 
             message.success(`成功更新騎乘者！`);
         } catch (e) {
@@ -173,6 +173,12 @@ const UserList = () => {
 
     const openCreateModal = () => {
         setCreateModalVisible(true);
+    };
+
+    const closeAllModals = () => {
+        setViewModalVisible(false);
+        setCreateModalVisible(false);
+        setEditModalVisible(false);
     };
 
     const closeViewModal = () => {
@@ -275,7 +281,7 @@ const UserList = () => {
                         style={{ marginLeft: 24, marginRight: 24 }}
                     />
                     <Modal
-                        title="檢視"
+                        title="檢視騎乘者"
                         visible={viewModalVisible}
                         onCancel={closeViewModal}
                         footer={null} // no [Ok], [Cancel] button
