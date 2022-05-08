@@ -203,9 +203,9 @@ const MonitoringWorkout = () => {
         const upperLimitHeartRate = record.upperLimitHeartRate;
 
         const calBase = upperLimitHeartRate / 100;
-        const overHigh = Math.floor(calBase * WARN_THRESHOLD.High);
-        const overMedium = Math.floor(calBase * WARN_THRESHOLD.Medium);
-        const overSlight = Math.floor(calBase * WARN_THRESHOLD.Slight);
+        const overHigh = Math.ceil(calBase * WARN_THRESHOLD.High);
+        const overMedium = Math.ceil(calBase * WARN_THRESHOLD.Medium);
+        const overSlight = Math.ceil(calBase * WARN_THRESHOLD.Slight);
 
         return [overSlight, overMedium, overHigh];
     };
