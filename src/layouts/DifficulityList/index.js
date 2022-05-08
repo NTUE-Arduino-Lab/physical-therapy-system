@@ -19,6 +19,7 @@ import {
     InputNumber,
     Popover,
     Badge,
+    Typography,
 } from 'antd';
 import {
     PlusOutlined,
@@ -28,13 +29,14 @@ import {
     ExclamationCircleOutlined,
 } from '@ant-design/icons';
 
-import { ROUTE_PATH, WARN_THRESHOLD } from '../../constants';
+import { ROUTE_PATH, WARN_THRESHOLD, WARN } from '../../constants';
 import styles from './styles.module.scss';
 import _ from '../../util/helper';
 
 import { difficultiesRef } from '../../services/firebase';
 
 const { Content } = Layout;
+const { Text } = Typography;
 
 const DifficulityList = () => {
     const navigate = useNavigate();
@@ -334,7 +336,7 @@ const DifficulityList = () => {
                                 {currDiff?.name}
                             </Descriptions.Item>
                             <Descriptions.Item label="目標騎乘時間" span={1}>
-                                {currDiff?.targetWorkoutTime}
+                                {currDiff?.targetWorkoutTime} 分
                             </Descriptions.Item>
                             <Descriptions.Item label="目標心率數值" span={2}>
                                 {currDiff?.targetHeartRate}
@@ -342,20 +344,55 @@ const DifficulityList = () => {
                             <Descriptions.Item label="上限心率數值" span={2}>
                                 {currDiff?.upperLimitHeartRate}
                             </Descriptions.Item>
-                            <Descriptions.Item label="警示心率門檻" span={2}>
+                            <Descriptions.Item
+                                label={
+                                    <>
+                                        警示心率門檻
+                                        <br />
+                                        <Text
+                                            type="secondary"
+                                            style={{ fontSize: '0.8em' }}
+                                        >
+                                            依據上限心率數值計算
+                                        </Text>
+                                    </>
+                                }
+                                span={2}
+                            >
                                 <Badge
                                     color="blue"
-                                    text={`第一階段：${warnHRValues?.[0]}`}
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[0],
+                                        WARN.Slight,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
                                 />
-                                <br />
+
                                 <Badge
                                     color="gold"
-                                    text={`第二階段：${warnHRValues?.[1]}`}
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[1],
+                                        WARN.Medium,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
                                 />
-                                <br />
+
                                 <Badge
                                     color="volcano"
-                                    text={`第三階段：${warnHRValues?.[2]}`}
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[2],
+                                        WARN.High,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
                                 />
                             </Descriptions.Item>
                         </Descriptions>
@@ -396,7 +433,11 @@ const DifficulityList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'分'}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="目標心率數值"
@@ -450,7 +491,11 @@ const DifficulityList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'分'}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="目標心率數值"
@@ -551,13 +596,39 @@ const columns = (openViewModal, openEditModal, onDeleteDiff) => [
                     trigger="click"
                     placement="left"
                 >
-                    <MoreOutlined rotate={90} style={{ fontSize: '14px' }} />
+                    <MoreOutlined rotate={90} style={{ fontSize: '20px' }} />
                 </Popover>
             );
         },
         width: 150,
     },
 ];
+
+const WarnHRValueDisplay = (value, warn) => {
+    let phase;
+    let overVal;
+    if (warn === WARN.Slight) {
+        phase = '一';
+        overVal = WARN_THRESHOLD.Slight - 100;
+    }
+    if (warn === WARN.Medium) {
+        phase = '二';
+        overVal = WARN_THRESHOLD.Medium - 100;
+    }
+    if (warn === WARN.High) {
+        phase = '三';
+        overVal = WARN_THRESHOLD.High - 100;
+    }
+
+    return (
+        <div style={{ display: 'flex' }}>
+            第{phase}階段：{value}
+            <Text type="secondary" style={{ fontSize: '0.85em' }}>
+                （超出 {overVal}％）
+            </Text>
+        </div>
+    );
+};
 
 const formLayout = {
     labelCol: {

@@ -424,7 +424,7 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
                     trigger="click"
                     placement="left"
                 >
-                    <MoreOutlined rotate={90} style={{ fontSize: '14px' }} />
+                    <MoreOutlined rotate={90} style={{ fontSize: '20px' }} />
                 </Popover>
             );
         },
