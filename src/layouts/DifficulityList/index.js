@@ -460,6 +460,7 @@ const DifficulityList = () => {
                                         message: '請填上限心率數值',
                                     },
                                 ]}
+                                tooltip="此數值用做計算分階警示心率"
                             >
                                 <InputNumber min={1} max={200} />
                             </Form.Item>
