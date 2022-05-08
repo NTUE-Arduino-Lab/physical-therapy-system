@@ -183,17 +183,17 @@ const UserList = () => {
 
     const closeViewModal = () => {
         setCurrUser();
-        setViewModalVisible(false);
+        closeAllModals();
     };
 
     const closeCreateModal = () => {
         createForm.resetFields();
-        setCreateModalVisible(false);
+        closeAllModals();
     };
 
     const closeEditModal = () => {
         setCurrUser();
-        setEditModalVisible(false);
+        closeAllModals();
     };
 
     const goDashboard = () => {
