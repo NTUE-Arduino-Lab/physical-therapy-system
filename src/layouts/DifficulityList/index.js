@@ -56,6 +56,11 @@ const DifficulityList = () => {
     const [editForm] = Form.useForm();
     const [createForm] = Form.useForm();
 
+    // forms changed
+    // 監聽上限數值變化，返回三階段警示心率
+    const [createFormChange, setCreateFormChange] = useState();
+    const [editFormChange, setEditFormChange] = useState();
+
     // modals
     const [createModalVisible, setCreateModalVisible] = useState();
     const [viewModalVisible, setViewModalVisible] = useState(false);
@@ -191,6 +196,7 @@ const DifficulityList = () => {
         });
 
         setCurrDiff(currDiff);
+        setEditFormChange(currDiff);
         setEditModalVisible(true);
     };
 
@@ -211,12 +217,19 @@ const DifficulityList = () => {
 
     const closeCreateModal = () => {
         createForm.resetFields();
+        setCreateFormChange();
         closeAllModals();
     };
 
     const closeEditModal = () => {
         setCurrDiff();
+        setEditFormChange();
         closeAllModals();
+    };
+
+    const onFormValueChange = (changedVal, allVal, formKey) => {
+        if (formKey === 'create') setCreateFormChange(allVal);
+        if (formKey === 'edit') setEditFormChange(allVal);
     };
 
     const goDashboard = () => {
@@ -227,8 +240,6 @@ const DifficulityList = () => {
         if (!_.isNumber(upperLimitHeartRate)) {
             return;
         }
-
-        console.log(upperLimitHeartRate);
 
         const calBase = upperLimitHeartRate / 100;
 
@@ -410,6 +421,9 @@ const DifficulityList = () => {
                             {...modalFormLayout}
                             form={createForm}
                             layout="horizontal"
+                            onValuesChange={(changedVal, allVal) =>
+                                onFormValueChange(changedVal, allVal, 'create')
+                            }
                         >
                             <Form.Item
                                 label="難度名稱"
@@ -449,7 +463,11 @@ const DifficulityList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'BPM'}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="上限心率數值"
@@ -462,7 +480,54 @@ const DifficulityList = () => {
                                 ]}
                                 tooltip="此數值用做計算分階警示心率"
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'BPM'}
+                                />
+                            </Form.Item>
+                            <Form.Item label=" " colon={false}>
+                                <Badge
+                                    color="blue"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            createFormChange?.upperLimitHeartRate,
+                                        )?.[0],
+                                        WARN.Slight,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="gold"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            createFormChange?.upperLimitHeartRate,
+                                        )?.[1],
+                                        WARN.Medium,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="volcano"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            createFormChange?.upperLimitHeartRate,
+                                        )?.[2],
+                                        WARN.High,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
                             </Form.Item>
                         </Form>
                     </Modal>
@@ -478,6 +543,9 @@ const DifficulityList = () => {
                             {...modalFormLayout}
                             form={editForm}
                             layout="horizontal"
+                            onValuesChange={(changedVal, allVal) =>
+                                onFormValueChange(changedVal, allVal, 'edit')
+                            }
                         >
                             <Form.Item label="難度名稱">
                                 {currDiff?.name}
@@ -508,7 +576,11 @@ const DifficulityList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'BPM'}
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="上限心率數值"
@@ -520,7 +592,54 @@ const DifficulityList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={200} />
+                                <InputNumber
+                                    min={1}
+                                    max={200}
+                                    addonAfter={'BPM'}
+                                />
+                            </Form.Item>
+                            <Form.Item label=" " colon={false}>
+                                <Badge
+                                    color="blue"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            editFormChange?.upperLimitHeartRate,
+                                        )?.[0],
+                                        WARN.Slight,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="gold"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            editFormChange?.upperLimitHeartRate,
+                                        )?.[1],
+                                        WARN.Medium,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="volcano"
+                                    text={WarnHRValueDisplay(
+                                        getExactThresholdValue(
+                                            editFormChange?.upperLimitHeartRate,
+                                        )?.[2],
+                                        WARN.High,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
                             </Form.Item>
                         </Form>
                     </Modal>
