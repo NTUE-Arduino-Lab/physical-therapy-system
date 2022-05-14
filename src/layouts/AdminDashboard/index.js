@@ -17,7 +17,7 @@ const AdminDashboard = () => {
     };
 
     const goRecordList = () => {
-        navigate(ROUTE_PATH.record_list);
+        navigate(`${ROUTE_PATH.record_list}/123`);
     };
 
     const goPrepareWorkout = () => {

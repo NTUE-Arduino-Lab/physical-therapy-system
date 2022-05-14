@@ -40,7 +40,10 @@ const AppRoutes = () => {
                     element={<MonitoringWorkout />}
                 />
                 <Route path={ROUTE_PATH.user_list} element={<UserList />} />
-                <Route path={ROUTE_PATH.record_list} element={<RecordList />} />
+                <Route
+                    path={`${ROUTE_PATH.record_list}/:recordId`}
+                    element={<RecordList />}
+                />
                 <Route
                     path={ROUTE_PATH.difficulty_list}
                     element={<DifficulityList />}
