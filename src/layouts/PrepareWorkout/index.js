@@ -9,6 +9,7 @@ import {
     updateDoc,
     deleteDoc,
     Timestamp,
+    getDocs,
 } from 'firebase/firestore';
 import {
     Statistic,
@@ -36,6 +37,8 @@ import { ROUTE_PATH, VALID_MIN } from '../../constants';
 import styles from './styles.module.scss';
 
 import {
+    usersRef,
+    difficultiesRef,
     recordsRef,
     generateValidPairId,
     validateInputPairId,
@@ -58,6 +61,10 @@ const PrepareWorkout = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
 
+    const [users, setUsers] = useState();
+    const [difficulties, setDifficulties] = useState([]);
+    const [isDone, setIsDone] = useState(false);
+
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
 
@@ -73,10 +80,21 @@ const PrepareWorkout = () => {
     const [inputPairId, setInputPairId] = useState(''); // 輸入的配對碼
 
     useEffect(() => {
+        init();
+
         return () => {
             if (_.isFunction(unsubscribe)) unsubscribe();
         };
     }, []);
+
+    const init = async () => {
+        const users = await fetchUsers();
+        const difficulties = await fetchDiffs();
+
+        setUsers(users);
+        setDifficulties(difficulties);
+        setIsDone(true);
+    };
 
     useEffect(() => {
         if (_.isEmpty(targetgetRecordId)) {
@@ -105,6 +123,34 @@ const PrepareWorkout = () => {
 
         // going to listen doc change!
     }, [targetgetRecordId]);
+
+    const fetchUsers = async () => {
+        const users = [];
+        const querySnapshot = await getDocs(usersRef);
+        querySnapshot.forEach((doc) => {
+            if (!doc.data()?.isDeleted) {
+                users.push({
+                    ...doc.data(),
+                    id: doc.id,
+                });
+            }
+        });
+
+        return users;
+    };
+
+    const fetchDiffs = async () => {
+        const difficulties = [];
+        const querySnapshot = await getDocs(difficultiesRef);
+        querySnapshot.forEach((doc) => {
+            difficulties.push({
+                ...doc.data(),
+                id: doc.id,
+            });
+        });
+
+        return difficulties;
+    };
 
     const goDashboard = async () => {
         if (targetgetRecordId) {
@@ -255,6 +301,19 @@ const PrepareWorkout = () => {
         </div>
     );
 
+    if (!isDone) {
+        return (
+            <Layout style={{ padding: '24px' }}>
+                <div className={styles.container}>
+                    <PageHeader
+                        className={styles.PageHeader}
+                        title="資料讀取中..."
+                    />
+                </div>
+            </Layout>
+        );
+    }
+
     return (
         <Layout>
             <Content className="site-layout" style={{ padding: '24px' }}>
@@ -282,12 +341,11 @@ const PrepareWorkout = () => {
                                 onChange={onUserChange}
                                 disabled={pairId}
                             >
-                                <Option value="9928ZTdBUebNeUoe2Gj2">
-                                    Murphy
-                                </Option>
-                                <Option value="azFwPlEh6L9kRnxQtZM8">
-                                    Allen
-                                </Option>
+                                {users.map((user) => (
+                                    <Option value={user.id} key={user.id}>
+                                        {user.name}
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item
@@ -305,10 +363,12 @@ const PrepareWorkout = () => {
                                 onChange={onDiffChange}
                                 disabled={pairId}
                             >
-                                <Option value="MOFmaft3pG7ECZoTsweR">
-                                    清幽小徑・25 分鐘・目標心率 100・上限心率
-                                    120
-                                </Option>
+                                {difficulties.map((diff) => (
+                                    <Option value={diff.id} key={diff.id}>
+                                        {diff.name}・{diff.targetWorkoutTime}{' '}
+                                        分鐘・目標 {diff.targetHeartRate} BPM
+                                    </Option>
+                                ))}
                             </Select>
                         </Form.Item>
                         <Form.Item {...tailLayout}>

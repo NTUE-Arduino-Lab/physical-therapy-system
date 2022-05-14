@@ -156,6 +156,10 @@ const UserList = () => {
         message.info('使用者已刪除。');
     };
 
+    const onViewCurrUserRecord = () => {
+        navigate(`${ROUTE_PATH.record_list}/${currUser.id}`);
+    };
+
     const openViewModal = (id) => {
         const currUser = users.find((u) => u.id === id);
         setCurrUser(currUser);
@@ -298,6 +302,13 @@ const UserList = () => {
                                 {currUser?.age}
                             </Descriptions.Item>
                         </Descriptions>
+                        <Button
+                            type="primary"
+                            onClick={onViewCurrUserRecord}
+                            style={{ marginLeft: '24px' }}
+                        >
+                            查看 {currUser?.name} 騎乘紀錄
+                        </Button>
                     </Modal>
                     {/* 新增 Modal */}
                     <Modal

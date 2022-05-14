@@ -49,7 +49,7 @@ const RecordList = () => {
     const [loading, setLoading] = useState(false); // 等待抓取 packets 資料
 
     const [records, setReocrds] = useState([]);
-    const [filteredRecord, setFilteredReocrd] = useState([]);
+    const [filteredRecords, setFilteredReocrds] = useState([]);
     const [currRecord, setCurrRecord] = useState();
     const [currReocrdPackets, setCurrRecordPackets] = useState();
 
@@ -148,16 +148,25 @@ const RecordList = () => {
         });
 
         setReocrds(patchedRecords);
-        setFilteredReocrd(patchedRecords);
         setUsers(users);
         setDifficulties(difficulties);
         setIsDone(true);
+
+        if (params.userId !== '123') {
+            const filteredRecords = patchedRecords.filter(
+                (r) => r.user === params.userId,
+            );
+            setFilteredReocrds(filteredRecords);
+            searchForm.setFieldsValue({ user: params.userId });
+        } else {
+            setFilteredReocrds(patchedRecords);
+        }
     };
 
     const onSearch = async () => {
         const values = await searchForm.validateFields();
 
-        let filteredRecord = records.filter((r) => {
+        let filteredRecords = records.filter((r) => {
             if (_.isEmpty(values.user) && _.isEmpty(values.difficulty)) {
                 return true;
             }
@@ -175,7 +184,7 @@ const RecordList = () => {
             }
         });
 
-        setFilteredReocrd(filteredRecord);
+        setFilteredReocrds(filteredRecords);
     };
 
     const openViewModal = async (id) => {
@@ -292,7 +301,7 @@ const RecordList = () => {
                     </Form>
                     <Table
                         columns={columns(openViewModal)}
-                        dataSource={filteredRecord}
+                        dataSource={filteredRecords}
                         pagination={{ pageSize: 5 }}
                         style={{ marginLeft: 24, marginRight: 24 }}
                     />
@@ -306,59 +315,81 @@ const RecordList = () => {
                         {loading ? (
                             '資料讀取中...'
                         ) : (
-                            <Descriptions
-                                bordered
-                                className={styles.descriptions}
-                            >
-                                <Descriptions.Item label="騎乘者姓名" span={2}>
-                                    {currRecord?.userData?.name}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="騎乘者身體年齡">
-                                    {currRecord?.userData?.age}
-                                </Descriptions.Item>
-
-                                <Descriptions.Item
-                                    label={
-                                        <div>
-                                            實際騎乘時間
-                                            <br />/ 目標騎乘時間
-                                        </div>
-                                    }
+                            <>
+                                <Descriptions
+                                    bordered
+                                    className={styles.descriptions}
                                 >
-                                    {calWorkoutTime(currRecord)}／
-                                    {
-                                        currRecord?.difficultyData
-                                            ?.targetWorkoutTime
-                                    }{' '}
-                                    分
-                                </Descriptions.Item>
-                                <Descriptions.Item label="開始騎乘時間">
-                                    {currRecord?.beginWorkoutTime.toLocaleString()}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="結束騎乘時間">
-                                    {currRecord?.finishedWorkoutTime.toLocaleString()}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="騎乘關卡">
-                                    {currRecord?.difficultyData?.name}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="目標心率">
-                                    {
-                                        currRecord?.difficultyData
-                                            ?.targetHeartRate
-                                    }
-                                </Descriptions.Item>
-                                <Descriptions.Item label="上限心率">
-                                    {
-                                        currRecord?.difficultyData
-                                            ?.upperLimitHeartRate
-                                    }
-                                </Descriptions.Item>
-                                <Descriptions.Item label="RPM＆心率統計圖">
-                                    <LineChart
-                                        {...configLineChart(currReocrdPackets)}
-                                    />
-                                </Descriptions.Item>
-                            </Descriptions>
+                                    <Descriptions.Item
+                                        label="騎乘者姓名"
+                                        span={2}
+                                    >
+                                        {currRecord?.userData?.name}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="騎乘者身體年齡">
+                                        {currRecord?.userData?.age}
+                                    </Descriptions.Item>
+
+                                    <Descriptions.Item
+                                        label={
+                                            <div>
+                                                實際騎乘時間
+                                                <br />/ 目標騎乘時間
+                                            </div>
+                                        }
+                                    >
+                                        {calWorkoutTime(currRecord)}／
+                                        {
+                                            currRecord?.difficultyData
+                                                ?.targetWorkoutTime
+                                        }{' '}
+                                        分
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="開始騎乘時間">
+                                        {currRecord?.beginWorkoutTime.toLocaleString()}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="結束騎乘時間">
+                                        {currRecord?.finishedWorkoutTime.toLocaleString()}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="騎乘關卡">
+                                        {currRecord?.difficultyData?.name}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="目標心率">
+                                        {
+                                            currRecord?.difficultyData
+                                                ?.targetHeartRate
+                                        }
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="上限心率">
+                                        {
+                                            currRecord?.difficultyData
+                                                ?.upperLimitHeartRate
+                                        }
+                                    </Descriptions.Item>
+                                    <Descriptions.Item
+                                        label="RPM＆心率統計圖"
+                                        span={3}
+                                    >
+                                        <LineChart
+                                            {...configLineChart(
+                                                currReocrdPackets,
+                                            )}
+                                        />
+                                    </Descriptions.Item>
+                                    <Descriptions.Item
+                                        label="物理治療師名稱"
+                                        span={3}
+                                    >
+                                        {currRecord?.therapist}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item
+                                        label="治療結果評語"
+                                        span={3}
+                                    >
+                                        {currRecord?.comment}
+                                    </Descriptions.Item>
+                                </Descriptions>
+                            </>
                         )}
                     </Modal>
                 </div>

@@ -41,7 +41,7 @@ const AppRoutes = () => {
                 />
                 <Route path={ROUTE_PATH.user_list} element={<UserList />} />
                 <Route
-                    path={`${ROUTE_PATH.record_list}/:recordId`}
+                    path={`${ROUTE_PATH.record_list}/:userId`}
                     element={<RecordList />}
                 />
                 <Route
