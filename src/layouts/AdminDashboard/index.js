@@ -1,8 +1,17 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+    TeamOutlined,
+    SlidersOutlined,
+    ProfileOutlined,
+    RocketOutlined,
+} from '@ant-design/icons';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
+
+import addOnImg from '../../assets/images/right-arrow.png';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -27,13 +36,45 @@ const AdminDashboard = () => {
 
     return (
         <div className={styles.container}>
-            <p>This is Admin Dashboard</p>
-            <button onClick={goUserList}>User List</button>
-            <button onClick={goRecordList}>Record List</button>
-            <button onClick={goDifficulityList}>Difficulity List</button>
-            <button onClick={goPrepareWorkout}>Prepare Workout</button>
+            <legend>～選擇您的操作～</legend>
+            <fieldset>
+                <TileWithIconAndAction
+                    icon={<TeamOutlined />}
+                    label="騎乘者設定"
+                    action={goUserList}
+                />
+
+                <TileWithIconAndAction
+                    icon={<SlidersOutlined />}
+                    label="騎乘關卡設定"
+                    action={goDifficulityList}
+                />
+
+                <TileWithIconAndAction
+                    icon={<ProfileOutlined />}
+                    label="騎乘紀錄查詢"
+                    action={goRecordList}
+                />
+
+                <TileWithIconAndAction
+                    icon={<RocketOutlined />}
+                    label="開始騎乘作業"
+                    action={goPrepareWorkout}
+                />
+            </fieldset>
         </div>
     );
 };
+
+const TileWithIconAndAction = ({ icon, label, action }) => (
+    <span className={styles.tile} onClick={action}>
+        <span
+            className={styles.addOn}
+            style={{ backgroundImage: `url(${addOnImg})` }}
+        ></span>
+        <span className={styles.tileIcon}>{icon}</span>
+        <span className={styles.tileLabel}>{label}</span>
+    </span>
+);
 
 export default AdminDashboard;

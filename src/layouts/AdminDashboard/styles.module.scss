@@ -1,5 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
 .container {
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: #f8f8f9;
+  font-family: "Inter", sans-serif;
+	line-height: 1.5;
+	min-height: 100vh;
+	display: flex;
+  flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+  fieldset {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    // max-width: 600px;
+    user-select: none;
+    & > * {
+      margin: 0.8rem 0.8rem;
+	  }
+  }
+
+  legend {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #9c9c9c;
+    text-align: center;
+    line-height: 1.25;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0.3em;
+  }
 }
+
+.tile {
+  display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 10rem;
+	min-height: 10rem;
+	border-radius: 0.5rem;
+	border: 2px solid #b5bfd9;
+	background-color: #fff;
+	box-shadow: 0 5px 10px rgba(#000, 0.1);
+	transition: 0.15s ease;
+	cursor: pointer;
+	position: relative;
+
+	.addOn {
+		position: absolute;
+		display: block;
+		width: 1.75rem;
+		height: 1.25rem;
+		top: 0.5rem;
+		left: 0.5rem;
+		opacity: 0;
+		transform: scale(0);
+		transition: 0.15s ease;
+		background-size: 12px;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+	}
+
+	&:hover {
+		border-color: #2260ff;
+		color: #2260ff;
+    box-shadow: 0 5px 10px rgba(#000, 0.1), 0 0 0 4px #b5c9fc;
+    
+		.addOn {
+			transform: scale(2);
+			opacity: 1;
+		}
+
+    .tileIcon,
+		.tileLabel {
+			color: #2260ff;
+		}
+	}
+  
+  .tileIcon {
+    transition: 0.375s ease;
+    color: #494949;
+    svg {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+  }
+  
+  .tileLabel {
+    color: #707070;
+    transition: 0.375s ease;
+    text-align: center;
+    margin-top: 0.75em;
+    font-size: 1.125em;
+  }
+}
+
+
