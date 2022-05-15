@@ -12,8 +12,12 @@ import {
 } from 'firebase/firestore';
 import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
-import { Modal, Popover, Button, Input, message } from 'antd';
-import { SettingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Modal, Popover, Button, Input, message, notification } from 'antd';
+import {
+    SettingOutlined,
+    ExclamationCircleOutlined,
+    SmileOutlined,
+} from '@ant-design/icons';
 
 import { ROUTE_PATH, WARN, WARN_THRESHOLD } from '../../constants';
 import styles from './styles.module.scss';
@@ -174,27 +178,33 @@ const MonitoringWorkout = () => {
         const targetHeartRate = record.targetHeartRate;
         const [overSlight, overMedium, overHigh] = getExactThresholdValue();
 
+        console.log(packet);
+
         if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
             playWarnSound(WARN.High);
+            sendNotification(WARN.High, packet.heartRate);
         } else if (
             packet.heartRate < overHigh &&
             packet.heartRate >= overMedium
         ) {
             console.log('playing: medium warn');
             playWarnSound(WARN.Medium);
+            sendNotification(WARN.Medium, packet.heartRate);
         } else if (
             packet.heartRate < overMedium &&
             packet.heartRate >= overSlight
         ) {
             console.log('playing: slight warn');
             playWarnSound(WARN.Slight);
+            sendNotification(WARN.Slight, packet.heartRate);
         } else if (
             packet.heartRate >= targetHeartRate &&
             packet.heartRate < overSlight
         ) {
             console.log('playing: archieved');
             playOtherSound(OTHER_SOUND.Archieved);
+            sendNotification('Archieved', packet.heartRate, targetHeartRate);
         }
     };
 
@@ -276,6 +286,36 @@ const MonitoringWorkout = () => {
         const accumlated = moment.duration(now.diff(begin)).asMilliseconds();
 
         return accumlated;
+    };
+
+    // 右上角通知顯示
+    const sendNotification = (warn, heartRate, targetHeartRate) => {
+        if (warn === WARN.High) {
+            // high warn
+            notification.warn({
+                message: '第三階段警示，請檢查騎乘者身體狀況',
+                description: `達到第三階段警示心率。最新心率：${heartRate} BPM。`,
+            });
+        } else if (warn === WARN.Medium) {
+            // medium warn
+            notification.info({
+                message: '第二階段警示，請留意騎乘者身體狀況',
+                description: `達到第一階段警示心率。最新心率：${heartRate} BPM。`,
+            });
+        } else if (warn === WARN.Slight) {
+            // slight warn
+            notification.open({
+                message: '第一階段警示',
+                description: `達到第一階段警示心率。最新心率：${heartRate} BPM。`,
+                icon: <SmileOutlined style={{ color: '#108ee9' }} />,
+            });
+        } else {
+            // archived
+            notification.success({
+                message: '恭喜達到目標訓練心率！',
+                description: `達到目標訓練心率（${targetHeartRate} BPM）。最新心率：${heartRate} BPM。`,
+            });
+        }
     };
 
     if (!isInitRecordDone || !isInitPacketsDone || _.isEmpty(difficulty)) {
