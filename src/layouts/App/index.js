@@ -24,9 +24,31 @@ const AppProvider = ({ children }) => {
 
     useEffect(() => {
         attempLogin();
-        const listener = (ev) => {
-            ev.preventDefault();
 
+        window.addEventListener('beforeunload', beforeunloadListener);
+        window.addEventListener('visibilitychange', visibilitychangeListener);
+        return () => {
+            window.removeEventListener(
+                'beforeunload',
+                visibilitychangeListener,
+            );
+        };
+    }, []);
+
+    const beforeunloadListener = (e) => {
+        e.preventDefault();
+
+        dispatch({
+            type: SET_AUTH,
+            payload: {
+                isValid: false,
+                roles: [],
+            },
+        });
+    };
+
+    const visibilitychangeListener = (e) => {
+        if (document.visibilityState == 'hidden') {
             dispatch({
                 type: SET_AUTH,
                 payload: {
@@ -34,14 +56,8 @@ const AppProvider = ({ children }) => {
                     roles: [],
                 },
             });
-
-            ev.returnValue = '文章要保存吼，确定离开吗？';
-        };
-        window.addEventListener('beforeunload', listener);
-        return () => {
-            window.removeEventListener('beforeunload', listener);
-        };
-    }, []);
+        }
+    };
 
     const attempLogin = () => {
         // console.log('executing attemp login');
