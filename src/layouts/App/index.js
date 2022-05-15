@@ -19,11 +19,28 @@ import '@ant-design/flowchart/dist/index.css';
 */
 
 const AppProvider = ({ children }) => {
-    const { dispatch } = useState();
+    const { dispatch } = useStore();
     const [initializedDone, setInitializedDone] = useState(false);
 
     useEffect(() => {
         attempLogin();
+        const listener = (ev) => {
+            ev.preventDefault();
+
+            dispatch({
+                type: SET_AUTH,
+                payload: {
+                    isValid: false,
+                    roles: [],
+                },
+            });
+
+            ev.returnValue = '文章要保存吼，确定离开吗？';
+        };
+        window.addEventListener('beforeunload', listener);
+        return () => {
+            window.removeEventListener('beforeunload', listener);
+        };
     }, []);
 
     const attempLogin = () => {

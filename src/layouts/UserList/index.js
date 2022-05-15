@@ -106,6 +106,8 @@ const UserList = () => {
             message.success(`成功新增騎乘者！`);
         } catch (e) {
             console.log(e);
+            setLoading(false);
+            message.error(e?.message);
         }
     };
 
