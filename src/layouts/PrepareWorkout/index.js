@@ -189,9 +189,10 @@ const PrepareWorkout = () => {
             return;
         }
 
-        // will changed
-        const targetHeartRate = 100; // careful the type
-        const upperLimitHeartRate = 120; // careful the type
+        const theDiff = difficulties.find((d) => d.id === selectedDiff);
+
+        const targetHeartRate = theDiff.targetHeartRate; // careful the type
+        const upperLimitHeartRate = theDiff.upperLimitHeartRate; // careful the type
         // constant
         const user = selectedUser;
         const difficulty = selectedDiff;

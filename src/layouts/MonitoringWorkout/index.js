@@ -23,6 +23,7 @@ import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 import wait from '../../util/wait';
 import useAudio from '../../util/useAudio';
 import formatWithMoment from '../../util/formatSeconds';
+import configLineChart from '../../util/configLineChart';
 
 import StopWatch from '../../components/StopWatch';
 
@@ -170,8 +171,6 @@ const MonitoringWorkout = () => {
     };
 
     const evaluateCurrPacket = (packet) => {
-        console.log(packet);
-
         const targetHeartRate = record.targetHeartRate;
         const [overSlight, overMedium, overHigh] = getExactThresholdValue();
 
@@ -297,6 +296,8 @@ const MonitoringWorkout = () => {
         </>
     );
 
+    console.log(record.targetHeartRate);
+
     // TODO:
     // refactoring <table> to component
     return (
@@ -339,109 +340,13 @@ const MonitoringWorkout = () => {
                     </caption>
                 </div>
                 <div className={styles.mainCol}>
-                    <LineChart {...configLineChart(packets)} />
+                    <LineChart
+                        {...configLineChart(packets, record.targetHeartRate)}
+                    />
                 </div>
             </div>
         </div>
     );
 };
-
-const configLineChart = (data) => ({
-    data: [data, data],
-    xField: 'timeLabel',
-    yField: ['rpm', 'heartRate'],
-    yAxis: {
-        rpm: {
-            title: {
-                text: 'RPM',
-            },
-        },
-        heartRate: {
-            title: {
-                text: '心率',
-            },
-        },
-    },
-    // xAxis: {
-    //     title: {
-    //         text: '時間',
-    //     },
-    // },
-    legend: {
-        itemName: {
-            formatter: (text, item) => {
-                return item.value === 'rpm' ? 'RPM值(單位？)' : '心率(單位？)';
-            },
-        },
-    },
-    meta: {
-        rpm: {
-            alias: 'RPM值 ',
-            formatter: (value) => {
-                return `${value} 單位？`;
-            },
-        },
-        heartRate: {
-            alias: '心率',
-            formatter: (value) => {
-                return `${value} 單位？`;
-                // return Number((v / 100).toFixed(1));
-            },
-        },
-    },
-    geometryOptions: [
-        {
-            geometry: 'line',
-            color: '#5B8FF9',
-            lineStyle: {
-                lineWidth: 2,
-                lineDash: [5, 5],
-            },
-        },
-        {
-            geometry: 'line',
-            color: '#5AD8A6',
-            smooth: true,
-            lineStyle: {
-                lineWidth: 4,
-                opacity: 0.5,
-            },
-            point: {
-                shape: 'circle',
-                size: 4,
-                style: {
-                    opacity: 0.5,
-                    stroke: '#5AD8A6',
-                    fill: '#fff',
-                },
-            },
-        },
-    ],
-    annotations: {
-        heartRate: [
-            {
-                type: 'line',
-                start: ['min', 138], // TODO: change [138] to 目標心率
-                end: ['max', 138], // TODO: change [138] to 目標心率
-                style: {
-                    lineWidth: 2,
-                    lineDash: [3, 3],
-                    stroke: '#F4664A',
-                },
-                text: {
-                    content: '目標心率(138)', // TODO: change [138] to 目標心率
-                    offsetY: -4,
-                    position: 'end',
-                    style: {
-                        textAlign: 'end',
-                    },
-                },
-            },
-        ],
-    },
-    tooltip: {
-        showTitle: true,
-    },
-});
 
 export default MonitoringWorkout;

@@ -25,6 +25,7 @@ import styles from './styles.module.scss';
 import _ from '../../util/helper';
 import formatWithMoment from '../../util/formatSeconds';
 import wait from '../../util/wait';
+import configLineChart from '../../util/configLineChart';
 
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 
@@ -215,7 +216,12 @@ const FinishedWorkout = () => {
                             {difficulty.upperLimitHeartRate}
                         </Descriptions.Item>
                         <Descriptions.Item label="RPM＆心率統計圖">
-                            <LineChart {...configLineChart(packets)} />
+                            <LineChart
+                                {...configLineChart(
+                                    packets,
+                                    record.targetHeartRate,
+                                )}
+                            />
                         </Descriptions.Item>
                     </Descriptions>
 
@@ -255,103 +261,5 @@ const FinishedWorkout = () => {
         </Layout>
     );
 };
-
-const configLineChart = (data) => ({
-    data: [data, data],
-    xField: 'timeLabel',
-    yField: ['rpm', 'heartRate'],
-    yAxis: {
-        rpm: {
-            title: {
-                text: 'RPM',
-            },
-        },
-        heartRate: {
-            title: {
-                text: '心率',
-            },
-        },
-    },
-    // xAxis: {
-    //     title: {
-    //         text: '時間',
-    //     },
-    // },
-    legend: {
-        itemName: {
-            formatter: (text, item) => {
-                return item.value === 'rpm' ? 'RPM值(單位？)' : '心率(單位？)';
-            },
-        },
-    },
-    meta: {
-        rpm: {
-            alias: 'RPM值 ',
-            formatter: (value) => {
-                return `${value} 單位？`;
-            },
-        },
-        heartRate: {
-            alias: '心率',
-            formatter: (value) => {
-                return `${value} 單位？`;
-                // return Number((v / 100).toFixed(1));
-            },
-        },
-    },
-    geometryOptions: [
-        {
-            geometry: 'line',
-            color: '#5B8FF9',
-            lineStyle: {
-                lineWidth: 2,
-                lineDash: [5, 5],
-            },
-        },
-        {
-            geometry: 'line',
-            color: '#5AD8A6',
-            smooth: true,
-            lineStyle: {
-                lineWidth: 4,
-                opacity: 0.5,
-            },
-            point: {
-                shape: 'circle',
-                size: 4,
-                style: {
-                    opacity: 0.5,
-                    stroke: '#5AD8A6',
-                    fill: '#fff',
-                },
-            },
-        },
-    ],
-    annotations: {
-        heartRate: [
-            {
-                type: 'line',
-                start: ['min', 138], // TODO: change [138] to 目標心率
-                end: ['max', 138], // TODO: change [138] to 目標心率
-                style: {
-                    lineWidth: 2,
-                    lineDash: [3, 3],
-                    stroke: '#F4664A',
-                },
-                text: {
-                    content: '目標心率(138)', // TODO: change [138] to 目標心率
-                    offsetY: -4,
-                    position: 'end',
-                    style: {
-                        textAlign: 'end',
-                    },
-                },
-            },
-        ],
-    },
-    tooltip: {
-        showTitle: true,
-    },
-});
 
 export default FinishedWorkout;
