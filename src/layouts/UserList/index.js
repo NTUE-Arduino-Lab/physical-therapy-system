@@ -2,7 +2,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDocs, updateDoc, doc, addDoc } from 'firebase/firestore';
+import {
+    getDocs,
+    updateDoc,
+    doc,
+    addDoc,
+    query,
+    where,
+} from 'firebase/firestore';
 import {
     Layout,
     Form,
@@ -64,15 +71,15 @@ const UserList = () => {
     };
 
     const fetchUsers = async () => {
+        const q = query(usersRef, where('isDeleted', '!=', true));
+
         const users = [];
-        const querySnapshot = await getDocs(usersRef);
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-            if (!doc.data()?.isDeleted) {
-                users.push({
-                    ...doc.data(),
-                    id: doc.id,
-                });
-            }
+            users.push({
+                ...doc.data(),
+                id: doc.id,
+            });
         });
 
         setUsers(users);
@@ -96,6 +103,8 @@ const UserList = () => {
             await addDoc(usersRef, {
                 name: values.name,
                 age: values.age,
+                note: values.note ?? null,
+                isDeleted: false,
             });
 
             await fetchUsers();
@@ -121,6 +130,7 @@ const UserList = () => {
             const currUserRef = doc(usersRef, currUser.id);
             await updateDoc(currUserRef, {
                 age: values.age,
+                note: values.note,
             });
 
             await fetchUsers();
@@ -130,6 +140,7 @@ const UserList = () => {
             message.success(`成功更新騎乘者！`);
         } catch (e) {
             console.log(e);
+            setLoading(false);
         }
     };
 
@@ -171,7 +182,11 @@ const UserList = () => {
     const openEditModal = (id) => {
         const currUser = users.find((u) => u.id === id);
 
-        editForm.setFieldsValue({ age: currUser.age, name: currUser.name });
+        editForm.setFieldsValue({
+            age: currUser.age,
+            name: currUser.name,
+            note: currUser.note,
+        });
 
         setCurrUser(currUser);
         setEditModalVisible(true);
@@ -300,8 +315,11 @@ const UserList = () => {
                             <Descriptions.Item label="騎乘者姓名" span={3}>
                                 {currUser?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="騎乘者身體年齡">
+                            <Descriptions.Item label="騎乘者身體年齡" span={3}>
                                 {currUser?.age}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="備註" span={3}>
+                                {currUser?.note}
                             </Descriptions.Item>
                         </Descriptions>
                         <Button
@@ -348,7 +366,19 @@ const UserList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={99} />
+                                <InputNumber
+                                    min={1}
+                                    max={99}
+                                    addonAfter={'歲'}
+                                />
+                            </Form.Item>
+                            <Form.Item label="備註" name="note">
+                                <Input.TextArea
+                                    showCount
+                                    placeholder="是否有隱疾、其他需留意之處．．．"
+                                    maxLength={50}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                />
                             </Form.Item>
                         </Form>
                     </Modal>
@@ -378,7 +408,19 @@ const UserList = () => {
                                     },
                                 ]}
                             >
-                                <InputNumber min={1} max={99} />
+                                <InputNumber
+                                    min={1}
+                                    max={99}
+                                    addonAfter={'歲'}
+                                />
+                            </Form.Item>
+                            <Form.Item label="備註" name="note">
+                                <Input.TextArea
+                                    showCount
+                                    placeholder="是否有隱疾、其他需留意之處．．．"
+                                    maxLength={50}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                />
                             </Form.Item>
                         </Form>
                     </Modal>

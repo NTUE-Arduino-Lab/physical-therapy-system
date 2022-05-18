@@ -10,6 +10,8 @@ import {
     deleteDoc,
     Timestamp,
     getDocs,
+    query,
+    where,
 } from 'firebase/firestore';
 import {
     Statistic,
@@ -24,6 +26,11 @@ import {
     Divider,
     Popover,
     Spin,
+    Row,
+    Col,
+    Descriptions,
+    Typography,
+    Badge,
 } from 'antd';
 import {
     LoadingOutlined,
@@ -33,7 +40,7 @@ import {
 } from '@ant-design/icons';
 import _ from '../../util/helper';
 
-import { ROUTE_PATH, VALID_MIN } from '../../constants';
+import { ROUTE_PATH, VALID_MIN, WARN_THRESHOLD, WARN } from '../../constants';
 import styles from './styles.module.scss';
 
 import {
@@ -48,6 +55,7 @@ import wait from '../../util/wait';
 const { Countdown } = Statistic;
 const { Content } = Layout;
 const { Option } = Select;
+const { Text } = Typography;
 
 const initialPacket = {
     rpm: 0,
@@ -65,8 +73,21 @@ const PrepareWorkout = () => {
     const [difficulties, setDifficulties] = useState([]);
     const [isDone, setIsDone] = useState(false);
 
+    // store [id]
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
+
+    // 提供查看[使用者], [關卡]所需資訊。store data object
+    const [selectedUserData, setSelectedUserData] = useState();
+    const [selectedDiffData, setSelectedDiffData] = useState();
+    const [userModalVis, setUserModalVis] = useState(false);
+    const [diffModalVis, setDiffModalVis] = useState(false);
+
+    //
+    // 顯示”當前關卡“各階段警示心率的值
+    const [warnHRValues, setWarnHRValues] = useState([]);
+    //
+    //
 
     const [isPairing, setIsPairing] = useState(false);
 
@@ -125,23 +146,25 @@ const PrepareWorkout = () => {
     }, [targetgetRecordId]);
 
     const fetchUsers = async () => {
+        const q = query(usersRef, where('isDeleted', '!=', true));
+
         const users = [];
-        const querySnapshot = await getDocs(usersRef);
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-            if (!doc.data()?.isDeleted) {
-                users.push({
-                    ...doc.data(),
-                    id: doc.id,
-                });
-            }
+            users.push({
+                ...doc.data(),
+                id: doc.id,
+            });
         });
 
         return users;
     };
 
     const fetchDiffs = async () => {
+        const q = query(difficultiesRef, where('isDeleted', '!=', true));
+
         const difficulties = [];
-        const querySnapshot = await getDocs(difficultiesRef);
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             difficulties.push({
                 ...doc.data(),
@@ -285,6 +308,47 @@ const PrepareWorkout = () => {
     const onUserChange = (value) => setSelectedUser(value);
     const onDiffChange = (value) => setSelectedDiff(value);
 
+    const openUserModal = () => {
+        const selectedUserData = users.find((u) => u.id === selectedUser);
+
+        setUserModalVis(true);
+        setSelectedUserData(selectedUserData);
+    };
+    const openDiffModal = () => {
+        const selectedDiffData = difficulties.find(
+            (d) => d.id === selectedDiff,
+        );
+        const warnHRValues = getExactThresholdValue(
+            selectedDiffData.upperLimitHeartRate,
+        );
+
+        setDiffModalVis(true);
+        setSelectedDiffData(selectedDiffData);
+        setWarnHRValues(warnHRValues);
+    };
+    const closeUserModal = () => {
+        setUserModalVis(false);
+        setSelectedUserData();
+    };
+    const closeDiffModal = () => {
+        setDiffModalVis(false);
+        setSelectedDiffData();
+    };
+
+    const getExactThresholdValue = (upperLimitHeartRate) => {
+        if (!_.isNumber(upperLimitHeartRate)) {
+            return;
+        }
+
+        const calBase = upperLimitHeartRate / 100;
+
+        const overHigh = Math.ceil(calBase * WARN_THRESHOLD.High);
+        const overMedium = Math.ceil(calBase * WARN_THRESHOLD.Medium);
+        const overSlight = Math.ceil(calBase * WARN_THRESHOLD.Slight);
+
+        return [overSlight, overMedium, overHigh];
+    };
+
     const simulateAppCotent = (
         <div className={styles.pairing}>
             <Input.Search
@@ -337,17 +401,32 @@ const PrepareWorkout = () => {
                                 },
                             ]}
                         >
-                            <Select
-                                placeholder="選擇騎乘者"
-                                onChange={onUserChange}
-                                disabled={pairId}
-                            >
-                                {users.map((user) => (
-                                    <Option value={user.id} key={user.id}>
-                                        {user.name}
-                                    </Option>
-                                ))}
-                            </Select>
+                            <Row gutter={8}>
+                                <Col span={18}>
+                                    <Select
+                                        placeholder="選擇騎乘者"
+                                        onChange={onUserChange}
+                                        disabled={pairId}
+                                    >
+                                        {users.map((user) => (
+                                            <Option
+                                                value={user.id}
+                                                key={user.id}
+                                            >
+                                                {user.name}
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Col>
+                                <Col span={6}>
+                                    <Button
+                                        disabled={!selectedUser}
+                                        onClick={openUserModal}
+                                    >
+                                        查看騎乘者資訊
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Form.Item>
                         <Form.Item
                             name="difficulty"
@@ -359,18 +438,35 @@ const PrepareWorkout = () => {
                                 },
                             ]}
                         >
-                            <Select
-                                placeholder="選擇關卡資訊"
-                                onChange={onDiffChange}
-                                disabled={pairId}
-                            >
-                                {difficulties.map((diff) => (
-                                    <Option value={diff.id} key={diff.id}>
-                                        {diff.name}・{diff.targetWorkoutTime}{' '}
-                                        分鐘・目標 {diff.targetHeartRate} BPM
-                                    </Option>
-                                ))}
-                            </Select>
+                            <Row gutter={8}>
+                                <Col span={18}>
+                                    <Select
+                                        placeholder="選擇關卡資訊"
+                                        onChange={onDiffChange}
+                                        disabled={pairId}
+                                    >
+                                        {difficulties.map((diff) => (
+                                            <Option
+                                                value={diff.id}
+                                                key={diff.id}
+                                            >
+                                                {diff.name}・
+                                                {diff.targetWorkoutTime}{' '}
+                                                分鐘・目標{' '}
+                                                {diff.targetHeartRate} BPM
+                                            </Option>
+                                        ))}
+                                    </Select>
+                                </Col>
+                                <Col span={6}>
+                                    <Button
+                                        disabled={!selectedDiff}
+                                        onClick={openDiffModal}
+                                    >
+                                        查看關卡資訊
+                                    </Button>
+                                </Col>
+                            </Row>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
                             <Button
@@ -383,6 +479,112 @@ const PrepareWorkout = () => {
                             </Button>
                         </Form.Item>
                     </Form>
+
+                    <Modal
+                        title="檢視騎乘者"
+                        visible={userModalVis}
+                        onCancel={closeUserModal}
+                        footer={null} // no [Ok], [Cancel] button
+                    >
+                        <Descriptions
+                            bordered
+                            className={styles.descriptions}
+                            size="middle"
+                        >
+                            <Descriptions.Item label="騎乘者姓名" span={3}>
+                                {selectedUserData?.name}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="騎乘者身體年齡" span={3}>
+                                {selectedUserData?.age}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="備註" span={3}>
+                                {selectedUserData?.note}
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </Modal>
+                    <Modal
+                        title="檢視難度"
+                        visible={diffModalVis}
+                        onCancel={closeDiffModal}
+                        footer={null} // no [Ok], [Cancel] button
+                        width={600}
+                    >
+                        <Descriptions
+                            bordered
+                            className={styles.descriptions}
+                            size="middle"
+                            column={2}
+                        >
+                            <Descriptions.Item label="難度名稱" span={1}>
+                                {selectedDiffData?.name}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="目標騎乘時間" span={1}>
+                                {selectedDiffData?.targetWorkoutTime} 分
+                            </Descriptions.Item>
+                            <Descriptions.Item label="目標心率數值" span={2}>
+                                {selectedDiffData?.targetHeartRate}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="上限心率數值" span={2}>
+                                {selectedDiffData?.upperLimitHeartRate}
+                            </Descriptions.Item>
+                            <Descriptions.Item
+                                label={
+                                    <>
+                                        警示心率門檻
+                                        <br />
+                                        <Text
+                                            type="secondary"
+                                            style={{
+                                                fontSize: '0.8em',
+                                            }}
+                                        >
+                                            依據上限心率數值計算
+                                        </Text>
+                                    </>
+                                }
+                                span={2}
+                            >
+                                <Badge
+                                    color="blue"
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[0],
+                                        WARN.Slight,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="gold"
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[1],
+                                        WARN.Medium,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+
+                                <Badge
+                                    color="volcano"
+                                    text={WarnHRValueDisplay(
+                                        warnHRValues?.[2],
+                                        WARN.High,
+                                    )}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                    }}
+                                />
+                            </Descriptions.Item>
+                            <Descriptions.Item label="備註" span={2}>
+                                {selectedDiffData?.note}
+                            </Descriptions.Item>
+                        </Descriptions>
+                    </Modal>
 
                     {pairId && (
                         <>
@@ -489,6 +691,32 @@ const PrepareWorkout = () => {
                 </div>
             </Content>
         </Layout>
+    );
+};
+
+const WarnHRValueDisplay = (value, warn) => {
+    let phase;
+    let overVal;
+    if (warn === WARN.Slight) {
+        phase = '一';
+        overVal = WARN_THRESHOLD.Slight - 100;
+    }
+    if (warn === WARN.Medium) {
+        phase = '二';
+        overVal = WARN_THRESHOLD.Medium - 100;
+    }
+    if (warn === WARN.High) {
+        phase = '三';
+        overVal = WARN_THRESHOLD.High - 100;
+    }
+
+    return (
+        <div style={{ display: 'flex' }}>
+            第{phase}階段：{value}
+            <Text type="secondary" style={{ fontSize: '0.85em' }}>
+                （超出 {overVal}％）
+            </Text>
+        </div>
     );
 };
 

@@ -2,7 +2,14 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDocs, updateDoc, doc, addDoc } from 'firebase/firestore';
+import {
+    getDocs,
+    updateDoc,
+    doc,
+    addDoc,
+    query,
+    where,
+} from 'firebase/firestore';
 import {
     Layout,
     Form,
@@ -76,15 +83,15 @@ const DifficulityList = () => {
     };
 
     const fetchDiffs = async () => {
+        const q = query(difficultiesRef, where('isDeleted', '!=', true));
+
         const difficulties = [];
-        const querySnapshot = await getDocs(difficultiesRef);
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-            if (!doc.data()?.isDeleted) {
-                difficulties.push({
-                    ...doc.data(),
-                    id: doc.id,
-                });
-            }
+            difficulties.push({
+                ...doc.data(),
+                id: doc.id,
+            });
         });
 
         setDifficulties(difficulties);
@@ -112,6 +119,8 @@ const DifficulityList = () => {
                 targetHeartRate: values.targetHeartRate,
                 targetWorkoutTime: values.targetWorkoutTime,
                 upperLimitHeartRate: values.upperLimitHeartRate,
+                note: values.note ?? null,
+                isDeleted: false,
             });
 
             await fetchDiffs();
@@ -122,6 +131,7 @@ const DifficulityList = () => {
             message.success(`成功新增難度！`);
         } catch (e) {
             console.log(e);
+            setLoading(false);
         }
     };
 
@@ -138,6 +148,7 @@ const DifficulityList = () => {
                 targetHeartRate: values.targetHeartRate,
                 targetWorkoutTime: values.targetWorkoutTime,
                 upperLimitHeartRate: values.upperLimitHeartRate,
+                note: values.note,
             });
 
             await fetchDiffs();
@@ -193,6 +204,7 @@ const DifficulityList = () => {
             targetHeartRate: currDiff.targetHeartRate,
             targetWorkoutTime: currDiff.targetWorkoutTime,
             upperLimitHeartRate: currDiff.upperLimitHeartRate,
+            note: currDiff.note,
         });
 
         setCurrDiff(currDiff);
@@ -406,6 +418,9 @@ const DifficulityList = () => {
                                     }}
                                 />
                             </Descriptions.Item>
+                            <Descriptions.Item label="備註" span={2}>
+                                {currDiff?.note}
+                            </Descriptions.Item>
                         </Descriptions>
                     </Modal>
                     {/* 新增 Modal */}
@@ -529,6 +544,14 @@ const DifficulityList = () => {
                                     }}
                                 />
                             </Form.Item>
+                            <Form.Item label="備註" name="note">
+                                <Input.TextArea
+                                    showCount
+                                    placeholder="需調整阻力值至多少、騎乘時的其他建議．．．"
+                                    maxLength={50}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                />
+                            </Form.Item>
                         </Form>
                     </Modal>
                     <Modal
@@ -639,6 +662,14 @@ const DifficulityList = () => {
                                         display: 'flex',
                                         alignItems: 'center',
                                     }}
+                                />
+                            </Form.Item>
+                            <Form.Item label="備註" name="note">
+                                <Input.TextArea
+                                    showCount
+                                    placeholder="需調整阻力值至多少、騎乘時的其他建議．．．"
+                                    maxLength={50}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
                                 />
                             </Form.Item>
                         </Form>
