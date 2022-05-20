@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import './global.scss';
 
 import { StoreProvider } from './store';
@@ -12,9 +12,10 @@ ReactDOM.render(
         <StoreProvider>
             <BrowserRouter>
                 <AppProvider>
-                    <Routes>
-                        <Route path="/*" element={<AppRoutes />} />
-                    </Routes>
+                    {/* <Routes>
+                        <Route path="*" element={<AppRoutes />} />
+                    </Routes> */}
+                    <AppRoutes />
                 </AppProvider>
             </BrowserRouter>
         </StoreProvider>
