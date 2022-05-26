@@ -195,9 +195,17 @@ const PrepareWorkout = () => {
     };
 
     const confirmUserAndDiff = async () => {
-        const valid = await form.validateFields();
+        // const valid = await form.validateFields();
 
-        console.log(valid);
+        // console.log(valid);
+
+        if (selectedUser == null || selectedDiff == null) {
+            Modal.error({
+                title: '有內容沒有完成...',
+                content: '請填寫好騎乘者資訊以及關卡資訊',
+            });
+            return;
+        }
 
         Modal.confirm({
             title: '即將產生配對碼！',
@@ -394,12 +402,12 @@ const PrepareWorkout = () => {
                         <Form.Item
                             name="user"
                             label="騎乘者"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '請選擇騎乘者',
-                                },
-                            ]}
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //         message: '請選擇騎乘者',
+                            //     },
+                            // ]}
                         >
                             <Row gutter={8}>
                                 <Col span={18}>
@@ -431,12 +439,12 @@ const PrepareWorkout = () => {
                         <Form.Item
                             name="difficulty"
                             label="關卡資訊"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: '請選擇關卡資訊',
-                                },
-                            ]}
+                            // rules={[
+                            //     {
+                            //         required: true,
+                            //         message: '請選擇關卡資訊',
+                            //     },
+                            // ]}
                         >
                             <Row gutter={8}>
                                 <Col span={18}>
