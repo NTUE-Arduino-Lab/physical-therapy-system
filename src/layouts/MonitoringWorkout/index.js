@@ -366,8 +366,8 @@ const MonitoringWorkout = () => {
     // refactoring <table> to component
     return (
         <div className={styles.container}>
+            {isPlaying && <audio src={audioSrc} autoPlay></audio>}
             <div className={styles.glass}>
-                {isPlaying && <audio src={audioSrc} autoPlay></audio>}
                 {/* <h1>騎乘監控畫面</h1> */}
                 <div className={`${styles.col} ${styles.col1}`}>
                     <span>騎乘者：{user?.name}</span>
