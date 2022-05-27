@@ -32,17 +32,6 @@ import configLineChart from '../../util/configLineChart';
 
 import StopWatch from '../../components/StopWatch';
 
-// import warn_slight_url from '../../assets/sounds/warn-slight.wav';
-// import warn_medium_url from '../../assets/sounds/warn-medium.wav';
-// import warn_high_url from '../../assets/sounds/warn-high.wav';
-// import other_notification_url from '../../assets/sounds/notification.wav';
-// import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
-
-const OTHER_SOUND = {
-    Notification: 'notification',
-    Archieved: 'goal-archieved',
-};
-
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
 
@@ -81,10 +70,6 @@ const MonitoringWorkout = () => {
 
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
-    const [isBuffersDone, setIsBufferDone] = useState(false);
-
-    // const [audioSrc, setAudioSrc] = useState(other_notification_url);
-    // const [isPlaying, setIsPlaying] = useState(false);
 
     // const {
     //     playWarnSound,
@@ -139,32 +124,55 @@ const MonitoringWorkout = () => {
         listenPacketsChange();
     };
 
-    const fetchBuffer = () => {
-        fetch(warn_slight_url)
-            .then((response) => response.arrayBuffer())
-            .then((arrayBuffer) =>
-                context.decodeAudioData(
-                    arrayBuffer,
-                    (audioBuffer) => {
-                        yodelBuffer2 = audioBuffer;
-                    },
-                    (error) => console.error(error),
-                ),
-            );
+    const fetchBuffer = async () => {
+        // fetch(warn_slight_url)
+        //     .then((response) => response.arrayBuffer())
+        //     .then((arrayBuffer) =>
+        //         context.decodeAudioData(
+        //             arrayBuffer,
+        //             (audioBuffer) => {
+        //                 yodelBuffer2 = audioBuffer;
+        //             },
+        //             (error) => console.error(error),
+        //         ),
+        //     );
 
-        fetch(
-            'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3',
-        )
-            .then((response) => response.arrayBuffer())
-            .then((arrayBuffer) =>
-                context.decodeAudioData(
-                    arrayBuffer,
-                    (audioBuffer) => {
-                        yodelBuffer = audioBuffer;
-                    },
-                    (error) => console.error(error),
-                ),
-            );
+        // fetch(
+        //     'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3',
+        // )
+        //     .then((response) => response.arrayBuffer())
+        //     .then((arrayBuffer) =>
+        //         context.decodeAudioData(
+        //             arrayBuffer,
+        //             (audioBuffer) => {
+        //                 yodelBuffer = audioBuffer;
+        //             },
+        //             (error) => console.error(error),
+        //         ),
+        //     );
+
+        let response;
+        let arrayBuffer;
+
+        response = await fetch(warn_slight_url);
+        arrayBuffer = await response.arrayBuffer();
+        context.decodeAudioData(
+            arrayBuffer,
+            (audioBuffer) => {
+                yodelBuffer2 = audioBuffer;
+            },
+            (error) => console.error(error),
+        );
+
+        response = await fetch('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3');
+        arrayBuffer = await response.arrayBuffer();
+        context.decodeAudioData(
+            arrayBuffer,
+            (audioBuffer) => {
+                yodelBuffer = audioBuffer;
+            },
+            (error) => console.error(error),
+        );
     };
 
     //:
@@ -252,18 +260,6 @@ const MonitoringWorkout = () => {
         source.buffer = buffer;
         source.connect(context.destination);
         source.start();
-
-        // const audio = document.getElementById('audio');
-        // audio.muted = false;
-        // audio.src = nextAudioSrc;
-        // audio.play();
-
-        // setAudioSrc(nextAudioSrc);
-
-        // setIsPlaying(true);
-        // setTimeout(() => {
-        //     setIsPlaying(false);
-        // }, 3000);
     };
 
     const grantAudioPerssion = () => {
