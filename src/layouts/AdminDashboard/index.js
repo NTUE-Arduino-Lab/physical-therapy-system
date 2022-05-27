@@ -62,22 +62,31 @@ const AdminDashboard = () => {
         // navigate(`${ROUTE_PATH.record_list}/123`);
         // getAudioPermission();
 
-        setAudioSrc(audio3);
+        const audio = document.getElementById('audio');
+        audio.muted = false;
+        audio.src = audio3;
+        audio.play();
+
+        // setAudioSrc(audio3);
         setIsPressed(true);
 
         setTimeout(() => {
             setIsPressed(false);
         }, 3000);
 
-        setTimeout(() => {
-            setAudioSrc(audio3);
-            setIsPressed(true);
-        }, 8000);
+        // setTimeout(() => {
+        //     setAudioSrc(audio3);
+        //     setIsPressed(true);
+        // }, 8000);
 
-        setTimeout(() => {
-            setIsPressed(false);
-        }, 9000);
+        // setTimeout(() => {
+        //     setIsPressed(false);
+        // }, 9000);
     };
+
+    const onEnd = () => {
+
+    }
 
     const goPrepareWorkout = () => {
         navigate(ROUTE_PATH.prepare_workout);
@@ -137,8 +146,8 @@ const AdminDashboard = () => {
     return (
         <div className={styles.container}>
             <legend>～選擇您的操作～</legend>
-
-            {isPressed && <audio src={audioSrc} autoPlay></audio>}
+            <audio id="audio" src={audioSrc} muted></audio>
+            {/* {isPressed && <audio src={audioSrc} autoPlay></audio>} */}
             <fieldset>
                 <TileWithIconAndAction
                     icon={<TeamOutlined />}

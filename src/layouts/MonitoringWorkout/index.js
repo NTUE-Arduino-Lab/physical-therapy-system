@@ -108,12 +108,16 @@ const MonitoringWorkout = () => {
     };
 
     const playAudio = (nextAudioSrc = other_notification_url) => {
-        setAudioSrc(nextAudioSrc);
+        const audio = document.getElementById('audio');
+        audio.muted = false;
+        audio.src = nextAudioSrc;
+        audio.play();
+        // setAudioSrc(nextAudioSrc);
 
-        setIsPlaying(true);
-        setTimeout(() => {
-            setIsPlaying(false);
-        }, 3000);
+        // setIsPlaying(true);
+        // setTimeout(() => {
+        //     setIsPlaying(false);
+        // }, 3000);
     };
 
     const grantAudioPerssion = () => {
@@ -366,7 +370,7 @@ const MonitoringWorkout = () => {
     // refactoring <table> to component
     return (
         <div className={styles.container}>
-            {isPlaying && <audio src={audioSrc} autoPlay></audio>}
+            <audio id="audio"></audio>
             <div className={styles.glass}>
                 {/* <h1>騎乘監控畫面</h1> */}
                 <div className={`${styles.col} ${styles.col1}`}>
