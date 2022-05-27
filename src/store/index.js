@@ -9,7 +9,7 @@ const StoreContext = createContext();
 const initialState = {
     auth: {
         isValid: true,
-        roles: [ROLES.Editor], // 1984: Editor ; 5150: Admin
+        roles: [ROLES.Admin], // 1984: Editor ; 5150: Admin
     },
 };
 

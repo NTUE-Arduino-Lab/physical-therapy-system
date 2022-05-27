@@ -25,11 +25,17 @@ import _ from '../../util/helper';
 
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 import wait from '../../util/wait';
-import useAudio from '../../util/useAudio';
+// import useAudio from '../../util/useAudio';
 import formatWithMoment from '../../util/formatSeconds';
 import configLineChart from '../../util/configLineChart';
 
 import StopWatch from '../../components/StopWatch';
+
+import warn_slight_url from '../../assets/sounds/warn-slight.wav';
+import warn_medium_url from '../../assets/sounds/warn-medium.wav';
+import warn_high_url from '../../assets/sounds/warn-high.wav';
+import other_notification_url from '../../assets/sounds/notification.wav';
+import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
 
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
@@ -46,12 +52,15 @@ const MonitoringWorkout = () => {
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
 
-    const {
-        playWarnSound,
-        playOtherSound,
-        OTHER_SOUND,
-        getAudioPermission,
-    } = useAudio();
+    const [audioSrc, setAudioSrc] = useState(other_notification_url);
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    // const {
+    //     playWarnSound,
+    //     playOtherSound,
+    //     OTHER_SOUND,
+    //     getAudioPermission,
+    // } = useAudio();
 
     // 騎乘計時碼表
     const [beginStopWatch, setBeginStopWatch] = useState(false);
@@ -92,12 +101,21 @@ const MonitoringWorkout = () => {
         listenPacketsChange();
     };
 
+    const playAudio = (nextAudioSrc = other_notification_url) => {
+        setAudioSrc(nextAudioSrc);
+
+        setIsPlaying(true);
+        setTimeout(() => {
+            setIsPlaying(false);
+        }, 1200);
+    };
+
     const grantAudioPerssion = () => {
         Modal.info({
             title: '提示：監控過程會產生提示聲響，請確保聲音打開！',
             // content: <button onClick={getAudioPermission}>點我測試;</button>,
             onOk() {
-                getAudioPermission();
+                playAudio();
             },
             maskClosable: false,
         });
@@ -182,28 +200,28 @@ const MonitoringWorkout = () => {
 
         if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
-            playWarnSound(WARN.High);
+            playAudio(warn_high_url);
             sendNotification(WARN.High, packet.heartRate);
         } else if (
             packet.heartRate < overHigh &&
             packet.heartRate >= overMedium
         ) {
             console.log('playing: medium warn');
-            playWarnSound(WARN.Medium);
+            playAudio(warn_medium_url);
             sendNotification(WARN.Medium, packet.heartRate);
         } else if (
             packet.heartRate < overMedium &&
             packet.heartRate >= overSlight
         ) {
             console.log('playing: slight warn');
-            playWarnSound(WARN.Slight);
+            playAudio(warn_slight_url);
             sendNotification(WARN.Slight, packet.heartRate);
         } else if (
             packet.heartRate >= targetHeartRate &&
             packet.heartRate < overSlight
         ) {
             console.log('playing: archieved');
-            playOtherSound(OTHER_SOUND.Archieved);
+            playAudio(other_archieved_url);
             sendNotification('Archieved', packet.heartRate, targetHeartRate);
         }
     };
@@ -343,6 +361,7 @@ const MonitoringWorkout = () => {
     return (
         <div className={styles.container}>
             <div className={styles.glass}>
+                <audio src={audioSrc} autoPlay muted={!isPlaying}></audio>
                 {/* <h1>騎乘監控畫面</h1> */}
                 <div className={`${styles.col} ${styles.col1}`}>
                     <span>騎乘者：{user?.name}</span>

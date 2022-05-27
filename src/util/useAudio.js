@@ -1,10 +1,21 @@
 import { useState } from 'react';
 import { WARN } from '../constants/index';
-import warn_slight_url from '../assets/sounds/warn-slight.wav';
-import warn_medium_url from '../assets/sounds/warn-medium.wav';
-import warn_high_url from '../assets/sounds/warn-high.wav';
-import other_notification_url from '../assets/sounds/notification.wav';
-import other_archieved_url from '../assets/sounds/goal-archieved.wav';
+// import warn_slight_url from '../assets/sounds/warn-slight.wav';
+// import warn_medium_url from '../assets/sounds/warn-medium.wav';
+// import warn_high_url from '../assets/sounds/warn-high.wav';
+// import other_notification_url from '../assets/sounds/notification.wav';
+// import other_archieved_url from '../assets/sounds/goal-archieved.wav';
+
+const warn_slight_url =
+    'https://github.com/yuchehsieh/assets-repo/blob/main/sounds/warn-slight.wav';
+const warn_medium_url =
+    'https://github.com/yuchehsieh/assets-repo/blob/main/sounds/warn-medium.wav';
+const warn_high_url =
+    'https://github.com/yuchehsieh/assets-repo/blob/main/sounds/warn-high.wav';
+const other_notification_url =
+    'https://github.com/yuchehsieh/assets-repo/blob/main/sounds/notification.wav';
+const other_archieved_url =
+    'https://github.com/yuchehsieh/assets-repo/blob/main/sounds/goal-archieved.wav';
 
 const OTHER_SOUND = {
     Notification: 'notification',
