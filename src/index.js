@@ -10,7 +10,7 @@ import AppProvider from './layouts/App';
 ReactDOM.render(
     <React.StrictMode>
         <StoreProvider>
-            <BrowserRouter>
+            <BrowserRouter basename="backstage">
                 <AppProvider>
                     {/* <Routes>
                         <Route path="*" element={<AppRoutes />} />
