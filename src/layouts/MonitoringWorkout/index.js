@@ -113,7 +113,7 @@ const MonitoringWorkout = () => {
         setIsPlaying(true);
         setTimeout(() => {
             setIsPlaying(false);
-        }, 1200);
+        }, 3000);
     };
 
     const grantAudioPerssion = () => {

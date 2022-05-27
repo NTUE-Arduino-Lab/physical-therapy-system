@@ -67,16 +67,16 @@ const AdminDashboard = () => {
 
         setTimeout(() => {
             setIsPressed(false);
-        }, 1000);
+        }, 3000);
 
         setTimeout(() => {
             setAudioSrc(audio3);
             setIsPressed(true);
-        }, 5000);
+        }, 8000);
 
         setTimeout(() => {
             setIsPressed(false);
-        }, 6000);
+        }, 9000);
     };
 
     const goPrepareWorkout = () => {
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
 
         setTimeout(() => {
             setIsPressed(false);
-        }, 1000);
+        }, 3000);
     };
 
     const initMusic = () => {
