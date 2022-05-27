@@ -12,10 +12,12 @@ import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
 import addOnImg from '../../assets/images/right-arrow.png';
+import useAudio from '../../util/useAudio';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     // const { pathname } = useLocation();
+    const { getAudioPermission } = useAudio();
 
     const goUserList = () => {
         navigate(ROUTE_PATH.user_list);
@@ -27,10 +29,12 @@ const AdminDashboard = () => {
 
     const goRecordList = () => {
         navigate(`${ROUTE_PATH.record_list}/123`);
+        getAudioPermission();
     };
 
     const goPrepareWorkout = () => {
         navigate(ROUTE_PATH.prepare_workout);
+        getAudioPermission();
         // navigate(ROUTE_PATH.prepare_workout, { replace: true }); // 若要防止左滑上一頁
     };
 
