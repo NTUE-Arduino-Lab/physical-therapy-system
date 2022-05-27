@@ -370,7 +370,7 @@ const MonitoringWorkout = () => {
     // refactoring <table> to component
     return (
         <div className={styles.container}>
-            <audio id="audio"></audio>
+            <audio id="audio" src={other_notification_url} muted></audio>
             <div className={styles.glass}>
                 {/* <h1>騎乘監控畫面</h1> */}
                 <div className={`${styles.col} ${styles.col1}`}>
