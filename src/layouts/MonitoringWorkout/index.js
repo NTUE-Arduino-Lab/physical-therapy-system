@@ -46,11 +46,16 @@ const OTHER_SOUND = {
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
 
-import warn_slight_url from '../../assets/sounds/warn-slight.wav';
-import warn_medium_url from '../../assets/sounds/warn-medium.wav';
-import warn_high_url from '../../assets/sounds/warn-high.wav';
-import other_notification_url from '../../assets/sounds/notification.wav';
-import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
+const warn_slight_url =
+    'https://static.wikia.nocookie.net/dota2_gamepedia/images/e/e0/Misc_soundboard_ehto_g_g.mp3';
+const warn_medium_url =
+    'https://static.wikia.nocookie.net/dota2_gamepedia/images/e/e0/Misc_soundboard_ehto_g_g.mp3';
+const warn_high_url =
+    'https://static.wikia.nocookie.net/dota2_gamepedia/images/e/e0/Misc_soundboard_ehto_g_g.mp3';
+const other_notification_url =
+    'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3';
+const other_archieved_url =
+    'https://static.wikia.nocookie.net/dota2_gamepedia/images/e/e0/Misc_soundboard_ehto_g_g.mp3';
 
 //:
 //:
@@ -59,7 +64,8 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext(); // Make it crossbrowser
 var gainNode = context.createGain();
 gainNode.gain.value = 1; // set volume to 100%
-var yodelBuffers = {};
+var yodelBuffer;
+var yodelBuffer2;
 //:
 //:
 //:
@@ -133,10 +139,19 @@ const MonitoringWorkout = () => {
         listenPacketsChange();
     };
 
-    //:
-    //:
-    //:
-    const fetchBuffer = async () => {
+    const fetchBuffer = () => {
+        fetch(warn_slight_url)
+            .then((response) => response.arrayBuffer())
+            .then((arrayBuffer) =>
+                context.decodeAudioData(
+                    arrayBuffer,
+                    (audioBuffer) => {
+                        yodelBuffer2 = audioBuffer;
+                    },
+                    (error) => console.error(error),
+                ),
+            );
+
         fetch(
             'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3',
         )
@@ -145,74 +160,96 @@ const MonitoringWorkout = () => {
                 context.decodeAudioData(
                     arrayBuffer,
                     (audioBuffer) => {
-                        yodelBuffers['default'] = audioBuffer;
+                        yodelBuffer = audioBuffer;
+                    },
+                    (error) => console.error(error),
+                ),
+            );
+    };
+
+    //:
+    //:
+    //:
+    const fetchAndplayAudio = async (url) => {
+        fetch(url)
+            .then((response) => response.arrayBuffer())
+            .then((arrayBuffer) =>
+                context.decodeAudioData(
+                    arrayBuffer,
+                    (audioBuffer) => {
+                        yodelBuffer = audioBuffer;
+
+                        var source = context.createBufferSource();
+                        source.buffer = yodelBuffer;
+                        source.connect(context.destination);
+                        source.start();
                     },
                     (error) => console.error(error),
                 ),
             );
 
-        let response;
-        let arrayBuffer;
+        // let response;
+        // let arrayBuffer;
 
-        response = await fetch(warn_slight_url);
-        arrayBuffer = await response.arrayBuffer();
-        context.decodeAudioData(
-            arrayBuffer,
-            (audioBuffer) => {
-                yodelBuffers[WARN.Slight] = audioBuffer;
-            },
-            (error) => console.error(error),
-        );
+        // response = await fetch(warn_slight_url);
+        // arrayBuffer = await response.arrayBuffer();
+        // context.decodeAudioData(
+        //     arrayBuffer,
+        //     (audioBuffer) => {
+        //         yodelBuffers[WARN.Slight] = audioBuffer;
+        //     },
+        //     (error) => console.error(error),
+        // );
 
-        response = await fetch(warn_medium_url);
-        arrayBuffer = await response.arrayBuffer();
-        context.decodeAudioData(
-            arrayBuffer,
-            (audioBuffer) => {
-                yodelBuffers[WARN.Medium] = audioBuffer;
-            },
-            (error) => console.error(error),
-        );
+        // response = await fetch(warn_medium_url);
+        // arrayBuffer = await response.arrayBuffer();
+        // context.decodeAudioData(
+        //     arrayBuffer,
+        //     (audioBuffer) => {
+        //         yodelBuffers[WARN.Medium] = audioBuffer;
+        //     },
+        //     (error) => console.error(error),
+        // );
 
-        response = await fetch(warn_high_url);
-        arrayBuffer = await response.arrayBuffer();
-        context.decodeAudioData(
-            arrayBuffer,
-            (audioBuffer) => {
-                yodelBuffers[WARN.High] = audioBuffer;
-            },
-            (error) => console.error(error),
-        );
+        // response = await fetch(warn_high_url);
+        // arrayBuffer = await response.arrayBuffer();
+        // context.decodeAudioData(
+        //     arrayBuffer,
+        //     (audioBuffer) => {
+        //         yodelBuffers[WARN.High] = audioBuffer;
+        //     },
+        //     (error) => console.error(error),
+        // );
 
-        response = await fetch(other_notification_url);
-        arrayBuffer = await response.arrayBuffer();
-        context.decodeAudioData(
-            arrayBuffer,
-            (audioBuffer) => {
-                yodelBuffers[OTHER_SOUND.Notification] = audioBuffer;
-            },
-            (error) => console.error(error),
-        );
+        // response = await fetch(other_notification_url);
+        // arrayBuffer = await response.arrayBuffer();
+        // context.decodeAudioData(
+        //     arrayBuffer,
+        //     (audioBuffer) => {
+        //         yodelBuffers[OTHER_SOUND.Notification] = audioBuffer;
+        //     },
+        //     (error) => console.error(error),
+        // );
 
-        response = await fetch(other_archieved_url);
-        arrayBuffer = await response.arrayBuffer();
-        context.decodeAudioData(
-            arrayBuffer,
-            (audioBuffer) => {
-                yodelBuffers[OTHER_SOUND.Archieved] = audioBuffer;
-            },
-            (error) => console.error(error),
-        );
+        // response = await fetch(other_archieved_url);
+        // arrayBuffer = await response.arrayBuffer();
+        // context.decodeAudioData(
+        //     arrayBuffer,
+        //     (audioBuffer) => {
+        //         yodelBuffers[OTHER_SOUND.Archieved] = audioBuffer;
+        //     },
+        //     (error) => console.error(error),
+        // );
 
-        setIsBufferDone(true);
+        // setIsBufferDone(true);
     };
     //:
     //:
     //:
 
-    const playAudio = (type = OTHER_SOUND.Notification) => {
+    const playAudio = (buffer) => {
         var source = context.createBufferSource();
-        source.buffer = yodelBuffers[type];
+        source.buffer = buffer;
         source.connect(context.destination);
         source.start();
 
@@ -234,7 +271,7 @@ const MonitoringWorkout = () => {
             title: '提示：監控過程會產生提示聲響，請確保聲音打開！',
             // content: <button onClick={getAudioPermission}>點我測試;</button>,
             onOk() {
-                playAudio();
+                playAudio(yodelBuffer);
             },
             maskClosable: false,
         });
@@ -319,28 +356,28 @@ const MonitoringWorkout = () => {
 
         if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
-            playAudio(WARN.High);
+            playAudio(yodelBuffer2);
             sendNotification(WARN.High, packet.heartRate);
         } else if (
             packet.heartRate < overHigh &&
             packet.heartRate >= overMedium
         ) {
             console.log('playing: medium warn');
-            playAudio(WARN.Medium);
+            playAudio(yodelBuffer2);
             sendNotification(WARN.Medium, packet.heartRate);
         } else if (
             packet.heartRate < overMedium &&
             packet.heartRate >= overSlight
         ) {
             console.log('playing: slight warn');
-            playAudio(WARN.Slight);
+            playAudio(yodelBuffer2);
             sendNotification(WARN.Slight, packet.heartRate);
         } else if (
             packet.heartRate >= targetHeartRate &&
             packet.heartRate < overSlight
         ) {
             console.log('playing: archieved');
-            playAudio(OTHER_SOUND.Archieved);
+            playAudio(yodelBuffer2);
             sendNotification('Archieved', packet.heartRate, targetHeartRate);
         }
     };
