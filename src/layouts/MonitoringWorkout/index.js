@@ -367,7 +367,7 @@ const MonitoringWorkout = () => {
     return (
         <div className={styles.container}>
             <div className={styles.glass}>
-                <audio src={audioSrc} autoPlay muted={!isPlaying}></audio>
+                {isPlaying && <audio src={audioSrc} autoPlay></audio>}
                 {/* <h1>騎乘監控畫面</h1> */}
                 <div className={`${styles.col} ${styles.col1}`}>
                     <span>騎乘者：{user?.name}</span>

@@ -16,17 +16,12 @@ import styles from './styles.module.scss';
 import addOnImg from '../../assets/images/right-arrow.png';
 import useAudio from '../../util/useAudio';
 
-
-
-
 import audio2 from '../../assets/sounds/goal-archieved.wav';
 import audio3 from '../../assets/sounds/notification.wav';
 import audio4 from '../../assets/sounds/warn-medium.wav';
 
-
-
 // const audioSrc =
-    // 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
+// 'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV';
 
 // let audio;
 
@@ -46,11 +41,9 @@ const AdminDashboard = () => {
         // });
         // console.log(audioRef.current);
         // window.addEventListener('load', initMusic);
-
         // setTimeout(() => {
         //     setAudioSrc(audio3);
         //     setIsPressed(true);
-
         //     setTimeout(() => {
         //         setIsPressed(false);
         //     }, 1000);
@@ -79,7 +72,7 @@ const AdminDashboard = () => {
         setTimeout(() => {
             setAudioSrc(audio3);
             setIsPressed(true);
-        }, 5000)
+        }, 5000);
 
         setTimeout(() => {
             setIsPressed(false);
@@ -145,7 +138,7 @@ const AdminDashboard = () => {
         <div className={styles.container}>
             <legend>～選擇您的操作～</legend>
 
-            <audio src={audioSrc} autoPlay muted={!isPressed}></audio>
+            {isPressed && <audio src={audioSrc} autoPlay></audio>}
             <fieldset>
                 <TileWithIconAndAction
                     icon={<TeamOutlined />}
