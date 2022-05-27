@@ -70,13 +70,19 @@ const MonitoringWorkout = () => {
 
     useEffect(() => {
         init();
-        grantAudioPerssion();
+        // grantAudioPerssion();
 
         return () => {
             if (_.isFunction(unsubscribeRecord)) unsubscribeRecord();
             if (_.isFunction(unsubscribePackets)) unsubscribePackets();
         };
     }, []);
+
+    useEffect(() => {
+        if (isInitRecordDone && isInitPacketsDone && !_.isEmpty(difficulty)) {
+            grantAudioPerssion();
+        }
+    }, [isInitRecordDone, isInitPacketsDone, difficulty]);
 
     useEffect(() => {
         if (_.isEmpty(record?.beginWorkoutTime)) return;

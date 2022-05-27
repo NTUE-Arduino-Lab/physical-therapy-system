@@ -25,14 +25,14 @@ const AppProvider = ({ children }) => {
     useEffect(() => {
         attempLogin();
 
-        window.addEventListener('beforeunload', beforeunloadListener);
-        window.addEventListener('visibilitychange', visibilitychangeListener);
-        return () => {
-            window.removeEventListener(
-                'beforeunload',
-                visibilitychangeListener,
-            );
-        };
+        // window.addEventListener('beforeunload', beforeunloadListener);
+        // window.addEventListener('visibilitychange', visibilitychangeListener);
+        // return () => {
+        //     window.removeEventListener(
+        //         'beforeunload',
+        //         visibilitychangeListener,
+        //     );
+        // };
     }, []);
 
     const beforeunloadListener = (e) => {
