@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,6 +41,18 @@ import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
 let unsubscribeRecord = null;
 let unsubscribePackets = null;
 
+//:
+//:
+//:
+var AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext(); // Make it crossbrowser
+var gainNode = context.createGain();
+gainNode.gain.value = 1; // set volume to 100%
+var yodelBuffer;
+//:
+//:
+//:
+
 const MonitoringWorkout = () => {
     const navigate = useNavigate();
     const params = useParams();
@@ -52,8 +65,8 @@ const MonitoringWorkout = () => {
     const [isInitRecordDone, setIsInitRecordDone] = useState(false);
     const [isInitPacketsDone, setIsInitPacketsDone] = useState(false);
 
-    const [audioSrc, setAudioSrc] = useState(other_notification_url);
-    const [isPlaying, setIsPlaying] = useState(false);
+    // const [audioSrc, setAudioSrc] = useState(other_notification_url);
+    // const [isPlaying, setIsPlaying] = useState(false);
 
     // const {
     //     playWarnSound,
@@ -70,6 +83,7 @@ const MonitoringWorkout = () => {
 
     useEffect(() => {
         init();
+        fetchBuffer();
         // grantAudioPerssion();
 
         return () => {
@@ -107,11 +121,50 @@ const MonitoringWorkout = () => {
         listenPacketsChange();
     };
 
+    //:
+    //:
+    //:
+    const fetchBuffer = async () => {
+        fetch(
+            'https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3',
+        )
+            .then((response) => response.arrayBuffer())
+            .then((arrayBuffer) =>
+                context.decodeAudioData(
+                    arrayBuffer,
+                    (audioBuffer) => {
+                        yodelBuffer = audioBuffer;
+                    },
+                    (error) => console.error(error),
+                ),
+            );
+    };
+    //:
+    //:
+    //:
+
     const playAudio = (nextAudioSrc = other_notification_url) => {
-        const audio = document.getElementById('audio');
-        audio.muted = false;
-        audio.src = nextAudioSrc;
-        audio.play();
+        var source = context.createBufferSource();
+        source.buffer = yodelBuffer;
+        source.connect(context.destination);
+        source.start();
+
+
+
+
+        
+        // const audio = document.getElementById('audio');
+        // audio.muted = false;
+        // audio.src = nextAudioSrc;
+        // audio.play();
+
+
+
+        
+
+
+
+
         // setAudioSrc(nextAudioSrc);
 
         // setIsPlaying(true);
