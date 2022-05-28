@@ -46,6 +46,8 @@ const other_notification_url =
 const other_archieved_url =
     'https://static.wikia.nocookie.net/dota2_gamepedia/images/e/e0/Misc_soundboard_ehto_g_g.mp3';
 
+import warn_high_static_url from '../../assets/sounds/warn-high.wav';
+
 //:
 //:
 //:
@@ -55,6 +57,7 @@ var gainNode = context.createGain();
 gainNode.gain.value = 1; // set volume to 100%
 var yodelBuffer;
 var yodelBuffer2;
+var yodelBuffer3;
 //:
 //:
 //:
@@ -170,6 +173,16 @@ const MonitoringWorkout = () => {
             arrayBuffer,
             (audioBuffer) => {
                 yodelBuffer = audioBuffer;
+            },
+            (error) => console.error(error),
+        );
+
+        response = await fetch(warn_high_static_url);
+        arrayBuffer = await response.arrayBuffer();
+        context.decodeAudioData(
+            arrayBuffer,
+            (audioBuffer) => {
+                yodelBuffer3 = audioBuffer;
             },
             (error) => console.error(error),
         );
@@ -352,7 +365,7 @@ const MonitoringWorkout = () => {
 
         if (packet.heartRate >= overHigh) {
             console.log('playing: high warn');
-            playAudio(yodelBuffer2);
+            playAudio(yodelBuffer3);
             sendNotification(WARN.High, packet.heartRate);
         } else if (
             packet.heartRate < overHigh &&

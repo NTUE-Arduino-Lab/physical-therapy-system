@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     TeamOutlined,
@@ -15,9 +15,29 @@ import styles from './styles.module.scss';
 
 import addOnImg from '../../assets/images/right-arrow.png';
 
+import warn_slight_url from '../../assets/sounds/warn-slight.wav';
+import warn_medium_url from '../../assets/sounds/warn-medium.wav';
+import warn_high_url from '../../assets/sounds/warn-high.wav';
+import other_notification_url from '../../assets/sounds/notification.wav';
+import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
+
+
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // console.log(warn_slight_url);
+        fetchWithUrl(warn_medium_url)
+    }, [])
+
+    const fetchWithUrl = async (url = warn_slight_url) => {
+    
+        let response = await fetch(url);
+        let arrayBuffer = await response.arrayBuffer();
+
+        console.log(arrayBuffer);
+    }
 
     const goUserList = () => {
         navigate(ROUTE_PATH.user_list);
