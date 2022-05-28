@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     TeamOutlined,
@@ -15,35 +15,8 @@ import styles from './styles.module.scss';
 
 import addOnImg from '../../assets/images/right-arrow.png';
 
-import warn_slight_url from '../../assets/sounds/warn-slight.wav';
-import warn_medium_url from '../../assets/sounds/warn-medium.wav';
-import warn_high_url from '../../assets/sounds/warn-high.wav';
-import other_notification_url from '../../assets/sounds/notification.wav';
-import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
-
-
-
-import test_mp3 from '../../assets/sounds/test-sound.mp3';
-const local_yodel = '/assets/sounds/local-yodel.mp3';
-
-
-
 const AdminDashboard = () => {
     const navigate = useNavigate();
-
-    useEffect(() => {
-        // console.log(warn_slight_url);
-        fetchWithUrl('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3')
-        fetchWithUrl(local_yodel)
-    }, [])
-
-    const fetchWithUrl = async (url = warn_slight_url) => {
-    
-        let response = await fetch(url);
-        let arrayBuffer = await response.arrayBuffer();
-
-        console.log(arrayBuffer);
-    }
 
     const goUserList = () => {
         navigate(ROUTE_PATH.user_list);
