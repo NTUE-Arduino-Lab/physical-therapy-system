@@ -23,12 +23,18 @@ import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
 
 
 
+import test_mp3 from '../../assets/sounds/test-sound.mp3';
+import local_yodel from '../../assets/sounds/local-yodel.mp3';
+
+
+
 const AdminDashboard = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
         // console.log(warn_slight_url);
-        fetchWithUrl(warn_medium_url)
+        fetchWithUrl('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/Yodel_Sound_Effect.mp3')
+        fetchWithUrl(local_yodel)
     }, [])
 
     const fetchWithUrl = async (url = warn_slight_url) => {

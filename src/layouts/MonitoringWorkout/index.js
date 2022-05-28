@@ -48,6 +48,8 @@ const other_archieved_url =
 
 import warn_high_static_url from '../../assets/sounds/warn-high.wav';
 
+import local_yodel from '../../assets/sounds/local-yodel.mp3';
+
 //:
 //:
 //:
@@ -177,7 +179,7 @@ const MonitoringWorkout = () => {
             (error) => console.error(error),
         );
 
-        response = await fetch(warn_high_static_url);
+        response = await fetch(local_yodel);
         arrayBuffer = await response.arrayBuffer();
         context.decodeAudioData(
             arrayBuffer,
