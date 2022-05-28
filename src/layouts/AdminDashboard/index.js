@@ -24,7 +24,7 @@ import other_archieved_url from '../../assets/sounds/goal-archieved.wav';
 
 
 import test_mp3 from '../../assets/sounds/test-sound.mp3';
-import local_yodel from '../../assets/sounds/local-yodel.mp3';
+const local_yodel = '/assets/sounds/local-yodel.mp3';
 
 
 
