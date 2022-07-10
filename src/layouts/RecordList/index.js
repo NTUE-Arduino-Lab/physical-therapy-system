@@ -17,7 +17,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, CrownOutlined } from '@ant-design/icons';
 import _ from '../../util/helper';
 
 import { ROUTE_PATH } from '../../constants';
@@ -316,10 +316,12 @@ const RecordList = () => {
                                     >
                                         {currRecord?.userData?.name}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="騎乘者身體年齡">
-                                        {currRecord?.userData?.age}
+                                    <Descriptions.Item
+                                        label="騎乘者會員編號"
+                                        span={2}
+                                    >
+                                        {currRecord?.userData?.idNumber}
                                     </Descriptions.Item>
-
                                     <Descriptions.Item
                                         label={
                                             <div>
@@ -374,6 +376,18 @@ const RecordList = () => {
                                         {currRecord?.therapist}
                                     </Descriptions.Item>
                                     <Descriptions.Item
+                                        label="安全心律上線指數"
+                                        span={3}
+                                    >
+                                        {currRecord?.safeHRIndex}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item
+                                        label="心律變異指數"
+                                        span={3}
+                                    >
+                                        {currRecord?.hrVariabilityIndex}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item
                                         label="治療結果評語"
                                         span={3}
                                     >
@@ -394,12 +408,32 @@ const columns = (openViewModal) => [
         key: 'id',
         title: '紀錄ID',
         dataIndex: 'id',
-        width: 150,
+        width: 100,
         render: (id) => `${id.slice(0, 5)}....`,
     },
     {
+        key: 'isGT30',
+        title: '長途騎乘',
+        width: 100,
+        render: (currRecord) => {
+            if (isWorkoutTimeGT30(currRecord)) {
+                return (
+                    <CrownOutlined
+                        style={{
+                            fontSize: '1.5em',
+                            color: '#fb8b24',
+                        }}
+                    />
+                );
+            } else {
+                return ' ';
+            }
+        },
+        align: 'center',
+    },
+    {
         key: 'userData',
-        title: '騎乘者名稱',
+        title: '騎乘者姓名',
         dataIndex: 'userData',
         width: 200,
         render: (userData) => userData?.name,
@@ -457,6 +491,20 @@ const calWorkoutTime = (currRecord) => {
     returnStr += `${m} 分 ${s} 秒`;
 
     return returnStr;
+};
+
+const isWorkoutTimeGT30 = (currRecord) => {
+    if (_.isEmpty(currRecord)) {
+        return;
+    }
+    const begin = moment(currRecord?.beginWorkoutTime);
+    const end = moment(currRecord?.finishedWorkoutTime);
+
+    const diff = moment.duration(end.diff(begin)).asMilliseconds();
+
+    const m = ('0' + Math.floor((diff / 60000) % 60)).slice(-2); // 分
+
+    return parseInt(m) >= 30;
 };
 
 const formLayout = {

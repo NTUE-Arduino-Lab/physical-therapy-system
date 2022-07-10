@@ -18,7 +18,11 @@ import {
     message,
     Modal,
 } from 'antd';
-import { UserOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import {
+    UserOutlined,
+    ExclamationCircleOutlined,
+    LineChartOutlined,
+} from '@ant-design/icons';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
@@ -45,6 +49,10 @@ const FinishedWorkout = () => {
     // doctor says...
     const [therapist, setTherapist] = useState();
     const [comment, setComment] = useState();
+
+    // 安全心律上線指數、心律變異指數
+    const [safeHRIndex, setSafeHRIndex] = useState();
+    const [hrVariabilityIndex, setHRVariabilityIndex] = useState();
 
     const [inputStatus, setInputStatus] = useState();
 
@@ -129,6 +137,8 @@ const FinishedWorkout = () => {
         const recordRef = doc(recordsRef, params.recordId);
         await updateDoc(recordRef, {
             therapist: therapist,
+            safeHRIndex: safeHRIndex,
+            hrVariabilityIndex: hrVariabilityIndex,
             comment: comment,
         });
 
@@ -239,6 +249,27 @@ const FinishedWorkout = () => {
                             }}
                             status={inputStatus}
                         />
+                        <Input
+                            size="large"
+                            placeholder="安全心律上線指數"
+                            prefix={<LineChartOutlined />}
+                            value={safeHRIndex}
+                            onChange={(e) => {
+                                setSafeHRIndex(e.target.value);
+                            }}
+                            style={{ marginTop: 16 }}
+                        />
+                        <Input
+                            size="large"
+                            placeholder="心律變異指數"
+                            prefix={<LineChartOutlined />}
+                            value={hrVariabilityIndex}
+                            onChange={(e) => {
+                                setHRVariabilityIndex(e.target.value);
+                            }}
+                            style={{ marginTop: 16 }}
+                        />
+
                         <Input.TextArea
                             showCount
                             placeholder="治療結果評語"
