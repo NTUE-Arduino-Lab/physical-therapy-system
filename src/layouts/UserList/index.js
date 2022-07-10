@@ -102,17 +102,6 @@ const UserList = () => {
         try {
             const values = await createForm.validateFields();
 
-            // exerciseHeartRate: 120 v
-            // exerciseResist: "20" vv
-            // exerciseSpeed: "30" vv
-            // height: 180 v
-            // idNumber: "A12345678" v
-            // medicine: undefined vv
-            // name: "陳大天" v
-            // note: undefined v
-            // weight: 75 v
-
-            console.log(values);
             setLoading(true);
             await addDoc(usersRef, {
                 name: values.name,
@@ -171,9 +160,9 @@ const UserList = () => {
         const theUser = users.find((u) => u.id === id);
 
         Modal.confirm({
-            title: `確定要刪除騎乘者者：${theUser.name}`,
+            title: `確定要刪除會員：${theUser.name}`,
             icon: <ExclamationCircleOutlined />,
-            content: '刪除後，騎乘者資料將無法返回。',
+            content: '刪除後，會員資料將無法返回。',
             okText: '刪除',
             okType: 'danger',
             cancelText: '取消',
@@ -189,7 +178,7 @@ const UserList = () => {
 
         await fetchUsers();
 
-        message.info('使用者已刪除。');
+        message.info('會員已刪除。');
     };
 
     const onViewCurrUserRecord = () => {
@@ -250,6 +239,10 @@ const UserList = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
+    const goTrainingWeekRecord = (targetUserId) => {
+        navigate(`${ROUTE_PATH.training_week_record}/${targetUserId}`);
+    };
+
     if (!isDone) {
         return (
             <Layout style={{ padding: '24px' }}>
@@ -268,8 +261,8 @@ const UserList = () => {
             <Content className="site-layout" style={{ padding: '24px' }}>
                 <div className={styles.container}>
                     <PageHeader
-                        title="會員資訊列表"
-                        subTitle="管理會員資訊"
+                        title="管理會員資訊"
+                        subTitle="會員資訊更新、訓練週數紀錄"
                         onBack={goDashboard}
                         extra={[
                             <Button
@@ -325,6 +318,7 @@ const UserList = () => {
                             openViewModal,
                             openEditModal,
                             onDeleteUser,
+                            goTrainingWeekRecord,
                         )}
                         dataSource={filteredUser}
                         pagination={{ pageSize: 5 }}
@@ -624,7 +618,12 @@ const UserList = () => {
     );
 };
 
-const columns = (openViewModal, openEditModal, onDeleteUser) => [
+const columns = (
+    openViewModal,
+    openEditModal,
+    onDeleteUser,
+    goTrainingWeekRecord,
+) => [
     {
         key: 'idNumber',
         title: '會員編號',
@@ -633,6 +632,7 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
         //     compare: (a, b) => a.age - b.age,
         // },
         width: 200,
+        render: (idNumber) => idNumber.slice(0, 4) + '...',
     },
     {
         key: 'name',
@@ -655,7 +655,21 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
     },
     {
         key: 'id',
-        title: ' ',
+        title: '',
+        dataIndex: 'id',
+        align: 'center',
+        render: (id) => {
+            return (
+                <Button type="link" onClick={() => goTrainingWeekRecord(id)}>
+                    前往訓練週數紀錄
+                </Button>
+            );
+        },
+        width: 150,
+    },
+    {
+        key: 'id',
+        title: '',
         dataIndex: 'id',
         align: 'center',
         render: (id) => {
@@ -667,20 +681,20 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
                                 type="link"
                                 onClick={() => openViewModal(id)}
                             >
-                                查看
+                                查看會員資訊
                             </Button>
                             <Button
                                 type="link"
                                 onClick={() => openEditModal(id)}
                             >
-                                編輯
+                                編輯會員資訊
                             </Button>
                             <Button
                                 type="link"
                                 danger
                                 onClick={() => onDeleteUser(id)}
                             >
-                                刪除
+                                刪除會員
                             </Button>
                         </Space>
                     }

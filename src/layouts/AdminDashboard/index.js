@@ -40,7 +40,7 @@ const AdminDashboard = () => {
             <fieldset>
                 <TileWithIconAndAction
                     icon={<TeamOutlined />}
-                    label="騎乘者設定"
+                    label="管理會員資訊"
                     action={goUserList}
                 />
 

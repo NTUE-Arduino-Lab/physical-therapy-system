@@ -14,6 +14,7 @@ import UserList from '../layouts/UserList';
 import DifficulityList from '../layouts/DifficulityList';
 import FinishedWorkout from '../layouts/FinishedWorkout';
 import RecordList from '../layouts/RecordList';
+import TrainingWeekRecord from '../layouts/TrainingWeekRecord';
 
 const AppRoutes = () => {
     return (
@@ -51,6 +52,10 @@ const AppRoutes = () => {
                 <Route
                     path={`${ROUTE_PATH.finsished_workout}/:recordId`}
                     element={<FinishedWorkout />}
+                />
+                <Route
+                    path={`${ROUTE_PATH.training_week_record}/:userId`}
+                    element={<TrainingWeekRecord />}
                 />
             </Route>
 

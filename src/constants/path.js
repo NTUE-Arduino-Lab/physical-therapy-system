@@ -9,6 +9,7 @@ const ROUTE_PATH = {
     difficulty_list: '/difficulty-list',
     record_list: '/record-list',
     finsished_workout: '/finished-workout',
+    training_week_record: '/training-week-record',
 };
 
 export default ROUTE_PATH;

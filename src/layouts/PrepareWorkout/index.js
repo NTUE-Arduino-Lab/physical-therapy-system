@@ -499,11 +499,29 @@ const PrepareWorkout = () => {
                             className={styles.descriptions}
                             size="middle"
                         >
-                            <Descriptions.Item label="騎乘者姓名" span={3}>
+                            <Descriptions.Item label="會員編號" span={3}>
+                                {selectedUserData?.idNumber}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="姓名" span={3}>
                                 {selectedUserData?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="騎乘者身體年齡" span={3}>
-                                {selectedUserData?.age}
+                            <Descriptions.Item label="身高" span={3}>
+                                {selectedUserData?.height} 公分
+                            </Descriptions.Item>
+                            <Descriptions.Item label="體重" span={3}>
+                                {selectedUserData?.weight} 公斤
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動心率" span={3}>
+                                {selectedUserData?.exerciseHeartRate} BPM
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動阻力" span={3}>
+                                {selectedUserData?.exerciseResist}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動速度" span={3}>
+                                {selectedUserData?.exerciseSpeed}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="是否服用藥物" span={3}>
+                                {selectedUserData?.medicine ? '是' : '否'}
                             </Descriptions.Item>
                             <Descriptions.Item label="備註" span={3}>
                                 {selectedUserData?.note}
