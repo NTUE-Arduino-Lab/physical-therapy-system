@@ -25,6 +25,8 @@ import {
     Descriptions,
     InputNumber,
     Popover,
+    Checkbox,
+    Typography,
 } from 'antd';
 import {
     PlusOutlined,
@@ -40,6 +42,7 @@ import styles from './styles.module.scss';
 import { usersRef } from '../../services/firebase';
 
 const { Content } = Layout;
+const { Text } = Typography;
 
 const UserList = () => {
     const navigate = useNavigate();
@@ -99,10 +102,27 @@ const UserList = () => {
         try {
             const values = await createForm.validateFields();
 
+            // exerciseHeartRate: 120 v
+            // exerciseResist: "20" vv
+            // exerciseSpeed: "30" vv
+            // height: 180 v
+            // idNumber: "A12345678" v
+            // medicine: undefined vv
+            // name: "陳大天" v
+            // note: undefined v
+            // weight: 75 v
+
+            console.log(values);
             setLoading(true);
             await addDoc(usersRef, {
                 name: values.name,
-                age: values.age,
+                idNumber: values.idNumber,
+                height: values.height,
+                weight: values.weight,
+                exerciseHeartRate: values.exerciseHeartRate,
+                exerciseResist: values.exerciseResist ?? null,
+                exerciseSpeed: values.exerciseSpeed ?? null,
+                medicine: values.medicine ?? false,
                 note: values.note ?? null,
                 isDeleted: false,
             });
@@ -112,7 +132,7 @@ const UserList = () => {
             closeAllModals();
             createForm.resetFields();
 
-            message.success(`成功新增騎乘者！`);
+            message.success(`成功新增會員！`);
         } catch (e) {
             console.log(e);
             setLoading(false);
@@ -123,14 +143,17 @@ const UserList = () => {
     const onPatchUser = async () => {
         try {
             const values = await editForm.validateFields();
-            // if pass
-            // [values] would be: {age: 12}
 
             setLoading(true);
             const currUserRef = doc(usersRef, currUser.id);
             await updateDoc(currUserRef, {
-                age: values.age,
-                note: values.note,
+                height: values.height,
+                weight: values.weight,
+                exerciseHeartRate: values.exerciseHeartRate,
+                exerciseResist: values.exerciseResist ?? null,
+                exerciseSpeed: values.exerciseSpeed ?? null,
+                medicine: values.medicine ?? false,
+                note: values.note ?? null,
             });
 
             await fetchUsers();
@@ -183,9 +206,15 @@ const UserList = () => {
         const currUser = users.find((u) => u.id === id);
 
         editForm.setFieldsValue({
-            age: currUser.age,
+            idNumber: currUser.idNumber,
             name: currUser.name,
-            note: currUser.note,
+            height: currUser.height,
+            weight: currUser.weight,
+            exerciseHeartRate: currUser.exerciseHeartRate,
+            exerciseResist: currUser.exerciseResist ?? null,
+            exerciseSpeed: currUser.exerciseSpeed ?? null,
+            medicine: currUser.medicine ?? false,
+            note: currUser.note ?? null,
         });
 
         setCurrUser(currUser);
@@ -239,8 +268,8 @@ const UserList = () => {
             <Content className="site-layout" style={{ padding: '24px' }}>
                 <div className={styles.container}>
                     <PageHeader
-                        title="騎乘者資訊列表"
-                        subTitle="管理騎乘者資訊"
+                        title="會員資訊列表"
+                        subTitle="管理會員資訊"
                         onBack={goDashboard}
                         extra={[
                             <Button
@@ -249,7 +278,7 @@ const UserList = () => {
                                 icon={<PlusOutlined />}
                                 onClick={openCreateModal}
                             >
-                                新增騎乘者
+                                新增會員
                             </Button>,
                         ]}
                     />
@@ -260,9 +289,9 @@ const UserList = () => {
                     >
                         <Row gutter={[16, 0]}>
                             <Col span={16}>
-                                <Form.Item label="騎乘者名稱" name="name">
+                                <Form.Item label="會員姓名" name="name">
                                     <Input
-                                        placeholder="輸入騎乘者名稱查詢"
+                                        placeholder="輸入會員姓名查詢"
                                         allowClear={{
                                             clearIcon: (
                                                 <CloseCircleFilled
@@ -312,11 +341,29 @@ const UserList = () => {
                             className={styles.descriptions}
                             size="middle"
                         >
-                            <Descriptions.Item label="騎乘者姓名" span={3}>
+                            <Descriptions.Item label="會員編號" span={3}>
+                                {currUser?.idNumber}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="姓名" span={3}>
                                 {currUser?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="騎乘者身體年齡" span={3}>
-                                {currUser?.age}
+                            <Descriptions.Item label="身高" span={3}>
+                                {currUser?.height} 公分
+                            </Descriptions.Item>
+                            <Descriptions.Item label="體重" span={3}>
+                                {currUser?.weight} 公斤
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動心率" span={3}>
+                                {currUser?.exerciseHeartRate} BPM
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動阻力" span={3}>
+                                {currUser?.exerciseResist}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="運動速度" span={3}>
+                                {currUser?.exerciseSpeed}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="是否服用藥物" span={3}>
+                                {currUser?.medicine ? '是' : '否'}
                             </Descriptions.Item>
                             <Descriptions.Item label="備註" span={3}>
                                 {currUser?.note}
@@ -332,7 +379,7 @@ const UserList = () => {
                     </Modal>
                     {/* 新增 Modal */}
                     <Modal
-                        title="新增騎乘者"
+                        title="新增會員"
                         visible={createModalVisible}
                         onOk={onCreateUser}
                         confirmLoading={loading}
@@ -345,37 +392,116 @@ const UserList = () => {
                             layout="horizontal"
                         >
                             <Form.Item
-                                label="騎乘者姓名"
+                                label="會員編號"
+                                name="idNumber"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員編號',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="會員編號為身分證字號" />
+                            </Form.Item>
+                            <Form.Item
+                                label="姓名"
                                 name="name"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '請填上騎乘者姓名',
+                                        message: '請填上姓名',
                                     },
                                 ]}
                             >
                                 <Input placeholder="" />
                             </Form.Item>
                             <Form.Item
-                                label="騎乘者身體年齡"
-                                name="age"
+                                label="身高"
+                                name="height"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '請填上騎乘者身體年齡',
+                                        message: '請填上會員身高',
                                     },
                                 ]}
                             >
                                 <InputNumber
                                     min={1}
-                                    max={99}
-                                    addonAfter={'歲'}
+                                    max={250}
+                                    addonAfter={'公分'}
                                 />
+                            </Form.Item>
+                            <Form.Item
+                                label="體重"
+                                name="weight"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員體重',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'公斤'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動心率"
+                                name="exerciseHeartRate"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員運動心率',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'BPM'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動阻力"
+                                name="exerciseResist"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動速度"
+                                name="exerciseSpeed"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                name="medicine"
+                                label="是否服用治療藥物"
+                                valuePropName="checked"
+                            >
+                                <Checkbox>
+                                    <Text type="secondary">
+                                        （有服用請打勾）
+                                    </Text>
+                                </Checkbox>
                             </Form.Item>
                             <Form.Item label="備註" name="note">
                                 <Input.TextArea
                                     showCount
-                                    placeholder="是否有隱疾、其他需留意之處．．．"
+                                    placeholder="治療藥物註記、其他需留意之處．．．"
                                     maxLength={50}
                                     autoSize={{ minRows: 3, maxRows: 5 }}
                                 />
@@ -383,7 +509,7 @@ const UserList = () => {
                         </Form>
                     </Modal>
                     <Modal
-                        title="編輯騎乘者"
+                        title="編輯會員"
                         visible={editModalVisible}
                         onOk={onPatchUser}
                         confirmLoading={loading}
@@ -395,29 +521,97 @@ const UserList = () => {
                             form={editForm}
                             layout="horizontal"
                         >
-                            <Form.Item label="騎乘者姓名">
-                                {currUser?.name}
+                            <Form.Item label="會員編號">
+                                {currUser?.idNumber}
                             </Form.Item>
+                            <Form.Item label="姓名">{currUser?.name}</Form.Item>
                             <Form.Item
-                                label="騎乘者身體年齡"
-                                name="age"
+                                label="身高"
+                                name="height"
                                 rules={[
                                     {
                                         required: true,
-                                        message: '請填上騎乘者身體年齡',
+                                        message: '請填上會員身高',
                                     },
                                 ]}
                             >
                                 <InputNumber
                                     min={1}
-                                    max={99}
-                                    addonAfter={'歲'}
+                                    max={250}
+                                    addonAfter={'公分'}
                                 />
+                            </Form.Item>
+                            <Form.Item
+                                label="體重"
+                                name="weight"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員體重',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'公斤'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動心率"
+                                name="exerciseHeartRate"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員運動心率',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'BPM'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動阻力"
+                                name="exerciseResist"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動速度"
+                                name="exerciseSpeed"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                name="medicine"
+                                label="是否服用治療藥物"
+                                valuePropName="checked"
+                            >
+                                <Checkbox>
+                                    <Text type="secondary">
+                                        （有服用請打勾）
+                                    </Text>
+                                </Checkbox>
                             </Form.Item>
                             <Form.Item label="備註" name="note">
                                 <Input.TextArea
                                     showCount
-                                    placeholder="是否有隱疾、其他需留意之處．．．"
+                                    placeholder="治療藥物註記、其他需留意之處．．．"
                                     maxLength={50}
                                     autoSize={{ minRows: 3, maxRows: 5 }}
                                 />
@@ -432,18 +626,32 @@ const UserList = () => {
 
 const columns = (openViewModal, openEditModal, onDeleteUser) => [
     {
-        key: 'name',
-        title: '騎乘者名稱',
-        dataIndex: 'name',
+        key: 'idNumber',
+        title: '會員編號',
+        dataIndex: 'idNumber',
+        // sorter: {
+        //     compare: (a, b) => a.age - b.age,
+        // },
+        width: 200,
     },
     {
-        key: 'age',
-        title: '騎乘者年齡',
-        dataIndex: 'age',
-        sorter: {
-            compare: (a, b) => a.age - b.age,
-        },
+        key: 'name',
+        title: '會員姓名',
+        dataIndex: 'name',
         width: 200,
+    },
+    {
+        key: 'medicine',
+        title: '是否服用治療藥物',
+        dataIndex: 'medicine',
+        render: (isMedicine) => (isMedicine ? '是' : '否'),
+        width: 150,
+        align: 'center',
+    },
+    {
+        key: 'note',
+        title: '備註',
+        dataIndex: 'note',
     },
     {
         key: 'id',
@@ -499,11 +707,11 @@ const formLayout = {
 
 const modalFormLayout = {
     labelCol: {
-        span: 6,
-        offset: 2,
+        span: 8,
+        // offset:,
     },
     wrapperCol: {
-        span: 14,
+        span: 16,
     },
 };
 
