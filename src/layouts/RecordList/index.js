@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection, query, where } from 'firebase/firestore';
 import {
     Layout,
     Form,
@@ -108,8 +108,10 @@ const RecordList = () => {
     };
 
     const fetchDiffs = async () => {
+        const q = query(difficultiesRef, where('isDeleted', '!=', true));
+
         const difficulties = [];
-        const querySnapshot = await getDocs(difficultiesRef);
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
             difficulties.push({
                 ...doc.data(),
