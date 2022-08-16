@@ -49,6 +49,15 @@ const copdSurveyJson = COPDSurveyJson;
 const sgrSurveyJson = SGRSurveyJson;
 const borgScaleSurveyJson = BorgScaleSurveyJson;
 
+const mySurveyCss = {
+    text: {
+        controlDisabled: 'survey-input-disabled',
+    },
+    rating: {
+        selected: 'survey-rating-selected',
+    },
+};
+
 const { Content } = Layout;
 
 const FinishedWorkout = () => {
@@ -549,7 +558,11 @@ const FinishedWorkout = () => {
                     destroyOnClose
                     okText="送出儲存"
                 >
-                    <Survey id="surveyContainer" model={survey} />
+                    <Survey
+                        id="surveyContainer"
+                        model={survey}
+                        css={mySurveyCss}
+                    />
                 </Modal>
             </Content>
         </Layout>

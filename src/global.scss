@@ -7,7 +7,18 @@
 .surveyModalStyle .ant-modal-body {
   padding: 0;
 }
-/* 以上數行是用來覆寫預設的 style */
+
+.survey-input-disabled {
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.survey-rating-selected {
+  color: rgba(255, 255, 255, 0.8) !important;
+  background-color: #19b394 !important;
+  border-color: #19b394 !important;
+}
+
+/* 以上數行是用來覆寫預設 Survey JS 的 style */
 
 *,
 *::after,
@@ -20,6 +31,10 @@
   font-stretch: normal;
   line-height: normal;
   outline: none;
+
+  /* 以下數行是用來覆寫預設 Survey JS 的 style 變數 */
+  --foreground-disabled: rgba(0, 0, 0, 0.5);
+  --border: rgba(0, 0, 0, 0.3);
 }
 
 body,

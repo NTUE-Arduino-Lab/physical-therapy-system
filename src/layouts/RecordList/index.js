@@ -45,6 +45,15 @@ const copdSurveyJson = COPDSurveyJson;
 const sgrSurveyJson = SGRSurveyJson;
 const borgScaleSurveyJson = BorgScaleSurveyJson;
 
+const mySurveyCss = {
+    text: {
+        controlDisabled: 'survey-input-disabled',
+    },
+    rating: {
+        selected: 'survey-rating-selected',
+    },
+};
+
 const { Content } = Layout;
 const { Option } = Select;
 
@@ -520,7 +529,11 @@ const RecordList = () => {
                         destroyOnClose
                         onCancel={onCancelSurvey}
                     >
-                        <Survey id="surveyContainer" model={survey} />
+                        <Survey
+                            id="surveyContainer"
+                            model={survey}
+                            css={mySurveyCss}
+                        />
                     </Modal>
                 </div>
             </Content>
