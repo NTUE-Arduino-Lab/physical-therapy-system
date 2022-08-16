@@ -1,0 +1,488 @@
+{
+    "title": "ST. GEORGE’S RESPIRATORY QUESTIONNAIRE ",
+    "description": "This questionnaire is designed to help us learn much more about how your breathing is troubling you and how it affects your life. We are using it to find out which aspects of your illness cause you most problems, rather than what the doctors and nurses think your problems are. Please ask if you have difficulty understanding the questions. Do not spend too long deciding about your answers. ",
+    "logoPosition": "right",
+    "pages": [
+        {
+            "name": "page1",
+            "elements": [
+                {
+                    "type": "panel",
+                    "name": "panel1",
+                    "elements": [
+                        {
+                            "type": "multipletext",
+                            "name": "question1",
+                            "titleLocation": "hidden",
+                            "items": [
+                                {
+                                    "name": "text1",
+                                    "title": "ID NUMBER"
+                                },
+                                {
+                                    "name": "text2",
+                                    "title": "Event"
+                                }
+                            ],
+                            "colCount": 2,
+                            "isRequired": true,
+                            "readOnly": true
+                        },
+                        {
+                            "type": "text",
+                            "name": "question2",
+                            "title": "Date of Collection",
+                            "titleLocation": "top",
+                            "hideNumber": true,
+                            "isRequired": true,
+                            "readOnly": true
+                        }
+                    ]
+                },
+                {
+                    "type": "panel",
+                    "name": "panel2",
+                    "elements": [
+                        {
+                            "type": "rating",
+                            "name": "question3",
+                            "title": "Please pick one response to show how you describe your current health:",
+                            "hideNumber": true,
+                            "rateValues": [
+                                "Very good",
+                                "Good",
+                                "Fair",
+                                "Poor",
+                                "Very Poor"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "panel",
+                    "name": "panel3",
+                    "elements": [
+                        {
+                            "type": "expression",
+                            "name": "question4",
+                            "title": "Part 1:  The following questions ask about your chest trouble. Please answer as it applies to you.",
+                            "hideNumber": true
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question5",
+                            "title": "I cough:",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "Most days a week"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Several days a week"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "Only with respiratory infections"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "Not at all"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question6",
+                            "title": "I bring up phlegm (sputum):",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "Most days a week"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Several days a week"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "Only with respiratory infections"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "Not at all"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question7",
+                            "title": " I have shortness of breath:",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "Most days a week"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Several days a week"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "Not at all"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question8",
+                            "title": "I have attacks of wheezing:",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "Most days a week"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Several days a week"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "A few days a month"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "Only with respiratory infections"
+                                },
+                                {
+                                    "value": "item5",
+                                    "text": "Not at all"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question9",
+                            "title": "How many attacks of chest trouble did you have during the last year?",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "3 or more attacks"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "1 or 2 attacks"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "None"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question10",
+                            "title": "How often do you have good days (with few respiratory problems)?",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "No good days"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "A few good days"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "Most days are good"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "Every day is good"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question11",
+                            "title": "If you have a wheeze, is it worse when you get up in the morning?",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "No"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Yes"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "panel",
+                    "name": "panel4",
+                    "elements": [
+                        {
+                            "type": "expression",
+                            "name": "question13",
+                            "title": "Part 2",
+                            "hideNumber": true
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question12",
+                            "title": "How would you describe your respiratory problems?",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "Cause me a lot of problems or are the most important physical problem I have"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "Cause me a few problems"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "Cause no problems"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "matrix",
+                            "name": "question14",
+                            "title": "Questions about what activities usually make you feel breathless. For each statement, please tell me which applies to you these days.",
+                            "columns": [
+                                {
+                                    "value": "Column 1",
+                                    "text": "False"
+                                },
+                                {
+                                    "value": "Column 2",
+                                    "text": "True"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "value": "Row 1",
+                                    "text": "Washing or dressing yourself"
+                                },
+                                {
+                                    "value": "Row 2",
+                                    "text": "Walking around the house"
+                                },
+                                {
+                                    "value": "Row 3",
+                                    "text": "Walking outside on the level ground"
+                                },
+                                {
+                                    "value": "Row 4",
+                                    "text": "Walking up a flight of stairs"
+                                },
+                                {
+                                    "value": "Row 5",
+                                    "text": "Walking up hills"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "matrix",
+                            "name": "question15",
+                            "title": "Some more questions about your cough and breathlessness. For each statement, please tell me which applies to you these days.",
+                            "columns": [
+                                {
+                                    "value": "Column 1",
+                                    "text": "False"
+                                },
+                                {
+                                    "value": "Column 2",
+                                    "text": "True"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "value": "Row 1",
+                                    "text": "Coughing hurts"
+                                },
+                                {
+                                    "value": "Row 2",
+                                    "text": "Coughing makes me tired"
+                                },
+                                {
+                                    "value": "Row 3",
+                                    "text": "I am short of breath when I talk"
+                                },
+                                {
+                                    "value": "Row 4",
+                                    "text": "I am short of breath when I bend over"
+                                },
+                                {
+                                    "value": "Row 5",
+                                    "text": "My cough or breathing disturbs my sleep"
+                                },
+                                {
+                                    "value": "Row 6",
+                                    "text": "I get exhausted easily"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "matrix",
+                            "name": "question16",
+                            "title": "Questions about other effects that your chest trouble may have on you. For each statement, please tell me which applies to you these days.",
+                            "columns": [
+                                {
+                                    "value": "Column 1",
+                                    "text": "False"
+                                },
+                                {
+                                    "value": "Column 2",
+                                    "text": "True"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "value": "Row 1",
+                                    "text": "My cough or breathing is embarrassing in public"
+                                },
+                                {
+                                    "value": "Row 2",
+                                    "text": "My respiratory problems are a nuisance to my family, friends, or neighbors"
+                                },
+                                {
+                                    "value": "Row 3",
+                                    "text": "I get afraid or panic when I cannot catch my breath"
+                                },
+                                {
+                                    "value": "Row 4",
+                                    "text": "I feel that I am not in control of my respiratory problems"
+                                },
+                                {
+                                    "value": "Row 5",
+                                    "text": "I have become frail or an invalid because of my respiratory problems"
+                                },
+                                {
+                                    "value": "Row 6",
+                                    "text": "Exercise is not safe for me"
+                                },
+                                {
+                                    "value": "Row 7",
+                                    "text": "Everything seems too much of an effort"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "matrix",
+                            "name": "question17",
+                            "title": "These are questions about how your activities might be affected by your respiratory problems. For each statement, please tell me which applies to you because of your breathing.",
+                            "columns": [
+                                {
+                                    "value": "Column 1",
+                                    "text": "False"
+                                },
+                                {
+                                    "value": "Column 2",
+                                    "text": "True"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "value": "Row 1",
+                                    "text": "I take a long time to get washed or dressed"
+                                },
+                                {
+                                    "value": "Row 2",
+                                    "text": "I cannot take a bath or shower, or I take a long time to do it"
+                                },
+                                {
+                                    "value": "Row 3",
+                                    "text": "I walk slower than other people, or I stop to rest"
+                                },
+                                {
+                                    "value": "Row 4",
+                                    "text": "Jobs such as house chores take a long time, or I have to stop to rest"
+                                },
+                                {
+                                    "value": "Row 5",
+                                    "text": "If I walk up one flight of stairs, I have to go slowly or stop"
+                                },
+                                {
+                                    "value": "Row 6",
+                                    "text": "If I hurry or walk fast, I have to stop or slow down"
+                                },
+                                {
+                                    "value": "Row 7",
+                                    "text": "My breathing makes it difficult to do things such as walk up hills, carry things up stairs, do light gardening such as weeding, dance, bowl, or play golf"
+                                },
+                                {
+                                    "value": "Row 8",
+                                    "text": "My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk briskly (5 miles per hour), play tennis, or swim"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "matrix",
+                            "name": "question18",
+                            "title": "We would like to know how your chest usually affects your daily life. For each statement, please tell me which applies to you because of your breathing.",
+                            "columns": [
+                                {
+                                    "value": "Column 1",
+                                    "text": "False"
+                                },
+                                {
+                                    "value": "Column 2",
+                                    "text": "True"
+                                }
+                            ],
+                            "rows": [
+                                {
+                                    "value": "Row 1",
+                                    "text": "I cannot play sports or do other physical activities"
+                                },
+                                {
+                                    "value": "Row 2",
+                                    "text": "I cannot go out for entertainment or recreation"
+                                },
+                                {
+                                    "value": "Row 3",
+                                    "text": "I cannot go out of the house to do the shopping"
+                                },
+                                {
+                                    "value": "Row 4",
+                                    "text": "I cannot do household chores"
+                                },
+                                {
+                                    "value": "Row 5",
+                                    "text": "I cannot move far from my bed or chair"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "radiogroup",
+                            "name": "question19",
+                            "title": "How do your respiratory problems affect you? Please pick one response.",
+                            "choices": [
+                                {
+                                    "value": "item1",
+                                    "text": "They do not stop me from doing anything I would like to do"
+                                },
+                                {
+                                    "value": "item2",
+                                    "text": "They stop me from doing one or two things I would like to do"
+                                },
+                                {
+                                    "value": "item3",
+                                    "text": "They stop me from doing most of the things I would like to do"
+                                },
+                                {
+                                    "value": "item4",
+                                    "text": "They stop me from doing everything I would like to do"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

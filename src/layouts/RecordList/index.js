@@ -14,11 +14,18 @@ import {
     Table,
     Descriptions,
     Select,
+    Space,
 } from 'antd';
 import moment from 'moment';
 import { DualAxes as LineChart } from '@ant-design/plots';
-import { SearchOutlined, CrownOutlined } from '@ant-design/icons';
+import {
+    SearchOutlined,
+    CrownOutlined,
+    CheckOutlined,
+} from '@ant-design/icons';
 import _ from '../../util/helper';
+import { StylesManager, Model } from 'survey-core';
+import { Survey } from 'survey-react-ui';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
@@ -26,6 +33,17 @@ import styles from './styles.module.scss';
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 import formatWithMoment from '../../util/formatSeconds';
 import configLineChart from '../../util/configLineChart';
+
+import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
+import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
+import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
+import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
+import 'survey-core/defaultV2.css';
+StylesManager.applyTheme('defaultV2');
+const sixSurveyJson = SixSurveyJson;
+const copdSurveyJson = COPDSurveyJson;
+const sgrSurveyJson = SGRSurveyJson;
+const borgScaleSurveyJson = BorgScaleSurveyJson;
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -52,6 +70,16 @@ const RecordList = () => {
 
     // modals
     const [viewModalVisible, setViewModalVisible] = useState(false);
+
+    // survey control
+    const [surveyModalVisible, setSurveyModalVisible] = useState(false);
+    const [curSurveyName, setCurSurveyName] = useState();
+    const [survey, setSurvey] = useState(new Model(sixSurveyJson));
+
+    // survey UI related!!
+    survey.focusFirstQuestionAutomatic = false;
+    survey.showNavigationButtons = false;
+    survey.showCompletedPage = false;
 
     useEffect(() => {
         init();
@@ -215,6 +243,48 @@ const RecordList = () => {
         navigate(ROUTE_PATH.admin_dashbaord);
     };
 
+    const openSurveyModal = (surveyName) => {
+        if (surveyName === '六分鐘呼吸測驗') {
+            let survey = new Model(sixSurveyJson);
+
+            survey.data = currRecord.sixSurvey;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'copd') {
+            let survey = new Model(copdSurveyJson);
+
+            survey.data = currRecord.copdSurvey;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'sgr') {
+            let survey = new Model(sgrSurveyJson);
+
+            survey.data = currRecord.sgrSurvey;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'borgScale') {
+            let survey = new Model(borgScaleSurveyJson);
+
+            survey.data = currRecord.borgScaleSurvey;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+
+        setCurSurveyName(surveyName);
+        setSurveyModalVisible(true);
+    };
+
+    const onCancelSurvey = () => {
+        setSurveyModalVisible(false);
+    };
+
     if (!isDone) {
         return (
             <Layout style={{ padding: '24px' }}>
@@ -345,6 +415,15 @@ const RecordList = () => {
                                     <Descriptions.Item label="結束騎乘時間">
                                         {currRecord?.finishedWorkoutTime.toLocaleString()}
                                     </Descriptions.Item>
+                                    <Descriptions.Item label="平均速率／平均心率">
+                                        20 BPM／30 RPM
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="運動強度">
+                                        23 WATTS
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="累積入熱量消耗">
+                                        12 CAL
+                                    </Descriptions.Item>
                                     <Descriptions.Item label="騎乘關卡">
                                         {currRecord?.difficultyData?.name}
                                     </Descriptions.Item>
@@ -396,8 +475,52 @@ const RecordList = () => {
                                         {currRecord?.comment}
                                     </Descriptions.Item>
                                 </Descriptions>
+                                <Space style={{ marginLeft: '24px' }}>
+                                    <Button
+                                        onClick={() =>
+                                            openSurveyModal('六分鐘呼吸測驗')
+                                        }
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 六分鐘呼吸測驗結果
+                                    </Button>
+                                    <Button
+                                        onClick={() => openSurveyModal('copd')}
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 COPD 測驗結果
+                                    </Button>
+                                    <Button
+                                        onClick={() => openSurveyModal('sgr')}
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 SGR 測驗結果
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            openSurveyModal('borgScale')
+                                        }
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 Borg Scale 測驗結果
+                                    </Button>
+                                </Space>
                             </>
                         )}
+                    </Modal>
+                    <Modal
+                        width={'70vw'}
+                        className="surveyModalStyle" // 如果要覆寫 style 要這樣做
+                        visible={surveyModalVisible}
+                        footer={null} // no [Ok], [Cancel] button
+                        destroyOnClose
+                        onCancel={onCancelSurvey}
+                    >
+                        <Survey id="surveyContainer" model={survey} />
                     </Modal>
                 </div>
             </Content>

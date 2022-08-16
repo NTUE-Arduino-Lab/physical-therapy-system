@@ -2,6 +2,13 @@
  * This is for global css usage.
  */
 
+/* 以下數行是用來覆寫 antd 預設 <Modal> 的 style */
+/* 參考資料: https://stackoverflow.com/questions/68469089/how-to-change-styles-in-modal-of-antd */
+.surveyModalStyle .ant-modal-body {
+  padding: 0;
+}
+/* 以上數行是用來覆寫預設的 style */
+
 *,
 *::after,
 *::before {

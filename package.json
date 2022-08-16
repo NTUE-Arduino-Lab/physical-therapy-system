@@ -25,6 +25,7 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-prettier": "^1.1.2",
+    "survey-creator-react": "^1.9.44",
     "underscore": "^1.9.2",
     "web-vitals": "^0.2.4"
   },

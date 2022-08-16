@@ -1,0 +1,60 @@
+{
+    "title": "How is your COPD? Take the COPD Assessment Test™ (CAT)",
+    "description": "This questionnaire will help you and your healthcare professional measure the impact COPD (Chronic ObstructivePulmonary Disease) is having on your wellbeing and daily life. Your answers, and test score, can be used by you andyour healthcare professional to help improve the management of your COPD and get the greatest benefit from treatment.",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "rating",
+        "name": "question1",
+        "title": "\"I never cough\" is 1, \"I cough all the time\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question2",
+        "title": "\"I have no phlegm (mucus) in my chest at all\" is 1, \"My chest is completely full of phlegm (mucus)\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question3",
+        "title": "\"My chest does not feel tight at all\" is 1, \"My chest feels very tight\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question4",
+        "title": "\"When I walk up a hill or one flight of stairs I am not breathless\" is 1, \"When I walk up a hill or one flight of stairs I am very breathless\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question5",
+        "title": "\"I am not limited doing any activities at home\" is 1, \"I am very limited doing activities at home\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question6",
+        "title": "\"I am confident leaving my home despite my lung condition\" is 1, \"I am not at all confident leaving my home because of my lung condition\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question7",
+        "title": "\"I sleep soundly\" is 1, \"I don't sleep soundly because of my lung condition\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       },
+       {
+        "type": "rating",
+        "name": "question8",
+        "title": "\"I have lots of energy\" is 1, \"I have no energy at all\" is 5.",
+        "description": "Please select the box that best describes you currently."
+       }
+      ]
+     }
+    ]
+   }

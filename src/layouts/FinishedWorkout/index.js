@@ -17,12 +17,17 @@ import {
     Button,
     message,
     Modal,
+    Space,
 } from 'antd';
 import {
     UserOutlined,
     ExclamationCircleOutlined,
     LineChartOutlined,
+    EditOutlined,
+    CheckOutlined,
 } from '@ant-design/icons';
+import { StylesManager, Model } from 'survey-core';
+import { Survey } from 'survey-react-ui';
 
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
@@ -32,6 +37,17 @@ import wait from '../../util/wait';
 import configLineChart from '../../util/configLineChart';
 
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
+
+import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
+import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
+import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
+import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
+import 'survey-core/defaultV2.css';
+StylesManager.applyTheme('defaultV2');
+const sixSurveyJson = SixSurveyJson;
+const copdSurveyJson = COPDSurveyJson;
+const sgrSurveyJson = SGRSurveyJson;
+const borgScaleSurveyJson = BorgScaleSurveyJson;
 
 const { Content } = Layout;
 
@@ -50,11 +66,105 @@ const FinishedWorkout = () => {
     const [therapist, setTherapist] = useState();
     const [comment, setComment] = useState();
 
-    // 安全心律上線指數、心律變異指數
+    // 安全心律上線指數、心律變異指數、SPO2
     const [safeHRIndex, setSafeHRIndex] = useState();
     const [hrVariabilityIndex, setHRVariabilityIndex] = useState();
+    const [spo2, setSpo2] = useState();
 
-    const [inputStatus, setInputStatus] = useState();
+    // survey control
+    const [surveyModalVisible, setSurveyModalVisible] = useState(false);
+    const [curSurveyName, setCurSurveyName] = useState();
+    const [survey, setSurvey] = useState(new Model(sixSurveyJson));
+
+    // survey data
+    const [sixSurveyData, setSixSurveyData] = useState();
+    const [copdSurveyData, setCopdSurveyData] = useState(false);
+    const [sgrSurveyData, setSGRSurveyData] = useState(false);
+    const [borgScaleSurveyData, setBorgScaleSurveyData] = useState();
+
+    // survey UI related!!
+    survey.focusFirstQuestionAutomatic = false;
+    survey.showNavigationButtons = false;
+    survey.showCompletedPage = false;
+
+    // survey METHODS
+    const saveResults = (sender) => {
+        const results = sender.data;
+
+        console.log(sender.data);
+
+        if (curSurveyName === '六分鐘呼吸測驗') {
+            setSixSurveyData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'copd') {
+            setCopdSurveyData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'sgr') {
+            setSGRSurveyData({ ...results, surveyCompleted: true });
+            console.log(sgrSurveyData);
+        }
+        if (curSurveyName === 'borgScale') {
+            setBorgScaleSurveyData({ ...results, surveyCompleted: true });
+        }
+    };
+    survey.onComplete.add(saveResults);
+
+    const openSurveyModal = (surveyName) => {
+        if (surveyName === '六分鐘呼吸測驗') {
+            let survey = new Model(sixSurveyJson);
+
+            // 1. 填入表單預設值
+            // 2. 檢視問卷模式
+            // *** TODO: // 之後改成:
+            // ***       // 最後成績送出前 都可以進行問卷的修改
+            // ***       // 並加上提示: 送出後，問卷答案便無法修改的字樣
+            if (sixSurveyData) {
+                survey.data = sixSurveyData;
+                // survey.mode = 'display'; // 這個打開後，僅供檢視
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'copd') {
+            let survey = new Model(copdSurveyJson);
+
+            if (copdSurveyData) {
+                survey.data = copdSurveyData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'sgr') {
+            let survey = new Model(sgrSurveyJson);
+
+            if (sgrSurveyData) {
+                survey.data = sgrSurveyData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'borgScale') {
+            let survey = new Model(borgScaleSurveyJson);
+
+            if (borgScaleSurveyData) {
+                survey.data = borgScaleSurveyData;
+            }
+            setSurvey(survey);
+        }
+
+        setCurSurveyName(surveyName);
+        setSurveyModalVisible(true);
+    };
+
+    const onOKSurvey = async () => {
+        let error = survey.hasErrors();
+        if (error) {
+            return;
+        }
+        survey.doComplete();
+        setSurveyModalVisible(false);
+    };
+
+    const onCancelSurvey = () => {
+        setSurveyModalVisible(false);
+    };
 
     useEffect(() => {
         init();
@@ -115,13 +225,78 @@ const FinishedWorkout = () => {
         setTherapist(therapist);
         setComment(comment);
         setIsDone(true);
+
+        console.log(user);
+        // 初始化 填入問卷基本資料
+        setSixSurveyData({
+            question2: user?.name,
+            question3: user?.idNumber,
+            question5: moment(record?.beginWorkoutTime).format('L'),
+            question9: user?.height + ' cm',
+            question10: user?.weight + ' kg',
+        });
+        setSGRSurveyData({
+            question1: {
+                text1: user?.idNumber,
+                text2: `${difficulty?.name} \n (目標${difficulty?.targetHeartRate}BPM／${difficulty?.targetWorkoutTime}分)`,
+            },
+            question2: moment(record?.beginWorkoutTime).format('L'),
+        });
+        setBorgScaleSurveyData({
+            question2: `${difficulty?.name} \n (目標${difficulty?.targetHeartRate}BPM／${difficulty?.targetWorkoutTime}分)`,
+        });
     };
+
+    // 初始化 填入問卷基本資料
+    // const initSurveyData = () => {
+    //     console.log(record);
+    //     console.log(user);
+    //     console.log(difficulty);
+    //     setSixSurveyData({
+    //         question2: user?.name,
+    //         question3: user?.idNumber,
+    //         question5: moment(record?.beginWorkoutTime).format('L'),
+    //     });
+    //     setSGRSurveyData({
+    //         question1: {
+    //             text1: user?.idNumber,
+    //             text2: `${difficulty?.name}\n(目標心率：${difficulty?.targetHeartRate}／目標騎乘時間：${difficulty?.targetWorkoutTime})`,
+    //         },
+    //         question2: moment(record?.beginWorkoutTime).format('L'),
+    //     });
+    // };
 
     const onFormSubmit = async (e) => {
         e.preventDefault();
         if (_.isEmpty(therapist)) {
             message.error('請填上治療師名稱');
-            setInputStatus('error');
+            return;
+        }
+
+        if (_.isEmpty(safeHRIndex)) {
+            message.error('請填上安全心律上線指數');
+            return;
+        }
+
+        if (_.isEmpty(hrVariabilityIndex)) {
+            message.error('請填上心律變異指數');
+            return;
+        }
+
+        if (_.isEmpty(spo2)) {
+            message.error('SPO2');
+            return;
+        }
+
+        if (
+            !(
+                sixSurveyData?.surveyCompleted &&
+                copdSurveyData?.surveyCompleted &&
+                sgrSurveyData?.surveyCompleted &&
+                borgScaleSurveyData?.surveyCompleted
+            )
+        ) {
+            message.error('尚有問卷未完成');
             return;
         }
 
@@ -139,7 +314,12 @@ const FinishedWorkout = () => {
             therapist: therapist,
             safeHRIndex: safeHRIndex,
             hrVariabilityIndex: hrVariabilityIndex,
+            spo2: spo2,
             comment: comment,
+            sixSurvey: sixSurveyData,
+            borgScaleSurvey: borgScaleSurveyData,
+            sgrSurvey: sgrSurveyData,
+            copdSurvey: copdSurveyData,
         });
 
         message.success({ content: '已提交！自動跳轉至選單畫面' });
@@ -216,6 +396,15 @@ const FinishedWorkout = () => {
                         <Descriptions.Item label="結束騎乘時間">
                             {record.finishedWorkoutTime.toLocaleString()}
                         </Descriptions.Item>
+                        <Descriptions.Item label="平均速率／平均心率">
+                            20 BPM／30 RPM
+                        </Descriptions.Item>
+                        <Descriptions.Item label="運動強度">
+                            23 WATTS
+                        </Descriptions.Item>
+                        <Descriptions.Item label="累積入熱量消耗">
+                            12 CAL
+                        </Descriptions.Item>
                         <Descriptions.Item label="騎乘關卡">
                             {difficulty.name}
                         </Descriptions.Item>
@@ -236,6 +425,57 @@ const FinishedWorkout = () => {
                     </Descriptions>
 
                     <div className={styles.form}>
+                        <h3>請完成以下評估問卷</h3>
+                        <Space>
+                            <Button
+                                onClick={() =>
+                                    openSurveyModal('六分鐘呼吸測驗')
+                                }
+                                type="primary"
+                                icon={
+                                    sixSurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 六分鐘呼吸測驗
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('copd')}
+                                type="primary"
+                                icon={
+                                    copdSurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 COPD 測驗
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('sgr')}
+                                type="primary"
+                                icon={
+                                    sgrSurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 SGR 測驗
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('borgScale')}
+                                type="primary"
+                                icon={
+                                    borgScaleSurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 Borg Scale 測驗
+                            </Button>
+                        </Space>
+                    </div>
+                    <div className={styles.form}>
                         <h3>請填寫以下資料，方可返回主選單</h3>
 
                         <Input
@@ -245,9 +485,19 @@ const FinishedWorkout = () => {
                             value={therapist}
                             onChange={(e) => {
                                 setTherapist(e.target.value);
-                                setInputStatus();
                             }}
-                            status={inputStatus}
+                            required={true}
+                        />
+                        <Input
+                            size="large"
+                            placeholder="SPO2"
+                            prefix={<EditOutlined />}
+                            value={spo2}
+                            onChange={(e) => {
+                                setSpo2(e.target.value);
+                            }}
+                            style={{ marginTop: 16 }}
+                            required={true}
                         />
                         <Input
                             size="large"
@@ -258,6 +508,7 @@ const FinishedWorkout = () => {
                                 setSafeHRIndex(e.target.value);
                             }}
                             style={{ marginTop: 16 }}
+                            required={true}
                         />
                         <Input
                             size="large"
@@ -268,6 +519,7 @@ const FinishedWorkout = () => {
                                 setHRVariabilityIndex(e.target.value);
                             }}
                             style={{ marginTop: 16 }}
+                            required={true}
                         />
 
                         <Input.TextArea
@@ -288,6 +540,17 @@ const FinishedWorkout = () => {
                         </Button>
                     </div>
                 </div>
+                <Modal
+                    width={'70vw'}
+                    className="surveyModalStyle" // 如果要覆寫 style 要這樣做
+                    visible={surveyModalVisible}
+                    onOk={onOKSurvey}
+                    onCancel={onCancelSurvey}
+                    destroyOnClose
+                    okText="送出儲存"
+                >
+                    <Survey id="surveyContainer" model={survey} />
+                </Modal>
             </Content>
         </Layout>
     );
