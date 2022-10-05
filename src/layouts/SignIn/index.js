@@ -71,7 +71,7 @@ const SignIn = () => {
                             colon={false}
                             style={{ marginBottom: 12 }}
                         >
-                            <Title level={2}>長庚大學-物理治療系統登入2</Title>
+                            <Title level={2}>長庚大學-物理治療系統登入A</Title>
                         </Form.Item>
                         <Form.Item
                             label="Email"
