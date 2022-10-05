@@ -15,12 +15,12 @@ import { getAuth } from 'firebase/auth';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: 'AIzaSyDZbsYnhDAV0SWjJw2e81ShRNuNRbz4-iQ',
+    apiKey: process.env.REACT_APP_API_KEY,
     authDomain: 'physical-therapy-system.firebaseapp.com',
     projectId: 'physical-therapy-system',
     storageBucket: 'physical-therapy-system.appspot.com',
     messagingSenderId: '411714019674',
-    appId: '1:411714019674:web:669257e2726581c3525363',
+    appId: process.env.REACT_APP_APP_ID,
     measurementId: 'G-93J05VGEJN',
 };
 
