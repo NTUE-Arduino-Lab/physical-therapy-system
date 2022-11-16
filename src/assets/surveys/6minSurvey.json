@@ -1,0 +1,354 @@
+{
+    "title": "6 minutes walking test",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+         {
+          "type": "multipletext",
+          "name": "question1",
+          "titleLocation": "hidden",
+          "isRequired": true,
+          "readOnly": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "病歷號(ID NUMBER)"
+           },
+           {
+            "name": "text2",
+            "title": "姓名"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "name": "question2",
+          "title": "Date of Collection",
+          "titleLocation": "top",
+          "hideNumber": true,
+          "isRequired": true,
+          "readOnly": true
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel2",
+        "elements": [
+         {
+          "type": "expression",
+          "name": "question3",
+          "title": "(一)",
+          "hideNumber": true
+         },
+         {
+          "type": "multipletext",
+          "name": "question11",
+          "title": "Rest",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question4",
+          "title": "1min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question5",
+          "title": "2min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question6",
+          "title": "3min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question7",
+          "title": "4min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question8",
+          "title": "5min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question9",
+          "title": "6min",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2 use"
+           },
+           {
+            "name": "text2",
+            "title": "Spo2"
+           },
+           {
+            "name": "text3",
+            "title": "HR (beat /min)"
+           },
+           {
+            "name": "text4",
+            "title": "BP (mmhg)"
+           },
+           {
+            "name": "text5",
+            "title": "RR"
+           },
+           {
+            "name": "text6",
+            "title": "Borg  Scale"
+           },
+           {
+            "name": "text7",
+            "title": "Distance"
+           }
+          ],
+          "colCount": 2
+         }
+        ]
+       },
+       {
+        "type": "multipletext",
+        "name": "question10",
+        "title": "(二)",
+        "hideNumber": true,
+        "items": [
+         {
+          "name": "text1",
+          "title": "BMI"
+         },
+         {
+          "name": "text2",
+          "title": "MHR"
+         },
+         {
+          "name": "text3",
+          "title": "HR(%)"
+         },
+         {
+          "name": "text4",
+          "title": "E`C"
+         },
+         {
+          "name": "text5",
+          "title": "speed"
+         },
+         {
+          "name": "text6",
+          "title": "Met"
+         },
+         {
+          "name": "text7",
+          "title": "VO2"
+         },
+         {
+          "name": "text8",
+          "title": "predicted"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   }

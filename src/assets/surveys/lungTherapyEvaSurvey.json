@@ -1,0 +1,1320 @@
+{
+    "title": "呼吸治療肺復原和呼吸訓練評估表",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+         {
+          "type": "multipletext",
+          "name": "question1",
+          "titleLocation": "hidden",
+          "isRequired": true,
+          "readOnly": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "病歷號(ID NUMBER)"
+           },
+           {
+            "name": "text2",
+            "title": "姓名"
+           },
+           {
+            "name": "text3",
+            "title": "年齡"
+           },
+           {
+            "name": "text4",
+            "title": "性別"
+           },
+           {
+            "name": "text5",
+            "title": "身高"
+           },
+           {
+            "name": "text6",
+            "title": "體重"
+           },
+           {
+            "name": "text7",
+            "title": "BMI"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question2",
+          "title": "Date of Collection",
+          "titleLocation": "top",
+          "hideNumber": true,
+          "isRequired": true,
+          "readOnly": true
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel2",
+        "elements": [
+         {
+          "type": "checkbox",
+          "name": "question3",
+          "title": "一、適應症",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "Asthma "
+           },
+           {
+            "value": "item2",
+            "text": "Atelectasis "
+           },
+           {
+            "value": "item3",
+            "text": "Bronchiectasis "
+           },
+           {
+            "value": "item4",
+            "text": "Bronchitis "
+           },
+           {
+            "value": "item5",
+            "text": "COPD "
+           },
+           {
+            "value": "item6",
+            "text": "retained secretions"
+           },
+           {
+            "value": "item7",
+            "text": "Neuromuscular disorders"
+           },
+           {
+            "value": "item8",
+            "text": "Muscle weakness"
+           },
+           {
+            "value": "item9",
+            "text": "Sleep disturbance"
+           },
+           {
+            "value": "item10",
+            "text": "Other"
+           }
+          ],
+          "colCount": 2
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel3",
+        "elements": [
+         {
+          "type": "expression",
+          "name": "question21",
+          "title": "二、綜合評估",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question5",
+          "title": "1.1 痰液評估-呼吸聲",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "正常"
+           },
+           {
+            "value": "item2",
+            "text": "喘鳴音(wheeze)"
+           },
+           {
+            "value": "item3",
+            "text": "乾囉音(rhonch i)"
+           },
+           {
+            "value": "item4",
+            "text": "濕囉音(rales)"
+           },
+           {
+            "value": "item5",
+            "text": "哮鳴音(stridor)"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "question6",
+          "title": "1.2 痰液評估-不正常呼吸型態",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "使用呼吸輔助肌"
+           },
+           {
+            "value": "item2",
+            "text": "端坐呼吸"
+           },
+           {
+            "value": "item3",
+            "text": "奇異呼吸運動"
+           },
+           {
+            "value": "item4",
+            "text": "呼吸困難"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question7",
+          "title": "1.3 痰液評估-痰液量",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "少"
+           },
+           {
+            "value": "item2",
+            "text": "中"
+           },
+           {
+            "value": "item4",
+            "text": "多"
+           },
+           {
+            "value": "item5",
+            "text": "極多"
+           }
+          ],
+          "colCount": 5
+         },
+         {
+          "type": "checkbox",
+          "name": "question8",
+          "title": "1.4 痰液評估-痰液性狀",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "黏液泡沫狀"
+           },
+           {
+            "value": "item2",
+            "text": "漿液性"
+           },
+           {
+            "value": "item3",
+            "text": "黏稠"
+           },
+           {
+            "value": "item4",
+            "text": "膿性"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "question9",
+          "title": "1.5 痰液評估-痰液顏色",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "白色"
+           },
+           {
+            "value": "item2",
+            "text": "黄或淡黄色"
+           },
+           {
+            "value": "item3",
+            "text": "黄綠色"
+           },
+           {
+            "value": "item4",
+            "text": "灰色或黑色"
+           },
+           {
+            "value": "item5",
+            "text": "帶血絲"
+           },
+           {
+            "value": "item6",
+            "text": "鮮紅色"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "radiogroup",
+          "name": "question10",
+          "title": "1.6 痰液評估-痰液氣味",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "無"
+           },
+           {
+            "value": "item2",
+            "text": "糞臭味"
+           },
+           {
+            "value": "item3",
+            "text": "惡臭味"
+           },
+           {
+            "value": "item4",
+            "text": "血腥味"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "question11",
+          "title": "2.1 肌力評估-活動度",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "行走正常"
+           },
+           {
+            "value": "item2",
+            "text": "行走不便但不需行走輔具與他人協助"
+           },
+           {
+            "value": "item3",
+            "text": "需使用行走輔具但不需他人協助"
+           },
+           {
+            "value": "item4",
+            "text": "需使用行走輔具且需他人協助"
+           },
+           {
+            "value": "item5",
+            "text": "無法行走"
+           },
+           {
+            "value": "item6",
+            "text": "坐輪椅"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question4",
+          "title": "2.2 肌力評估-居家運動",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "無"
+           },
+           {
+            "value": "item2",
+            "text": "跑步"
+           },
+           {
+            "value": "item3",
+            "text": "散步"
+           },
+           {
+            "value": "item4",
+            "text": "四肢伸展運動"
+           },
+           {
+            "value": "item5",
+            "text": "其他"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question20",
+          "visibleIf": "{question4} contains 'item4'",
+          "title": "四肢伸展運動運動時間(分鐘/週)",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question22",
+          "visibleIf": "{question4} contains 'item5'",
+          "title": "肌力評估-居家運動-其他",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question12",
+          "title": "3. 呼吸問題",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "痰液清除功能不足"
+           },
+           {
+            "value": "item2",
+            "text": "低血氧"
+           },
+           {
+            "value": "item3",
+            "text": "高二氧化碳"
+           },
+           {
+            "value": "item4",
+            "text": "肺容積不足"
+           },
+           {
+            "value": "item5",
+            "text": "睡眠呼吸障礙（睡醒頭痛/高血壓/白天嗜睡）"
+           },
+           {
+            "value": "item6",
+            "text": "活動時喘，導致活動困難"
+           },
+           {
+            "value": "item7",
+            "text": "肢體肌力不足或活動耐力差"
+           },
+           {
+            "value": "item8",
+            "text": "常呼吸型態/肩頸肥大"
+           },
+           {
+            "value": "item9",
+            "text": "胸廓畸形/明顯桶狀胸"
+           },
+           {
+            "value": "item10",
+            "text": "其他"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "name": "question13",
+          "visibleIf": "{question12} contains 'item10'",
+          "title": "呼吸問題-其他",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question14",
+          "title": "4. 戒菸狀態-抽菸史",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "有"
+           },
+           {
+            "value": "item2",
+            "text": "無"
+           },
+           {
+            "value": "item3",
+            "text": "從COPD收案開始，至今已戒菸成功 ≧ 6個月未復吸。"
+           },
+           {
+            "value": "item4",
+            "text": "戒菸中"
+           },
+           {
+            "value": "item5",
+            "text": "已有戒菸用藥"
+           },
+           {
+            "value": "item6",
+            "text": "轉介戒菸門診，或由戒菸衛教師後續追蹤中。"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question15",
+          "visibleIf": "{question14} contains 'item1'",
+          "title": "有抽菸史",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "年"
+           },
+           {
+            "name": "text2",
+            "title": "包數/天"
+           },
+           {
+            "name": "text3",
+            "title": "戒菸幾年"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "name": "question16",
+          "visibleIf": "{question14} contains 'item4'",
+          "title": "戒菸中，現有 _______個月未復吸(指開始戒菸起6個月內)",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question17",
+          "visibleIf": "{question14} contains 'item5'",
+          "title": "已有戒菸用藥，藥物名稱: ",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question18",
+          "visibleIf": "{question14} contains 'item5'",
+          "title": "藥物類型",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "口服"
+           },
+           {
+            "value": "item2",
+            "text": "戒菸貼片"
+           },
+           {
+            "value": "item3",
+            "text": "口嚼錠"
+           }
+          ],
+          "colCount": 3
+         },
+         {
+          "type": "checkbox",
+          "name": "question19",
+          "title": "5.1 氧氣評估",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "休息時PaO2≦ 55 mmHg或 SpO2≦88%"
+           },
+           {
+            "value": "item2",
+            "text": "休息時PaO2≦60 mmHg或SpO2≦ 89 %，且合併有下列情形者"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question23",
+          "visibleIf": "{question19} contains 'item2'",
+          "title": "休息時PaO2≦60 mmHg或SpO2≦ 89 %，且合併有下列情形者",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "心肺症或心衰竭"
+           },
+           {
+            "value": "item2",
+            "text": "運動時或睡眠中PaO2<60mmHg，SpO2<89%"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question25",
+          "title": "5.2 氧氣評估-建議氧氣治療處方",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "休息時氧氣______ L/min"
+           },
+           {
+            "name": "日常活動時氧氣______  L/min"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question26",
+          "title": "5.3 氧氣評估",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "目前無使用氧氣"
+           },
+           {
+            "value": "item2",
+            "text": "已有居家用氧"
+           },
+           {
+            "value": "item3",
+            "text": "氧氣濃縮機"
+           },
+           {
+            "value": "item4",
+            "text": "高壓氧氣鋼瓶"
+           },
+           {
+            "value": "item5",
+            "text": "液態氧"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question27",
+          "title": "6. 檢查項目",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "6 MWT distance"
+           },
+           {
+            "value": "item2",
+            "text": "room air"
+           },
+           {
+            "value": "item3",
+            "text": "PEFF "
+           },
+           {
+            "value": "item4",
+            "text": "MIP"
+           },
+           {
+            "value": "item5",
+            "text": "MEP"
+           },
+           {
+            "value": "item6",
+            "text": "PFT"
+           },
+           {
+            "value": "item7",
+            "text": "mMRC "
+           },
+           {
+            "value": "item8",
+            "text": "CAT"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "multipletext",
+          "name": "question28",
+          "visibleIf": "{question27} contains 'item1'",
+          "title": "6 MWT distance",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "HR"
+           },
+           {
+            "name": "text2",
+            "title": "RR"
+           },
+           {
+            "name": "text3",
+            "title": "Oximetry:     %"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question29",
+          "visibleIf": "{question27} contains 'item2'",
+          "title": "room air",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "O2"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question24",
+          "visibleIf": "{question27} contains 'item3'",
+          "title": "PEFF :本次",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "L/min"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question30",
+          "visibleIf": "{question27} contains 'item4'",
+          "title": "MIP",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "cmH2O"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question31",
+          "visibleIf": "{question27} contains 'item5'",
+          "title": "MEP",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "cmH2O"
+           }
+          ]
+         },
+         {
+          "type": "multipletext",
+          "name": "question32",
+          "visibleIf": "{question27} contains 'item6'",
+          "title": "PFT",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "FEV1 ______ L"
+           },
+           {
+            "name": "FEV1 ______ % 預估值"
+           },
+           {
+            "name": "FEV1 / FVC:_______ % 預估值"
+           }
+          ]
+         },
+         {
+          "type": "text",
+          "name": "question33",
+          "visibleIf": "{question27} contains 'item7'",
+          "title": "mMRC",
+          "hideNumber": true
+         },
+         {
+          "type": "text",
+          "name": "question34",
+          "visibleIf": "{question27} contains 'item8'",
+          "title": "CAT",
+          "hideNumber": true
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel5",
+        "elements": [
+         {
+          "type": "expression",
+          "name": "question62",
+          "title": "三、短期/長期照護目標",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question64",
+          "title": "1. 短期目標",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "改善呼吸喘"
+           },
+           {
+            "value": "item2",
+            "text": "呼吸型態建立"
+           },
+           {
+            "value": "item3",
+            "text": "降低輔助肌的使用"
+           },
+           {
+            "value": "item4",
+            "text": "痰液清除"
+           },
+           {
+            "value": "item5",
+            "text": "咳嗽訓練"
+           },
+           {
+            "value": "item6",
+            "text": "肺有效擴張"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "question63",
+          "title": "2. 長期目標",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "增加活動量"
+           },
+           {
+            "value": "item2",
+            "text": "能夠執行日常活動"
+           },
+           {
+            "value": "item3",
+            "text": "能輕鬆外出"
+           },
+           {
+            "value": "item4",
+            "text": "復原運動"
+           },
+           {
+            "value": "item5",
+            "text": "增加生活品質"
+           },
+           {
+            "value": "item6",
+            "text": "肌肉強化運動"
+           },
+           {
+            "value": "item7",
+            "text": "減少急性惡化及住院"
+           }
+          ],
+          "colCount": 2
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel6",
+        "elements": [
+         {
+          "type": "checkbox",
+          "name": "question66",
+          "title": "四、處置項目",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "SVN inhalation"
+           },
+           {
+            "value": "item2",
+            "text": "Inhalation drug education"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question68",
+          "visibleIf": "{question66} contains 'item1'",
+          "title": "SVN inhalation",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "Bricanyl"
+           },
+           {
+            "value": "item2",
+            "text": "Atrovent"
+           },
+           {
+            "value": "item3",
+            "text": "Bricanyl+Atrovent"
+           },
+           {
+            "value": "item4",
+            "text": "Combivent"
+           },
+           {
+            "value": "item5",
+            "text": "other"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question65",
+          "visibleIf": "{question68} contains 'item5'",
+          "title": "SVN inhalation - other"
+         },
+         {
+          "type": "checkbox",
+          "name": "question67",
+          "visibleIf": "{question66} contains 'item2'",
+          "title": "Inhalation drug education",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "MDI"
+           },
+           {
+            "value": "item2",
+            "text": "DPI"
+           }
+          ],
+          "colCount": 5
+         },
+         {
+          "type": "checkbox",
+          "name": "question69",
+          "visibleIf": "{question67} contains 'item1'",
+          "title": "Inhalation drug education - MDI",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "Alvesco "
+           },
+           {
+            "value": "item2",
+            "text": "Berotec"
+           },
+           {
+            "value": "item3",
+            "text": "Duasma"
+           },
+           {
+            "value": "item4",
+            "text": "Foster"
+           },
+           {
+            "value": "item5",
+            "text": "Olodaterol "
+           },
+           {
+            "value": "item6",
+            "text": "Respimat"
+           },
+           {
+            "value": "item7",
+            "text": "Spiolto"
+           },
+           {
+            "value": "item8",
+            "text": "Seretide Evohaler"
+           },
+           {
+            "value": "item9",
+            "text": "Ventolin"
+           },
+           {
+            "value": "item10",
+            "text": "其他"
+           },
+           {
+            "value": "item11",
+            "text": "第一次教導"
+           },
+           {
+            "value": "item12",
+            "text": "再次修正錯誤"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question70",
+          "visibleIf": "{question69} contains 'item10'",
+          "title": "Inhalation drug education - MDI - 其他",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question71",
+          "visibleIf": "{question67} contains 'item2'",
+          "title": "Inhalation drug education - DPI",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "Flixotide"
+           },
+           {
+            "value": "item2",
+            "text": "Indacaterol "
+           },
+           {
+            "value": "item3",
+            "text": "Relvar Ellipta"
+           },
+           {
+            "value": "item4",
+            "text": "Anoro Ellipta"
+           },
+           {
+            "value": "item5",
+            "text": "Seretide"
+           },
+           {
+            "value": "item6",
+            "text": "Symbicort"
+           },
+           {
+            "value": "item7",
+            "text": "Spiolto"
+           },
+           {
+            "value": "item8",
+            "text": "Ultibro"
+           },
+           {
+            "value": "item10",
+            "text": "其他"
+           },
+           {
+            "value": "item11",
+            "text": "第一次教導"
+           },
+           {
+            "value": "item12",
+            "text": "再次修正錯誤"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question72",
+          "visibleIf": "{question71} contains 'item10'",
+          "title": "Inhalation drug education - DPI - 其他",
+          "hideNumber": true
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel7",
+        "elements": [
+         {
+          "type": "checkbox",
+          "name": "question73",
+          "title": "五、肺復原照護計劃",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "呼吸運動/呼吸訓練"
+           },
+           {
+            "value": "item2",
+            "text": "肺擴張治療"
+           },
+           {
+            "value": "item3",
+            "text": "痰液清除/咳嗽功能訓練"
+           },
+           {
+            "value": "item4",
+            "text": "呼吸肌力訓練"
+           },
+           {
+            "value": "item5",
+            "text": "運動肺功能訓練"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question74",
+          "visibleIf": "{question73} contains 'item1'",
+          "title": "呼吸運動/呼吸訓練",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "呼吸控制(橫膈呼吸、噘嘴吐氣)"
+           },
+           {
+            "value": "item2",
+            "text": "哈氣/咳嗽技巧"
+           },
+           {
+            "value": "item3",
+            "text": "呼吸困難緩解技巧"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question75",
+          "visibleIf": "{question73} contains 'item2'",
+          "title": "肺擴張治療",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "負壓呼吸器治療"
+           },
+           {
+            "value": "item2",
+            "text": "雙項陽壓BiPAP治療"
+           },
+           {
+            "value": "item3",
+            "text": "間歇陽壓IPPB治療"
+           },
+           {
+            "value": "item4",
+            "text": "連續陽壓呼吸CPAP治療"
+           },
+           {
+            "value": "item5",
+            "text": "誘發性呼吸訓練IS(ml/sec)"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question76",
+          "visibleIf": "{question73} contains 'item3'",
+          "title": "痰液清除/咳嗽功能訓練",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "藥物吸入"
+           },
+           {
+            "value": "item2",
+            "text": "濕氣噴霧治療"
+           },
+           {
+            "value": "item3",
+            "text": "正確咳嗽方法"
+           },
+           {
+            "value": "item4",
+            "text": "姿位引流"
+           },
+           {
+            "value": "item5",
+            "text": "扣擊與振顫"
+           },
+           {
+            "value": "item6",
+            "text": "氣道清潔治療"
+           },
+           {
+            "value": "item7",
+            "text": "高頻震盪拍痰HFCWC"
+           },
+           {
+            "value": "item8",
+            "text": "助咳機Cough Machine"
+           },
+           {
+            "value": "item9",
+            "text": "呼吸道訓練震動器"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "checkbox",
+          "name": "question77",
+          "visibleIf": "{question73} contains 'item4'",
+          "title": "呼吸肌力訓練",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "吸氣肌訓練(IMT)"
+           },
+           {
+            "value": "item2",
+            "text": "吐氣肌訓練(PEP)"
+           },
+           {
+            "value": "item3",
+            "text": "呼吸道訓練震動器"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question78",
+          "visibleIf": "{question73} contains 'item5'",
+          "title": "運動肺功能訓練",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "上肢運動"
+           },
+           {
+            "value": "item5",
+            "text": "下肢運動"
+           },
+           {
+            "value": "item6",
+            "text": "其他"
+           }
+          ],
+          "colCount": 5
+         },
+         {
+          "type": "text",
+          "name": "question80",
+          "visibleIf": "{question78} contains 'item6'",
+          "title": "運動肺功能訓練-其他",
+          "hideNumber": true
+         },
+         {
+          "type": "checkbox",
+          "name": "question79",
+          "visibleIf": "{question78} contains 'item1'",
+          "title": "運動肺功能訓練-上肢運動",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "舉水瓶"
+           },
+           {
+            "value": "item5",
+            "text": "彈力帶"
+           },
+           {
+            "value": "item6",
+            "text": "手搖車"
+           }
+          ],
+          "colCount": 5
+         },
+         {
+          "type": "multipletext",
+          "name": "question81",
+          "visibleIf": "{question79} contains 'item6'",
+          "title": "運動肺功能訓練-上肢運動-手搖車",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "訓練時間"
+           },
+           {
+            "name": "text2",
+            "title": "頻率"
+           }
+          ]
+         },
+         {
+          "type": "checkbox",
+          "name": "question82",
+          "visibleIf": "{question78} contains 'item5'",
+          "title": "運動肺功能訓練-下肢運動",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "走路"
+           },
+           {
+            "value": "item5",
+            "text": "彈力帶"
+           },
+           {
+            "value": "item6",
+            "text": "腳踏車"
+           }
+          ],
+          "colCount": 5
+         },
+         {
+          "type": "multipletext",
+          "name": "question83",
+          "visibleIf": "{question82} contains 'item6'",
+          "title": "運動肺功能訓練-下肢運動-腳踏車",
+          "hideNumber": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "訓練時間"
+           },
+           {
+            "name": "text2",
+            "title": "頻率"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "checkbox",
+        "name": "question84",
+        "title": "六、衛教項目",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "item1",
+          "text": "肺部病生理及自我處理方式"
+         },
+         {
+          "value": "item2",
+          "text": "痰液清除技巧"
+         },
+         {
+          "value": "item3",
+          "text": "呼吸控制及咳嗽技巧"
+         },
+         {
+          "value": "item4",
+          "text": "吸入型藥物使用技巧"
+         },
+         {
+          "value": "item5",
+          "text": "居家用氧注意事項"
+         },
+         {
+          "value": "item6",
+          "text": "居家呼吸器照護注意事項"
+         },
+         {
+          "value": "item7",
+          "text": "COPD惡化急性發作處理"
+         },
+         {
+          "value": "item8",
+          "text": "肺部復原管理與諮詢"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "question85",
+        "title": "七、其他",
+        "hideNumber": true
+       }
+      ]
+     }
+    ]
+   }

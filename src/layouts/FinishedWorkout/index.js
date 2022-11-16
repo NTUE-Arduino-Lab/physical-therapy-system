@@ -42,12 +42,16 @@ import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
 import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
 import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
+import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
+import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
 const sixSurveyJson = SixSurveyJson;
 const copdSurveyJson = COPDSurveyJson;
 const sgrSurveyJson = SGRSurveyJson;
 const borgScaleSurveyJson = BorgScaleSurveyJson;
+const lungTherapyEvaSurveyJson = LungTherapyEvaSurveyJson;
+const sixSurveyNewJson = SixSurveyNewJson;
 
 const mySurveyCss = {
     text: {
@@ -90,6 +94,8 @@ const FinishedWorkout = () => {
     const [copdSurveyData, setCopdSurveyData] = useState(false);
     const [sgrSurveyData, setSGRSurveyData] = useState(false);
     const [borgScaleSurveyData, setBorgScaleSurveyData] = useState();
+    const [lungTherapyEvaData, setLungTherapyEvaData] = useState();
+    const [sixSurveyNewData, setSixSurveyNewData] = useState();
 
     // survey UI related!!
     survey.focusFirstQuestionAutomatic = false;
@@ -114,6 +120,12 @@ const FinishedWorkout = () => {
         }
         if (curSurveyName === 'borgScale') {
             setBorgScaleSurveyData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'lungTherapyEva') {
+            setLungTherapyEvaData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'sixSurveyNew') {
+            setSixSurveyNewData({ ...results, surveyCompleted: true });
         }
     };
     survey.onComplete.add(saveResults);
@@ -154,6 +166,22 @@ const FinishedWorkout = () => {
 
             if (borgScaleSurveyData) {
                 survey.data = borgScaleSurveyData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'lungTherapyEva') {
+            let survey = new Model(lungTherapyEvaSurveyJson);
+
+            if (lungTherapyEvaData) {
+                survey.data = lungTherapyEvaData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'sixSurveyNew') {
+            let survey = new Model(sixSurveyNewJson);
+
+            if (sixSurveyNewData) {
+                survey.data = sixSurveyNewData;
             }
             setSurvey(survey);
         }
@@ -253,6 +281,22 @@ const FinishedWorkout = () => {
         });
         setBorgScaleSurveyData({
             question2: `${difficulty?.name} \n (目標${difficulty?.targetHeartRate}BPM／${difficulty?.targetWorkoutTime}分)`,
+        });
+        setLungTherapyEvaData({
+            question1: {
+                text1: user?.idNumber,
+                text2: user?.name,
+                text5: user?.height + ' cm',
+                text6: user?.weight + ' kg',
+            },
+            question2: moment(record?.beginWorkoutTime).format('L'),
+        });
+        setSixSurveyNewData({
+            question1: {
+                text1: user?.idNumber,
+                text2: user?.name,
+            },
+            question2: moment(record?.beginWorkoutTime).format('L'),
         });
     };
 
@@ -481,6 +525,30 @@ const FinishedWorkout = () => {
                                 }
                             >
                                 進行 Borg Scale 測驗
+                            </Button>
+                            <Button
+                                onClick={() =>
+                                    openSurveyModal('lungTherapyEva')
+                                }
+                                type="primary"
+                                icon={
+                                    lungTherapyEvaData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 呼吸治療肺復原和呼吸訓練評估表
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('sixSurveyNew')}
+                                type="primary"
+                                icon={
+                                    sixSurveyNewData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                            >
+                                進行 新 六分鐘呼吸測驗
                             </Button>
                         </Space>
                     </div>
