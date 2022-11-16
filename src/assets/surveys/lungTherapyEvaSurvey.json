@@ -260,7 +260,7 @@
           "colCount": 2
          },
          {
-          "type": "radiogroup",
+          "type": "checkbox",
           "name": "question10",
           "title": "1.6 痰液評估-痰液氣味",
           "hideNumber": true,

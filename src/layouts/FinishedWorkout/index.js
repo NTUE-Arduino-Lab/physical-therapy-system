@@ -346,7 +346,9 @@ const FinishedWorkout = () => {
                 sixSurveyData?.surveyCompleted &&
                 copdSurveyData?.surveyCompleted &&
                 sgrSurveyData?.surveyCompleted &&
-                borgScaleSurveyData?.surveyCompleted
+                borgScaleSurveyData?.surveyCompleted &&
+                lungTherapyEvaData?.surveyCompleted &&
+                sixSurveyNewData?.surveyCompleted
             )
         ) {
             message.error('尚有問卷未完成');
@@ -373,6 +375,8 @@ const FinishedWorkout = () => {
             borgScaleSurvey: borgScaleSurveyData,
             sgrSurvey: sgrSurveyData,
             copdSurvey: copdSurveyData,
+            lungTherapyEva: lungTherapyEvaData,
+            sixSurveyNew: sixSurveyNewData,
         });
 
         message.success({ content: '已提交！自動跳轉至選單畫面' });
@@ -526,6 +530,12 @@ const FinishedWorkout = () => {
                             >
                                 進行 Borg Scale 測驗
                             </Button>
+                        </Space>
+                        <Space
+                            style={{
+                                marginTop: '24px',
+                            }}
+                        >
                             <Button
                                 onClick={() =>
                                     openSurveyModal('lungTherapyEva')

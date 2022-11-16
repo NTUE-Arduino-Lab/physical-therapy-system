@@ -38,12 +38,16 @@ import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
 import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
 import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
+import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
+import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
 const sixSurveyJson = SixSurveyJson;
 const copdSurveyJson = COPDSurveyJson;
 const sgrSurveyJson = SGRSurveyJson;
 const borgScaleSurveyJson = BorgScaleSurveyJson;
+const lungTherapyEvaSurveyJson = LungTherapyEvaSurveyJson;
+const sixSurveyNewJson = SixSurveyNewJson;
 
 const mySurveyCss = {
     text: {
@@ -285,6 +289,22 @@ const RecordList = () => {
 
             setSurvey(survey);
         }
+        if (surveyName === 'lungTherapyEva') {
+            let survey = new Model(lungTherapyEvaSurveyJson);
+
+            survey.data = currRecord.lungTherapyEva;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'sixSurveyNew') {
+            let survey = new Model(sixSurveyNewJson);
+
+            survey.data = currRecord.sixSurveyNew;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
 
         setCurSurveyName(surveyName);
         setSurveyModalVisible(true);
@@ -516,6 +536,31 @@ const RecordList = () => {
                                         icon={<CheckOutlined />}
                                     >
                                         查看 Borg Scale 測驗結果
+                                    </Button>
+                                </Space>
+                                <Space
+                                    style={{
+                                        marginLeft: '24px',
+                                        marginTop: '24px',
+                                    }}
+                                >
+                                    <Button
+                                        onClick={() =>
+                                            openSurveyModal('lungTherapyEva')
+                                        }
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 呼吸治療肺復原和呼吸訓練評估表結果
+                                    </Button>
+                                    <Button
+                                        onClick={() =>
+                                            openSurveyModal('sixSurveyNew')
+                                        }
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 新 六分鐘呼吸測驗結果
                                     </Button>
                                 </Space>
                             </>
