@@ -19,6 +19,47 @@
 }
 
 .descriptions, 
+.surveys,
 .form {
   padding: 16px 24px;
+}
+
+.form {
+  margin-left: 24px;
+  margin-right: 24px;
+  margin-top: 16px;
+  display: flex;
+  border: 1px solid #F39700;
+  background-color: #FCC976;
+  border-radius: 10px;
+  display: grid;
+  grid-template-rows: 3em 1fr;
+  grid-template-columns: 2fr 3fr;
+  grid-template-areas: 
+    "label label"
+    "group1 group2";
+}
+
+.formLabel {
+  grid-area: label;
+}
+
+.formGroup1 {
+  grid-area: group1;
+  margin-right: 1em;
+
+  border-radius: 10px;
+  background: #fff;
+  padding: 1em;
+  border: 1px solid #F39700;
+}
+
+.formGroup2 {
+  grid-area: group2;
+  margin-left: 1em;
+
+  border-radius: 10px;
+  background: #fff;
+  padding: 1em;
+  border: 1px solid #F39700;
 }

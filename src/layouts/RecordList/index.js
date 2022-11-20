@@ -33,6 +33,8 @@ import styles from './styles.module.scss';
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 import formatWithMoment from '../../util/formatSeconds';
 import configLineChart from '../../util/configLineChart';
+import IconBack from '../../components/IconBack';
+import IconCheck from '../../components/IconCheck';
 
 import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
 import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
@@ -75,7 +77,7 @@ const RecordList = () => {
     const [currReocrdPackets, setCurrRecordPackets] = useState();
 
     // patched Data
-    const [users, setUsers] = useState(); // 把使用者資料灌回去 records 中
+    const [users, setUsers] = useState([]); // 把使用者資料灌回去 records 中
     const [difficulties, setDifficulties] = useState([]); // 把難度資料灌回去 records 中
 
     // forms
@@ -221,29 +223,30 @@ const RecordList = () => {
     };
 
     const openViewModal = async (id) => {
-        setViewModalVisible(true);
-        setLoading(true);
+        navigate(`${ROUTE_PATH.record_detail}/${id}`);
+        // setViewModalVisible(true);
+        // setLoading(true);
 
-        const currRecord = records.find((r) => r.id === id);
-        const packetsRef = collection(recordsRef, id, 'packets');
+        // const currRecord = records.find((r) => r.id === id);
+        // const packetsRef = collection(recordsRef, id, 'packets');
 
-        // packets
-        const currReocrdPackets = [];
-        const packetsSnapshot = await getDocs(packetsRef);
-        packetsSnapshot.forEach((doc) => {
-            currReocrdPackets.push({
-                ...doc.data(),
-                timeLabel: formatWithMoment(doc.data().time),
-            });
-        });
+        // // packets
+        // const currReocrdPackets = [];
+        // const packetsSnapshot = await getDocs(packetsRef);
+        // packetsSnapshot.forEach((doc) => {
+        //     currReocrdPackets.push({
+        //         ...doc.data(),
+        //         timeLabel: formatWithMoment(doc.data().time),
+        //     });
+        // });
 
-        currReocrdPackets.sort((a, b) => a.time - b.time);
-        currReocrdPackets.splice(0, 1);
+        // currReocrdPackets.sort((a, b) => a.time - b.time);
+        // currReocrdPackets.splice(0, 1);
 
-        setCurrRecord(currRecord);
-        setCurrRecordPackets(currReocrdPackets);
+        // setCurrRecord(currRecord);
+        // setCurrRecordPackets(currReocrdPackets);
 
-        setLoading(false);
+        // setLoading(false);
     };
 
     const closeViewModal = () => {
@@ -314,27 +317,37 @@ const RecordList = () => {
         setSurveyModalVisible(false);
     };
 
-    if (!isDone) {
-        return (
-            <Layout style={{ padding: '24px' }}>
-                <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="資料讀取中..."
-                    />
-                </div>
-            </Layout>
-        );
-    }
+    // if (!isDone) {
+    //     return (
+    //         <Layout style={{ padding: '24px' }}>
+    //             <div className={styles.container}>
+    //                 <PageHeader
+    //                     className={styles.PageHeader}
+    //                     title="資料讀取中..."
+    //                 />
+    //             </div>
+    //         </Layout>
+    //     );
+    // }
 
     return (
         <Layout>
-            <Content className="site-layout" style={{ padding: '24px' }}>
+            <Content className={styles.antContent}>
+                <div className={styles.backIcon} onClick={goDashboard}>
+                    <IconBack />
+                </div>
                 <div className={styles.container}>
                     <PageHeader
                         title="騎乘紀錄列表"
-                        subTitle="查看騎乘紀錄資訊"
-                        onBack={goDashboard}
+                        subTitle={
+                            <span
+                                style={{ color: '#797878', fontWeight: 'bold' }}
+                            >
+                                查看騎乘紀錄資訊
+                            </span>
+                        }
+                        // onBack={goDashboard}
+                        style={{ borderRadius: '20px' }}
                     />
                     <Form
                         {...formLayout}
@@ -345,12 +358,12 @@ const RecordList = () => {
                             <Col span={10}>
                                 <Form.Item label="騎乘者名稱" name="user">
                                     <Select placeholder="選擇騎乘者" allowClear>
-                                        {users.map((user) => (
+                                        {users?.map((user) => (
                                             <Option
-                                                value={user.id}
-                                                key={user.id}
+                                                value={user?.id}
+                                                key={user?.id}
                                             >
-                                                {user.name}
+                                                {user?.name}
                                             </Option>
                                         ))}
                                     </Select>
@@ -362,15 +375,15 @@ const RecordList = () => {
                                         placeholder="選擇關卡資訊"
                                         allowClear
                                     >
-                                        {difficulties.map((diff) => (
+                                        {difficulties?.map((diff) => (
                                             <Option
-                                                value={diff.id}
-                                                key={diff.id}
+                                                value={diff?.id}
+                                                key={diff?.id}
                                             >
-                                                {diff.name}・
-                                                {diff.targetWorkoutTime}{' '}
+                                                {diff?.name}・
+                                                {diff?.targetWorkoutTime}{' '}
                                                 分鐘・目標{' '}
-                                                {diff.targetHeartRate} BPM
+                                                {diff?.targetHeartRate} BPM
                                             </Option>
                                         ))}
                                     </Select>
@@ -383,6 +396,10 @@ const RecordList = () => {
                                         htmlType="submit"
                                         onClick={onSearch}
                                         icon={<SearchOutlined />}
+                                        style={{
+                                            border: '1px solid #F39700',
+                                            background: '#FCC976',
+                                        }}
                                     >
                                         查詢
                                     </Button>
@@ -393,11 +410,24 @@ const RecordList = () => {
                     <Table
                         columns={columns(openViewModal)}
                         dataSource={filteredRecords}
-                        pagination={{ pageSize: 5 }}
+                        pagination={{
+                            pageSize: 5,
+                            position: ['bottomCenter'],
+                        }}
                         style={{ marginLeft: 24, marginRight: 24 }}
+                        className={styles.table}
                     />
                     <Modal
-                        title="檢視紀錄"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                檢視紀錄
+                            </span>
+                        }
                         visible={viewModalVisible}
                         onCancel={closeViewModal}
                         footer={null} // no [Ok], [Cancel] button
@@ -414,12 +444,31 @@ const RecordList = () => {
                                     <Descriptions.Item
                                         label="騎乘者姓名"
                                         span={2}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderTopLeftRadius: '0.8rem',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {currRecord?.userData?.name}
                                     </Descriptions.Item>
                                     <Descriptions.Item
                                         label="騎乘者會員編號"
                                         span={2}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {currRecord?.userData?.idNumber}
                                     </Descriptions.Item>
@@ -430,6 +479,15 @@ const RecordList = () => {
                                                 <br />/ 目標騎乘時間
                                             </div>
                                         }
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {calWorkoutTime(currRecord)}／
                                         {
@@ -438,31 +496,119 @@ const RecordList = () => {
                                         }{' '}
                                         分
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="開始騎乘時間">
+                                    <Descriptions.Item
+                                        label="開始騎乘時間"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         {currRecord?.beginWorkoutTime.toLocaleString()}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="結束騎乘時間">
+                                    <Descriptions.Item
+                                        label="結束騎乘時間"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         {currRecord?.finishedWorkoutTime.toLocaleString()}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="平均速率／平均心率">
+                                    <Descriptions.Item
+                                        label="平均速率／平均心率"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         20 BPM／30 RPM
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="運動強度">
+                                    <Descriptions.Item
+                                        label="運動強度"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         23 WATTS
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="累積入熱量消耗">
+                                    <Descriptions.Item
+                                        label="累積入熱量消耗"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         12 CAL
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="騎乘關卡">
+                                    <Descriptions.Item
+                                        label="騎乘關卡"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         {currRecord?.difficultyData?.name}
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="目標心率">
+                                    <Descriptions.Item
+                                        label="目標心率"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         {
                                             currRecord?.difficultyData
                                                 ?.targetHeartRate
                                         }
                                     </Descriptions.Item>
-                                    <Descriptions.Item label="上限心率">
+                                    <Descriptions.Item
+                                        label="上限心率"
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                    >
                                         {
                                             currRecord?.difficultyData
                                                 ?.upperLimitHeartRate
@@ -471,6 +617,15 @@ const RecordList = () => {
                                     <Descriptions.Item
                                         label="RPM＆心率統計圖"
                                         span={3}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         <LineChart
                                             {...configLineChart(
@@ -482,24 +637,55 @@ const RecordList = () => {
                                     <Descriptions.Item
                                         label="物理治療師名稱"
                                         span={3}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {currRecord?.therapist}
                                     </Descriptions.Item>
                                     <Descriptions.Item
                                         label="安全心律上線指數"
                                         span={3}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {currRecord?.safeHRIndex}
                                     </Descriptions.Item>
                                     <Descriptions.Item
                                         label="心律變異指數"
                                         span={3}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
+                                        contentStyle={{
+                                            borderBottom:
+                                                '1px solid rgb(243, 151, 0)',
+                                        }}
                                     >
                                         {currRecord?.hrVariabilityIndex}
                                     </Descriptions.Item>
                                     <Descriptions.Item
                                         label="治療結果評語"
                                         span={3}
+                                        labelStyle={{
+                                            background: '#FCC976',
+                                            borderBottomLeftRadius: '0.8rem',
+                                        }}
                                     >
                                         {currRecord?.comment}
                                     </Descriptions.Item>
@@ -647,7 +833,15 @@ const columns = (openViewModal) => [
         dataIndex: 'id',
         align: 'center',
         render: (id) => (
-            <Button type="link" onClick={() => openViewModal(id)}>
+            <Button
+                type="primary"
+                onClick={() => openViewModal(id)}
+                style={{
+                    borderRadius: '34px',
+                    background: '#F39700',
+                    border: '0px',
+                }}
+            >
                 查看
             </Button>
         ),

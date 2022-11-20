@@ -15,6 +15,7 @@ import DifficulityList from '../layouts/DifficulityList';
 import FinishedWorkout from '../layouts/FinishedWorkout';
 import RecordList from '../layouts/RecordList';
 import TrainingWeekRecord from '../layouts/TrainingWeekRecord';
+import RecordDetail from '../layouts/RecordDetail';
 
 const AppRoutes = () => {
     return (
@@ -44,6 +45,10 @@ const AppRoutes = () => {
                 <Route
                     path={`${ROUTE_PATH.record_list}/:userId`}
                     element={<RecordList />}
+                />
+                <Route
+                    path={`${ROUTE_PATH.record_detail}/:recordId`}
+                    element={<RecordDetail />}
                 />
                 <Route
                     path={ROUTE_PATH.difficulty_list}

@@ -41,6 +41,11 @@ import styles from './styles.module.scss';
 import _ from '../../util/helper';
 
 import { difficultiesRef } from '../../services/firebase';
+import IconBack from '../../components/IconBack';
+import IconCheck from '../../components/IconCheck';
+import IconView from '../../components/IconView';
+import IconEdit from '../../components/IconEdit';
+import IconDelete from '../../components/IconDelete';
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -183,7 +188,7 @@ const DifficulityList = () => {
 
         await fetchDiffs();
 
-        message.info('難度已刪除。');
+        // message.info('難度已刪除。');
     };
 
     const openViewModal = (id) => {
@@ -262,37 +267,52 @@ const DifficulityList = () => {
         return [overSlight, overMedium, overHigh];
     };
 
-    if (!isDone) {
-        return (
-            <Layout style={{ padding: '24px' }}>
-                <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="資料讀取中..."
-                    />
-                </div>
-            </Layout>
-        );
-    }
+    // if (!isDone) {
+    //     return (
+    //         <Layout style={{ padding: '24px' }}>
+    //             <div className={styles.container}>
+    //                 <PageHeader
+    //                     className={styles.PageHeader}
+    //                     title="資料讀取中..."
+    //                 />
+    //             </div>
+    //         </Layout>
+    //     );
+    // }
 
     return (
         <Layout>
-            <Content className="site-layout" style={{ padding: '24px' }}>
+            <Content className={styles.antContent}>
+                <div className={styles.backIcon} onClick={goDashboard}>
+                    <IconBack />
+                </div>
                 <div className={styles.container}>
                     <PageHeader
                         title="訓練難度資訊列表"
-                        subTitle="管理難度資訊"
-                        onBack={goDashboard}
+                        subTitle={
+                            <span
+                                style={{ color: '#797878', fontWeight: 'bold' }}
+                            >
+                                管理難度資訊
+                            </span>
+                        }
+                        // onBack={goDashboard}
                         extra={[
                             <Button
                                 key={1}
                                 type="primary"
                                 icon={<PlusOutlined />}
                                 onClick={openCreateModal}
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                }}
                             >
                                 新增難度
                             </Button>,
                         ]}
+                        style={{ borderRadius: '20px' }}
                     />
                     <Form
                         {...formLayout}
@@ -325,6 +345,10 @@ const DifficulityList = () => {
                                         htmlType="submit"
                                         onClick={onSearch}
                                         icon={<SearchOutlined />}
+                                        style={{
+                                            border: '1px solid #F39700',
+                                            background: '#FCC976',
+                                        }}
                                     >
                                         查詢
                                     </Button>
@@ -339,11 +363,24 @@ const DifficulityList = () => {
                             onDeleteDiff,
                         )}
                         dataSource={filteredDiffs}
-                        pagination={{ pageSize: 5 }}
+                        pagination={{
+                            pageSize: 5,
+                            position: ['bottomCenter'],
+                        }}
                         style={{ marginLeft: 24, marginRight: 24 }}
+                        className={styles.table}
                     />
                     <Modal
-                        title="檢視難度"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                關卡資訊
+                            </span>
+                        }
                         visible={viewModalVisible}
                         onCancel={closeViewModal}
                         footer={null} // no [Ok], [Cancel] button
@@ -355,16 +392,57 @@ const DifficulityList = () => {
                             size="middle"
                             column={2}
                         >
-                            <Descriptions.Item label="難度名稱" span={1}>
+                            <Descriptions.Item
+                                label="難度名稱"
+                                span={1}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderTopLeftRadius: '0.8rem',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currDiff?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="目標騎乘時間" span={1}>
+                            <Descriptions.Item
+                                label="目標騎乘時間"
+                                span={1}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currDiff?.targetWorkoutTime} 分
                             </Descriptions.Item>
-                            <Descriptions.Item label="目標心率數值" span={2}>
+                            <Descriptions.Item
+                                label="目標心率數值"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currDiff?.targetHeartRate}
                             </Descriptions.Item>
-                            <Descriptions.Item label="上限心率數值" span={2}>
+                            <Descriptions.Item
+                                label="上限心率數值"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currDiff?.upperLimitHeartRate}
                             </Descriptions.Item>
                             <Descriptions.Item
@@ -381,6 +459,13 @@ const DifficulityList = () => {
                                     </>
                                 }
                                 span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
                             >
                                 <Badge
                                     color="blue"
@@ -418,19 +503,64 @@ const DifficulityList = () => {
                                     }}
                                 />
                             </Descriptions.Item>
-                            <Descriptions.Item label="備註" span={2}>
+                            <Descriptions.Item
+                                label="備註"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottomLeftRadius: '0.8rem',
+                                }}
+                            >
                                 {currDiff?.note}
                             </Descriptions.Item>
                         </Descriptions>
                     </Modal>
                     {/* 新增 Modal */}
                     <Modal
-                        title="新增難度"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                新增難度
+                            </span>
+                        }
                         visible={createModalVisible}
                         onOk={onCreateDiff}
                         confirmLoading={loading}
                         onCancel={closeCreateModal}
                         destroyOnClose
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeCreateModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onCreateDiff}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -555,12 +685,50 @@ const DifficulityList = () => {
                         </Form>
                     </Modal>
                     <Modal
-                        title="編輯難度"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                編輯難度
+                            </span>
+                        }
                         visible={editModalVisible}
                         onOk={onPatchDiff}
                         confirmLoading={loading}
                         onCancel={closeEditModal}
                         destroyOnClose
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeEditModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onPatchDiff}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -720,35 +888,35 @@ const columns = (openViewModal, openEditModal, onDeleteDiff) => [
         align: 'center',
         render: (id) => {
             return (
-                <Popover
-                    content={
-                        <Space direction="vertical" size="small">
-                            <Button
-                                type="link"
-                                onClick={() => openViewModal(id)}
-                            >
-                                查看
-                            </Button>
-                            <Button
-                                type="link"
-                                onClick={() => openEditModal(id)}
-                            >
-                                編輯
-                            </Button>
-                            <Button
-                                type="link"
-                                danger
-                                onClick={() => onDeleteDiff(id)}
-                            >
-                                刪除
-                            </Button>
-                        </Space>
-                    }
-                    trigger="click"
-                    placement="left"
-                >
-                    <MoreOutlined rotate={90} style={{ fontSize: '20px' }} />
-                </Popover>
+                <Space direction="horizontal" size="middle">
+                    <div
+                        style={{ width: '1.5em', height: '1.5em' }}
+                        onClick={() => openViewModal(id)}
+                    >
+                        <IconView />
+                    </div>
+                    <div
+                        style={{ width: '1.5em', height: '1.5em' }}
+                        onClick={() => openEditModal(id)}
+                    >
+                        <IconEdit />
+                    </div>
+                    <div
+                        style={{ width: '1.5em', height: '1.5em' }}
+                        onClick={() => onDeleteDiff(id)}
+                    >
+                        <IconDelete />
+                    </div>
+                    {/* <Button type="link" onClick={() => openViewModal(id)}>
+                        查看
+                    </Button>
+                    <Button type="link" onClick={() => openEditModal(id)}>
+                        編輯
+                    </Button>
+                    <Button type="link" danger onClick={() => onDeleteDiff(id)}>
+                        刪除
+                    </Button> */}
+                </Space>
             );
         },
         width: 150,

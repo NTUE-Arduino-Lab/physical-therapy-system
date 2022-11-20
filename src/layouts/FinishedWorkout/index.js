@@ -429,10 +429,30 @@ const FinishedWorkout = () => {
                     />
 
                     <Descriptions bordered className={styles.descriptions}>
-                        <Descriptions.Item label="騎乘者姓名" span={2}>
+                        <Descriptions.Item
+                            label="騎乘者姓名"
+                            span={2}
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderTopLeftRadius: '0.8rem',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {user?.name}
                         </Descriptions.Item>
-                        <Descriptions.Item label="騎乘者身體年齡">
+                        <Descriptions.Item
+                            label="騎乘者身體年齡"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {user?.age}
                         </Descriptions.Item>
 
@@ -443,35 +463,120 @@ const FinishedWorkout = () => {
                                     <br />/ 目標騎乘時間
                                 </div>
                             }
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
                         >
                             {calWorkoutTime()}／{difficulty.targetWorkoutTime}{' '}
                             分
                         </Descriptions.Item>
-                        <Descriptions.Item label="開始騎乘時間">
+                        <Descriptions.Item
+                            label="開始騎乘時間"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {record.beginWorkoutTime.toLocaleString()}
                         </Descriptions.Item>
-                        <Descriptions.Item label="結束騎乘時間">
+                        <Descriptions.Item
+                            label="結束騎乘時間"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {record.finishedWorkoutTime.toLocaleString()}
                         </Descriptions.Item>
-                        <Descriptions.Item label="平均速率／平均心率">
+                        <Descriptions.Item
+                            label="平均速率／平均心率"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             20 BPM／30 RPM
                         </Descriptions.Item>
-                        <Descriptions.Item label="運動強度">
+                        <Descriptions.Item
+                            label="運動強度"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             23 WATTS
                         </Descriptions.Item>
-                        <Descriptions.Item label="累積入熱量消耗">
+                        <Descriptions.Item
+                            label="累積入熱量消耗"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             12 CAL
                         </Descriptions.Item>
-                        <Descriptions.Item label="騎乘關卡">
+                        <Descriptions.Item
+                            label="騎乘關卡"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {difficulty.name}
                         </Descriptions.Item>
-                        <Descriptions.Item label="目標心率">
+                        <Descriptions.Item
+                            label="目標心率"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {difficulty.targetHeartRate}
                         </Descriptions.Item>
-                        <Descriptions.Item label="上限心率">
+                        <Descriptions.Item
+                            label="上限心率"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                            contentStyle={{
+                                borderBottom: '1px solid rgb(243, 151, 0)',
+                            }}
+                        >
                             {difficulty.upperLimitHeartRate}
                         </Descriptions.Item>
-                        <Descriptions.Item label="RPM＆心率統計圖">
+                        <Descriptions.Item
+                            label="RPM＆心率統計圖"
+                            labelStyle={{
+                                background: '#FCC976',
+                                borderBottomLeftRadius: '0.8rem',
+                            }}
+                        >
                             <LineChart
                                 {...configLineChart(
                                     packets,
@@ -481,7 +586,7 @@ const FinishedWorkout = () => {
                         </Descriptions.Item>
                     </Descriptions>
 
-                    <div className={styles.form}>
+                    <div className={styles.surveys}>
                         <h3>請完成以下評估問卷</h3>
                         <Space>
                             <Button
@@ -494,6 +599,12 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 六分鐘呼吸測驗
                             </Button>
@@ -505,6 +616,12 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 COPD 測驗
                             </Button>
@@ -516,6 +633,12 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 SGR 測驗
                             </Button>
@@ -527,6 +650,12 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 Borg Scale 測驗
                             </Button>
@@ -546,6 +675,12 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 呼吸治療肺復原和呼吸訓練評估表
                             </Button>
@@ -557,73 +692,96 @@ const FinishedWorkout = () => {
                                         <CheckOutlined />
                                     ) : null
                                 }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
                             >
                                 進行 新 六分鐘呼吸測驗
                             </Button>
                         </Space>
                     </div>
                     <div className={styles.form}>
-                        <h3>請填寫以下資料，方可返回主選單</h3>
-
-                        <Input
-                            size="large"
-                            placeholder="物理治療師名稱"
-                            prefix={<UserOutlined />}
-                            value={therapist}
-                            onChange={(e) => {
-                                setTherapist(e.target.value);
-                            }}
-                            required={true}
-                        />
-                        <Input
-                            size="large"
-                            placeholder="SPO2"
-                            prefix={<EditOutlined />}
-                            value={spo2}
-                            onChange={(e) => {
-                                setSpo2(e.target.value);
-                            }}
-                            style={{ marginTop: 16 }}
-                            required={true}
-                        />
-                        <Input
-                            size="large"
-                            placeholder="安全心律上線指數"
-                            prefix={<LineChartOutlined />}
-                            value={safeHRIndex}
-                            onChange={(e) => {
-                                setSafeHRIndex(e.target.value);
-                            }}
-                            style={{ marginTop: 16 }}
-                            required={true}
-                        />
-                        <Input
-                            size="large"
-                            placeholder="心律變異指數"
-                            prefix={<LineChartOutlined />}
-                            value={hrVariabilityIndex}
-                            onChange={(e) => {
-                                setHRVariabilityIndex(e.target.value);
-                            }}
-                            style={{ marginTop: 16 }}
-                            required={true}
-                        />
-
-                        <Input.TextArea
-                            showCount
-                            placeholder="治療結果評語"
-                            maxLength={50}
-                            value={comment}
-                            onChange={(e) => setComment(e.target.value)}
-                            style={{ marginTop: 16 }}
-                        />
-
+                        <h3 className={styles.formLabel}>
+                            請填寫以下資料，方可返回主選單
+                        </h3>
+                        <div className={styles.formGroup1}>
+                            <Input
+                                size="large"
+                                placeholder="物理治療師名稱"
+                                prefix={<UserOutlined />}
+                                value={therapist}
+                                onChange={(e) => {
+                                    setTherapist(e.target.value);
+                                }}
+                                required={true}
+                            />
+                            <Input
+                                size="large"
+                                placeholder="SPO2"
+                                prefix={<EditOutlined />}
+                                value={spo2}
+                                onChange={(e) => {
+                                    setSpo2(e.target.value);
+                                }}
+                                style={{ marginTop: 16 }}
+                                required={true}
+                            />
+                            <Input
+                                size="large"
+                                placeholder="安全心律上線指數"
+                                prefix={<LineChartOutlined />}
+                                value={safeHRIndex}
+                                onChange={(e) => {
+                                    setSafeHRIndex(e.target.value);
+                                }}
+                                style={{ marginTop: 16 }}
+                                required={true}
+                            />
+                            <Input
+                                size="large"
+                                placeholder="心律變異指數"
+                                prefix={<LineChartOutlined />}
+                                value={hrVariabilityIndex}
+                                onChange={(e) => {
+                                    setHRVariabilityIndex(e.target.value);
+                                }}
+                                style={{ marginTop: 16 }}
+                                required={true}
+                            />
+                        </div>
+                        <div className={styles.formGroup2}>
+                            <Input.TextArea
+                                showCount
+                                placeholder="治療結果評語"
+                                maxLength={50}
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                                style={{ height: '90%' }}
+                            />
+                        </div>
+                    </div>
+                    <div
+                        style={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
                         <Button
                             onClick={onFormSubmit}
                             type="primary"
-                            style={{ marginTop: 16 }}
+                            style={{
+                                marginTop: 36,
+                                borderRadius: '34px',
+                                background: '#F39700',
+                                border: '0px',
+                                padding: '0em 2em',
+                            }}
                         >
-                            提交，返回主選單
+                            提交
                         </Button>
                     </div>
                 </div>

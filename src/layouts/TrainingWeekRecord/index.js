@@ -34,6 +34,8 @@ import {
 import styles from './styles.module.scss';
 
 import { usersRef } from '../../services/firebase';
+import IconBack from '../../components/IconBack';
+import IconCheck from '../../components/IconCheck';
 
 const { Content } = Layout;
 
@@ -120,7 +122,7 @@ const TrainingWeekRecord = () => {
             closeAllModals();
             createForm.resetFields();
 
-            message.success(`成功新增週次紀錄！`);
+            // message.success(`成功新增週次紀錄！`);
         } catch (e) {
             console.log(e);
             setLoading(false);
@@ -147,7 +149,7 @@ const TrainingWeekRecord = () => {
             setLoading(false);
             closeAllModals();
 
-            message.success(`成功更新騎乘者！`);
+            // message.success(`成功更新騎乘者！`);
         } catch (e) {
             console.log(e);
             setLoading(false);
@@ -181,7 +183,7 @@ const TrainingWeekRecord = () => {
 
         await fetchRecords();
 
-        message.info('週次紀錄已刪除。');
+        // message.info('週次紀錄已刪除。');
     };
 
     const openViewModal = (id) => {
@@ -231,37 +233,33 @@ const TrainingWeekRecord = () => {
         navigate(-1);
     };
 
-    if (!isDone) {
-        return (
-            <Layout style={{ padding: '24px' }}>
-                <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="資料讀取中..."
-                    />
-                </div>
-            </Layout>
-        );
-    }
-
     return (
         <Layout>
-            <Content className="site-layout" style={{ padding: '24px' }}>
+            <Content className={styles.antContent}>
+                <div className={styles.backIcon} onClick={goBack}>
+                    <IconBack />
+                </div>
                 <div className={styles.container}>
                     <PageHeader
-                        title={`${user.name}的訓練週數紀錄`}
+                        title={`${user?.name}的訓練週數紀錄`}
                         // subTitle={`管理${user.name}的訓練週數紀錄`}
-                        onBack={goBack}
+                        // onBack={goBack}
                         extra={[
                             <Button
                                 key={1}
                                 type="primary"
                                 icon={<PlusOutlined />}
                                 onClick={openCreateModal}
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                }}
                             >
                                 新增訓練週次紀錄
                             </Button>,
                         ]}
+                        style={{ borderRadius: '20px' }}
                     />
                     <Table
                         columns={columns(
@@ -270,38 +268,88 @@ const TrainingWeekRecord = () => {
                             onDeleteRecord,
                         )}
                         dataSource={records}
-                        pagination={{ pageSize: 5 }}
+                        pagination={{
+                            pageSize: 5,
+                            position: ['bottomCenter'],
+                        }}
                         style={{ marginLeft: 24, marginRight: 24 }}
+                        className={styles.table}
                     />
                     <Modal
-                        title="檢視週次紀錄"
+                        // title="檢視週次紀錄"
                         visible={viewModalVisible}
                         onCancel={closeViewModal}
                         footer={null} // no [Ok], [Cancel] button
-                        width="70vw"
+                        width="50vw"
                     >
                         <Descriptions
                             bordered
                             className={styles.descriptions}
                             size="middle"
                         >
-                            <Descriptions.Item label="週次" span={3}>
+                            <Descriptions.Item
+                                label="週次"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderTopLeftRadius: '0.8rem',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currRecord?.weekNumber}
                             </Descriptions.Item>
-                            <Descriptions.Item label="紀錄內容" span={3}>
+                            <Descriptions.Item
+                                label="紀錄內容"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottomLeftRadius: '0.8rem',
+                                }}
+                            >
                                 {currRecord?.content}
                             </Descriptions.Item>
                         </Descriptions>
                     </Modal>
                     {/* 新增 Modal */}
                     <Modal
-                        title="新增週次紀錄"
                         visible={createModalVisible}
                         onOk={onCreateUser}
                         confirmLoading={loading}
                         onCancel={closeCreateModal}
                         destroyOnClose
-                        width="70vw"
+                        width="50vw"
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeCreateModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onCreateUser}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -340,13 +388,42 @@ const TrainingWeekRecord = () => {
                         </Form>
                     </Modal>
                     <Modal
-                        title="編輯週次紀錄"
+                        // title="編輯週次紀錄"
                         visible={editModalVisible}
                         onOk={onPatchRecord}
                         confirmLoading={loading}
                         onCancel={closeEditModal}
                         destroyOnClose
-                        width="70vw"
+                        width="50vw"
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeEditModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onPatchRecord}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -403,12 +480,14 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
                             <Button
                                 type="link"
                                 onClick={() => openViewModal(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 查看週次紀錄
                             </Button>
                             <Button
                                 type="link"
                                 onClick={() => openEditModal(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 編輯週次紀錄
                             </Button>
@@ -416,6 +495,7 @@ const columns = (openViewModal, openEditModal, onDeleteUser) => [
                                 type="link"
                                 danger
                                 onClick={() => onDeleteUser(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 刪除週次紀錄
                             </Button>

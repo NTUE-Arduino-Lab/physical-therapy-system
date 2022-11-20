@@ -40,6 +40,8 @@ import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
 import { usersRef } from '../../services/firebase';
+import IconBack from '../../components/IconBack';
+import IconCheck from '../../components/IconCheck';
 
 const { Content } = Layout;
 const { Text } = Typography;
@@ -121,7 +123,16 @@ const UserList = () => {
             closeAllModals();
             createForm.resetFields();
 
-            message.success(`成功新增會員！`);
+            message.info({
+                content: '成功新增會員',
+                top: 10,
+                duration: 3,
+                icon: (
+                    <div style={{ width: '1em', height: '1em' }}>
+                        <IconCheck />
+                    </div>
+                ),
+            });
         } catch (e) {
             console.log(e);
             setLoading(false);
@@ -149,7 +160,16 @@ const UserList = () => {
             setLoading(false);
             closeAllModals();
 
-            message.success(`成功更新騎乘者！`);
+            message.info({
+                content: '成功更新騎乘者',
+                top: 10,
+                duration: 3,
+                icon: (
+                    <div style={{ width: '1em', height: '1em' }}>
+                        <IconCheck />
+                    </div>
+                ),
+            });
         } catch (e) {
             console.log(e);
             setLoading(false);
@@ -178,7 +198,16 @@ const UserList = () => {
 
         await fetchUsers();
 
-        message.info('會員已刪除。');
+        message.info({
+            content: '成功更新騎乘者',
+            top: 10,
+            duration: 3,
+            icon: (
+                <div style={{ width: '1em', height: '1em' }}>
+                    <IconCheck />
+                </div>
+            ),
+        });
     };
 
     const onViewCurrUserRecord = () => {
@@ -243,37 +272,77 @@ const UserList = () => {
         navigate(`${ROUTE_PATH.training_week_record}/${targetUserId}`);
     };
 
-    if (!isDone) {
-        return (
-            <Layout style={{ padding: '24px' }}>
-                <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="資料讀取中..."
-                    />
+    const testModalInfo = () => {
+        message.info({
+            content: '成功更新騎乘者',
+            top: 10,
+            duration: 3,
+            icon: (
+                <div style={{ width: '1em', height: '1em' }}>
+                    <IconCheck />
                 </div>
-            </Layout>
-        );
-    }
+            ),
+        });
+    };
+
+    // if (!isDone) {
+    //     return (
+    //         <Layout style={{ padding: '24px' }}>
+    //             <div className={styles.container}>
+    //                 <PageHeader
+    //                     className={styles.PageHeader}
+    //                     title="資料讀取中..."
+    //                 />
+    //             </div>
+    //         </Layout>
+    //     );
+    // }
 
     return (
         <Layout>
-            <Content className="site-layout" style={{ padding: '24px' }}>
+            <Content className={styles.antContent}>
+                <div className={styles.backIcon} onClick={goDashboard}>
+                    <IconBack />
+                </div>
                 <div className={styles.container}>
                     <PageHeader
                         title="管理會員資訊"
-                        subTitle="會員資訊更新、訓練週數紀錄"
-                        onBack={goDashboard}
+                        subTitle={
+                            <span
+                                style={{ color: '#797878', fontWeight: 'bold' }}
+                            >
+                                會員資訊更新、訓練週數紀錄
+                            </span>
+                        }
                         extra={[
                             <Button
                                 key={1}
                                 type="primary"
                                 icon={<PlusOutlined />}
                                 onClick={openCreateModal}
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                }}
                             >
                                 新增會員
                             </Button>,
+                            // <Button
+                            //     key={1}
+                            //     type="primary"
+                            //     icon={<PlusOutlined />}
+                            //     onClick={testModalInfo}
+                            //     style={{
+                            //         borderRadius: '34px',
+                            //         background: '#F39700',
+                            //         border: '0px',
+                            //     }}
+                            // >
+                            //     測試 modal info
+                            // </Button>,
                         ]}
+                        style={{ borderRadius: '20px' }}
                     />
                     <Form
                         {...formLayout}
@@ -306,6 +375,10 @@ const UserList = () => {
                                         htmlType="submit"
                                         onClick={onSearch}
                                         icon={<SearchOutlined />}
+                                        style={{
+                                            border: '1px solid #F39700',
+                                            background: '#FCC976',
+                                        }}
                                     >
                                         查詢
                                     </Button>
@@ -321,64 +394,212 @@ const UserList = () => {
                             goTrainingWeekRecord,
                         )}
                         dataSource={filteredUser}
-                        pagination={{ pageSize: 5 }}
+                        pagination={{
+                            pageSize: 5,
+                            position: ['bottomCenter'],
+                        }}
                         style={{ marginLeft: 24, marginRight: 24 }}
+                        className={styles.table}
                     />
                     <Modal
-                        title="檢視騎乘者"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                檢視騎乘者
+                            </span>
+                        }
                         visible={viewModalVisible}
                         onCancel={closeViewModal}
                         footer={null} // no [Ok], [Cancel] button
+                        style={{
+                            borderRadius: '16px',
+                        }}
+                        className={styles.modal}
                     >
                         <Descriptions
                             bordered
                             className={styles.descriptions}
                             size="middle"
                         >
-                            <Descriptions.Item label="會員編號" span={3}>
+                            <Descriptions.Item
+                                label="會員編號"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderTopLeftRadius: '0.8rem',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.idNumber}
                             </Descriptions.Item>
-                            <Descriptions.Item label="姓名" span={3}>
+                            <Descriptions.Item
+                                label="姓名"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="身高" span={3}>
+                            <Descriptions.Item
+                                label="身高"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.height} 公分
                             </Descriptions.Item>
-                            <Descriptions.Item label="體重" span={3}>
+                            <Descriptions.Item
+                                label="體重"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.weight} 公斤
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動心率" span={3}>
+                            <Descriptions.Item
+                                label="運動心率"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.exerciseHeartRate} BPM
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動阻力" span={3}>
+                            <Descriptions.Item
+                                label="運動阻力"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.exerciseResist}
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動速度" span={3}>
+                            <Descriptions.Item
+                                label="運動速度"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.exerciseSpeed}
                             </Descriptions.Item>
-                            <Descriptions.Item label="是否服用藥物" span={3}>
+                            <Descriptions.Item
+                                label="是否服用藥物"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {currUser?.medicine ? '是' : '否'}
                             </Descriptions.Item>
-                            <Descriptions.Item label="備註" span={3}>
+                            <Descriptions.Item
+                                label="備註"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottomLeftRadius: '0.8rem',
+                                }}
+                            >
                                 {currUser?.note}
                             </Descriptions.Item>
                         </Descriptions>
                         <Button
                             type="primary"
                             onClick={onViewCurrUserRecord}
-                            style={{ marginLeft: '24px' }}
+                            style={{
+                                marginLeft: '24px',
+                                backgroundColor: '#F39700',
+                                borderRadius: '34px',
+                                border: '0px',
+                            }}
                         >
                             查看 {currUser?.name} 騎乘紀錄
                         </Button>
                     </Modal>
                     {/* 新增 Modal */}
                     <Modal
-                        title="新增會員"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                新增會員
+                            </span>
+                        }
                         visible={createModalVisible}
                         onOk={onCreateUser}
                         confirmLoading={loading}
                         onCancel={closeCreateModal}
                         destroyOnClose
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeCreateModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onCreateUser}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -503,12 +724,50 @@ const UserList = () => {
                         </Form>
                     </Modal>
                     <Modal
-                        title="編輯會員"
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                編輯會員資訊
+                            </span>
+                        }
                         visible={editModalVisible}
                         onOk={onPatchUser}
                         confirmLoading={loading}
                         onCancel={closeEditModal}
                         destroyOnClose
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeEditModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onPatchUser}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
                     >
                         <Form
                             {...modalFormLayout}
@@ -660,7 +919,15 @@ const columns = (
         align: 'center',
         render: (id) => {
             return (
-                <Button type="link" onClick={() => goTrainingWeekRecord(id)}>
+                <Button
+                    type="primary"
+                    style={{
+                        borderRadius: '34px',
+                        background: '#F39700',
+                        border: '0px',
+                    }}
+                    onClick={() => goTrainingWeekRecord(id)}
+                >
                     前往訓練週數紀錄
                 </Button>
             );
@@ -676,16 +943,24 @@ const columns = (
             return (
                 <Popover
                     content={
-                        <Space direction="vertical" size="small">
+                        <Space
+                            direction="vertical"
+                            size="small"
+                            // style={{
+                            //     border: '1px solid red',
+                            // }}
+                        >
                             <Button
                                 type="link"
                                 onClick={() => openViewModal(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 查看會員資訊
                             </Button>
                             <Button
                                 type="link"
                                 onClick={() => openEditModal(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 編輯會員資訊
                             </Button>
@@ -693,6 +968,7 @@ const columns = (
                                 type="link"
                                 danger
                                 onClick={() => onDeleteUser(id)}
+                                style={{ color: '#F39700' }}
                             >
                                 刪除會員
                             </Button>
@@ -700,6 +976,11 @@ const columns = (
                     }
                     trigger="click"
                     placement="left"
+                    className={styles.popover}
+                    style={{
+                        border: '1px solid #F39700',
+                        borderRadius: '16px',
+                    }}
                 >
                     <MoreOutlined rotate={90} style={{ fontSize: '20px' }} />
                 </Popover>

@@ -2,6 +2,10 @@
  * This is for global css usage.
  */
 
+ .ant-modal-content {
+  border-radius: 16px;
+}
+
 /* 以下數行是用來覆寫 antd 預設 <Modal> 的 style */
 /* 參考資料: https://stackoverflow.com/questions/68469089/how-to-change-styles-in-modal-of-antd */
 .surveyModalStyle .ant-modal-body {
@@ -61,7 +65,128 @@ body {
   // overscroll-behavior-x: none; // 避免左右滑動 上下頁
   // checkout: https://stackoverflow.com/questions/15829172/stop-chrome-back-forward-two-finger-swipe
   // -webkit-overflow-scrolling: touch;
+
+  
+
+  // 以下直接複寫 antd 風格
+
+  // Modal
+  .ant-popover-inner {
+    border-radius: 16px;
+    border: 1px solid #F39700
+  }
+  .ant-modal-header {
+    border-radius: 16px 16px 0 0;
+    border-bottom: 1px solid #FCC976;
+
+  }
+  .ant-modal-content {
+    border-radius: 16px;
+  }
+  .ant-modal-footer {
+    border-top: 0px;
+    padding-bottom: 1.5rem;
+  }
+
+  .ant-modal-confirm-btns .ant-btn-default {
+    border-radius: 34px;
+    background: '#fff';
+    border: 1px solid #F39700;
+    color: #000;
+    padding: 0em 2em;
+  }
+
+  .ant-modal-confirm-btns .ant-btn-dangerous,
+  .ant-modal-confirm-btns .ant-btn-primary {
+    border-radius: 34px;
+    background: #F39700;
+    border: 0px;
+    color: #fff;
+    padding: 0em 2em;
+  }
+
+  // Descriotion
+  .ant-descriptions-view {
+    border: 1px solid #F39700 !important;
+    border-radius: 0.8rem;
+  }
+  .ant-descriptions-item-label {
+    border-right: 1px solid #F39700 !important;
+  }
+
+  // Form - Number Input
+  .ant-input-number-group-wrapper {
+    width: 100%
+  }
+
+  // Message
+  .ant-message-notice-content{
+    border-radius: 16px;
+    border: 1px solid #F39700;
+
+    .ant-message-info {
+      display: flex;
+      align-items: center;
+      // padding: 1em 1em;
+      gap: 0.5em;
+    }
+  }
+
+  // Table 
+  .ant-table-column-sorter-inner {
+    color: white;  
+  }
+  .ant-pagination-item-active {
+    border-color: #F39700;
+    color: #F39700;
+
+    & a {
+      color: #F39700;
+    }
+
+    &:hover {
+      border-color: #F39700;
+    }
+
+    &:hover a {
+      color: #F39700;
+    }
+  }
+  .ant-pagination-prev:hover .ant-pagination-item-link {
+    color: #F39700;
+    border-color: #F39700;
+  }
+  .ant-pagination-next:hover .ant-pagination-item-link {
+    color: #F39700;
+    border-color: #F39700;
+  }
+
+  //Radio
+  .ant-radio-checked .ant-radio-inner{
+    border-color: #F39700 !important ;
+  }
+  
+  .ant-radio-checked .ant-radio-inner:after{
+    background-color: #F39700;
+  }
+  
+  .ant-radio:hover .ant-radio-inner {
+    border-color: #F39700 ;
+  }
+
+  // Stastic
+  .ant-statistic {
+    display: flex;
+    align-items: center;
+    width: 18%;
+    justify-content: space-between;
+
+    .ant-statistic-title {
+      margin-bottom: 0;
+    }
+  }
 }
+
 
 textarea,
 input {

@@ -8,6 +8,7 @@ const ROUTE_PATH = {
     user_list: '/user-list',
     difficulty_list: '/difficulty-list',
     record_list: '/record-list',
+    record_detail: '/record-detail',
     finsished_workout: '/finished-workout',
     training_week_record: '/training-week-record',
 };

@@ -31,12 +31,17 @@ import {
     Descriptions,
     Typography,
     Badge,
+    Space,
+    Radio,
+    Checkbox,
+    InputNumber,
 } from 'antd';
 import {
     LoadingOutlined,
     ExclamationCircleOutlined,
     SettingOutlined,
     ArrowRightOutlined,
+    PlusOutlined,
 } from '@ant-design/icons';
 import _ from '../../util/helper';
 
@@ -51,6 +56,10 @@ import {
     validateInputPairId,
 } from '../../services/firebase';
 import wait from '../../util/wait';
+import IconBack from '../../components/IconBack';
+import IconCheck from '../../components/IconCheck';
+import IconArrowDown from '../../components/IconArrowDown';
+import IconPrepareWorkout from '../../components/IconPrepareWorkout';
 
 const { Countdown } = Statistic;
 const { Content } = Layout;
@@ -77,6 +86,10 @@ const PrepareWorkout = () => {
     const [selectedUser, setSelectedUser] = useState();
     const [selectedDiff, setSelectedDiff] = useState();
 
+    // 選使用者、關卡
+    const [selUserModVis, setSelUserModVis] = useState(false);
+    const [selDiffModVis, setSelDiffModVis] = useState(false);
+
     // 提供查看[使用者], [關卡]所需資訊。store data object
     const [selectedUserData, setSelectedUserData] = useState();
     const [selectedDiffData, setSelectedDiffData] = useState();
@@ -88,6 +101,10 @@ const PrepareWorkout = () => {
     const [warnHRValues, setWarnHRValues] = useState([]);
     //
     //
+
+    // 直接在這邊建立新使用者
+    const [createForm] = Form.useForm();
+    const [createModalVisible, setCreateModalVisible] = useState(false);
 
     const [isPairing, setIsPairing] = useState(false);
 
@@ -211,6 +228,8 @@ const PrepareWorkout = () => {
             title: '即將產生配對碼！',
             icon: <ExclamationCircleOutlined />,
             content: '資料一旦輸入將無法進行修改，請確認無誤！',
+            okText: '確定',
+            cancelText: '取消',
             onOk: () => createRecord(),
         });
     };
@@ -310,11 +329,10 @@ const PrepareWorkout = () => {
         setSelectedDiff();
         setPairDeadline(null);
         setInputPairId(null);
+        setSelectedDiffData();
+        setSelectedUserData();
         form.resetFields();
     };
-
-    const onUserChange = (value) => setSelectedUser(value);
-    const onDiffChange = (value) => setSelectedDiff(value);
 
     const openUserModal = () => {
         const selectedUserData = users.find((u) => u.id === selectedUser);
@@ -336,11 +354,11 @@ const PrepareWorkout = () => {
     };
     const closeUserModal = () => {
         setUserModalVis(false);
-        setSelectedUserData();
+        // setSelectedUserData();
     };
     const closeDiffModal = () => {
         setDiffModalVis(false);
-        setSelectedDiffData();
+        // setSelectedDiffData();
     };
 
     const getExactThresholdValue = (upperLimitHeartRate) => {
@@ -374,120 +392,534 @@ const PrepareWorkout = () => {
         </div>
     );
 
+    // 選使用者
+    const openSelectUser = () => {
+        if (pairId) {
+            return;
+        }
+        setSelUserModVis(true);
+    };
+    const closeSelectUser = () => {
+        setSelUserModVis(false);
+    };
+
+    const onSelectUser = (e) => {
+        setSelectedUser(e.target.value);
+    };
+
+    const confirmSelectedUser = () => {
+        const selectedUserData = users?.find((u) => u.id === selectedUser);
+        setSelectedUserData(selectedUserData);
+        closeSelectUser();
+    };
+
+    // 選關卡
+    const openSelectDiff = () => {
+        if (pairId) {
+            return;
+        }
+        setSelDiffModVis(true);
+    };
+
+    const closeSelectDiff = () => {
+        setSelDiffModVis(false);
+    };
+
+    const onSelectDiff = (e) => {
+        setSelectedDiff(e.target.value);
+    };
+
+    const confirmSelectedDiff = () => {
+        const selectedDiffData = [...difficulties]?.find(
+            (d) => d.id === selectedDiff,
+        );
+
+        if (!selectedDiffData) {
+            return;
+        }
+
+        selectedDiffData.displayName = `${selectedDiffData.name}・${selectedDiffData.targetWorkoutTime} 分鐘・目標 ${selectedDiffData.targetHeartRate} BPM`;
+
+        const warnHRValues = getExactThresholdValue(
+            selectedDiffData?.upperLimitHeartRate,
+        );
+
+        setSelectedDiffData(selectedDiffData);
+        setWarnHRValues(warnHRValues);
+        closeSelectDiff();
+    };
+
+    // 建立新使用者
+    const closeCreateModal = () => {
+        createForm.resetFields();
+        setCreateModalVisible(false);
+    };
+
+    const openCreateModal = () => {
+        setCreateModalVisible(true);
+    };
+
+    const onCreateUser = async () => {
+        try {
+            const values = await createForm.validateFields();
+
+            await addDoc(usersRef, {
+                name: values.name,
+                idNumber: values.idNumber,
+                height: values.height,
+                weight: values.weight,
+                exerciseHeartRate: values.exerciseHeartRate,
+                exerciseResist: values.exerciseResist ?? null,
+                exerciseSpeed: values.exerciseSpeed ?? null,
+                medicine: values.medicine ?? false,
+                note: values.note ?? null,
+                isDeleted: false,
+            });
+
+            const users = await fetchUsers();
+            createForm.resetFields();
+            setUsers(users);
+            closeCreateModal();
+
+            message.info({
+                content: '成功新增會員',
+                top: 10,
+                duration: 3,
+                icon: (
+                    <div style={{ width: '1em', height: '1em' }}>
+                        <IconCheck />
+                    </div>
+                ),
+            });
+        } catch (e) {
+            console.log(e);
+            message.error(e?.message);
+        }
+    };
+
     if (!isDone) {
         return (
-            <Layout style={{ padding: '24px' }}>
-                <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="資料讀取中..."
-                    />
-                </div>
+            <Layout>
+                <Content className={styles.antContent}>
+                    <div className={styles.container}>
+                        <PageHeader
+                            className={styles.PageHeader}
+                            title="資料讀取中..."
+                        />
+                    </div>
+                </Content>
             </Layout>
         );
     }
 
     return (
         <Layout>
-            <Content className="site-layout" style={{ padding: '24px' }}>
+            <Content className={styles.antContent}>
+                <div className={styles.backIcon} onClick={goDashboard}>
+                    <IconBack />
+                </div>
                 <div className={styles.container}>
-                    <PageHeader
-                        className={styles.PageHeader}
-                        title="準備騎乘！進行騎乘設定"
-                        subTitle="選擇騎乘者及關卡資訊"
-                        onBack={goDashboard}
-                    />
-
-                    <Form {...formLayout} form={form} style={{ marginTop: 36 }}>
-                        <Form.Item
-                            name="user"
-                            label="騎乘者"
-                            // rules={[
-                            //     {
-                            //         required: true,
-                            //         message: '請選擇騎乘者',
-                            //     },
-                            // ]}
-                        >
+                    <div
+                        className={styles.hero}
+                        style={{ display: pairId ? 'none' : 'block' }}
+                    >
+                        <IconPrepareWorkout />
+                    </div>
+                    <div className={styles.heroText}>準備騎乘!進行騎乘設定</div>
+                    <Form {...formLayout} form={form} style={{ width: '100%' }}>
+                        <Form.Item name="user" label="騎乘者">
                             <Row gutter={8}>
                                 <Col span={18}>
-                                    <Select
-                                        placeholder="選擇騎乘者"
-                                        onChange={onUserChange}
-                                        disabled={pairId}
+                                    <div
+                                        className={`${styles.inputGroup} ${
+                                            selectedUserData?.name
+                                                ? styles.active
+                                                : ''
+                                        } ${pairId ? styles.disalbed : ''}`}
+                                        onClick={openSelectUser}
                                     >
-                                        {users.map((user) => (
-                                            <Option
-                                                value={user.id}
-                                                key={user.id}
-                                            >
-                                                {user.name}
-                                            </Option>
-                                        ))}
-                                    </Select>
+                                        {selectedUserData?.name}
+                                        <IconArrowDown />
+                                    </div>
                                 </Col>
                                 <Col span={6}>
                                     <Button
                                         disabled={!selectedUser}
                                         onClick={openUserModal}
+                                        style={{ width: '100%' }}
                                     >
-                                        查看騎乘者資訊
+                                        騎乘者資訊
                                     </Button>
                                 </Col>
                             </Row>
                         </Form.Item>
-                        <Form.Item
-                            name="difficulty"
-                            label="關卡資訊"
-                            // rules={[
-                            //     {
-                            //         required: true,
-                            //         message: '請選擇關卡資訊',
-                            //     },
-                            // ]}
-                        >
+                        <Form.Item name="difficulty" label="關卡資訊">
                             <Row gutter={8}>
                                 <Col span={18}>
-                                    <Select
-                                        placeholder="選擇關卡資訊"
-                                        onChange={onDiffChange}
-                                        disabled={pairId}
+                                    <div
+                                        className={`${styles.inputGroup} ${
+                                            selectedDiffData?.displayName
+                                                ? styles.active
+                                                : ''
+                                        } ${pairId ? styles.disalbed : ''}`}
+                                        onClick={openSelectDiff}
                                     >
-                                        {difficulties.map((diff) => (
-                                            <Option
-                                                value={diff.id}
-                                                key={diff.id}
-                                            >
-                                                {diff.name}・
-                                                {diff.targetWorkoutTime}{' '}
-                                                分鐘・目標{' '}
-                                                {diff.targetHeartRate} BPM
-                                            </Option>
-                                        ))}
-                                    </Select>
+                                        {selectedDiffData?.displayName}
+                                        <IconArrowDown />
+                                    </div>
                                 </Col>
                                 <Col span={6}>
                                     <Button
                                         disabled={!selectedDiff}
                                         onClick={openDiffModal}
+                                        style={{ width: '100%' }}
                                     >
-                                        查看關卡資訊
+                                        關卡資訊
                                     </Button>
                                 </Col>
                             </Row>
                         </Form.Item>
                         <Form.Item {...tailLayout}>
-                            <Button
-                                type="primary"
-                                htmlType="submit"
-                                onClick={confirmUserAndDiff}
-                                disabled={pairId}
+                            <div
+                                style={{
+                                    width: '100%',
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    justifyContent: 'center',
+                                }}
                             >
-                                下一步，生成配對碼
-                            </Button>
+                                <Button
+                                    type="primary"
+                                    htmlType="submit"
+                                    onClick={confirmUserAndDiff}
+                                    disabled={pairId}
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: pairId
+                                            ? '#D9D9D9'
+                                            : '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                        letterSpacing: '0.5em',
+                                        color: '#fff',
+                                        fontSize: '1.2em',
+                                    }}
+                                >
+                                    下一步生成配對碼
+                                </Button>
+                            </div>
                         </Form.Item>
                     </Form>
 
+                    <Modal
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                選擇關卡
+                            </span>
+                        }
+                        visible={selDiffModVis}
+                        onCancel={closeSelectDiff}
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeSelectDiff}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={confirmSelectedDiff}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Space
+                            direction="vertical"
+                            style={{
+                                paddingLeft: '15px',
+                                maxHeight: '40vh',
+                                overflowY: 'scroll',
+                                width: '100%',
+                            }}
+                        >
+                            {[...difficulties].map((diff) => (
+                                <Radio
+                                    value={diff.id}
+                                    key={diff.id}
+                                    checked={diff.id === selectedDiff}
+                                    onChange={onSelectDiff}
+                                >
+                                    {diff.name}・{diff.targetWorkoutTime}{' '}
+                                    分鐘・目標 {diff.targetHeartRate} BPM
+                                </Radio>
+                            ))}
+                        </Space>
+                    </Modal>
+                    <Modal
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                選擇騎乘者
+                            </span>
+                        }
+                        visible={selUserModVis}
+                        onCancel={closeSelectUser}
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeSelectUser}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={confirmSelectedUser}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Button
+                            type="link"
+                            icon={<PlusOutlined />}
+                            style={{
+                                color: '#F39700',
+                                fontSize: 'bold',
+                            }}
+                            onClick={openCreateModal}
+                        >
+                            新增騎乘者
+                        </Button>
+                        <Divider style={{ margin: '1em' }} />
+                        <Space
+                            direction="vertical"
+                            style={{
+                                paddingLeft: '15px',
+                                maxHeight: '40vh',
+                                overflowY: 'scroll',
+                                width: '100%',
+                            }}
+                        >
+                            {users.map((user) => (
+                                <Radio
+                                    size="large"
+                                    value={user.id}
+                                    key={user.id}
+                                    checked={user.id === selectedUser}
+                                    onChange={onSelectUser}
+                                >
+                                    {user.name}
+                                </Radio>
+                            ))}
+                        </Space>
+                    </Modal>
+                    <Modal
+                        title={
+                            <span
+                                style={{
+                                    fontSize: '1.2em',
+                                    fontWeight: 'bold',
+                                }}
+                            >
+                                新增會員
+                            </span>
+                        }
+                        visible={createModalVisible}
+                        onOk={onCreateUser}
+                        onCancel={closeCreateModal}
+                        destroyOnClose
+                        footer={
+                            <div>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#fff',
+                                        border: '1px solid #F39700',
+                                        color: '#000',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={closeCreateModal}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: '#F39700',
+                                        border: '0px',
+                                        padding: '0em 2em',
+                                    }}
+                                    onClick={onCreateUser}
+                                >
+                                    確定
+                                </Button>
+                            </div>
+                        }
+                    >
+                        <Form
+                            {...modalFormLayout}
+                            form={createForm}
+                            layout="horizontal"
+                        >
+                            <Form.Item
+                                label="會員編號"
+                                name="idNumber"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員編號',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="會員編號為身分證字號" />
+                            </Form.Item>
+                            <Form.Item
+                                label="姓名"
+                                name="name"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上姓名',
+                                    },
+                                ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                label="身高"
+                                name="height"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員身高',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'公分'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="體重"
+                                name="weight"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員體重',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'公斤'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動心率"
+                                name="exerciseHeartRate"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: '請填上會員運動心率',
+                                    },
+                                ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={250}
+                                    addonAfter={'BPM'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動阻力"
+                                name="exerciseResist"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                label="運動速度"
+                                name="exerciseSpeed"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上姓名',
+                                //     },
+                                // ]}
+                            >
+                                <Input placeholder="" />
+                            </Form.Item>
+                            <Form.Item
+                                name="medicine"
+                                label="是否服用治療藥物"
+                                valuePropName="checked"
+                            >
+                                <Checkbox>
+                                    <Text type="secondary">
+                                        （有服用請打勾）
+                                    </Text>
+                                </Checkbox>
+                            </Form.Item>
+                            <Form.Item label="備註" name="note">
+                                <Input.TextArea
+                                    showCount
+                                    placeholder="治療藥物註記、其他需留意之處．．．"
+                                    maxLength={50}
+                                    autoSize={{ minRows: 3, maxRows: 5 }}
+                                />
+                            </Form.Item>
+                        </Form>
+                    </Modal>
                     <Modal
                         title="檢視騎乘者"
                         visible={userModalVis}
@@ -499,31 +931,119 @@ const PrepareWorkout = () => {
                             className={styles.descriptions}
                             size="middle"
                         >
-                            <Descriptions.Item label="會員編號" span={3}>
+                            <Descriptions.Item
+                                label="會員編號"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderTopLeftRadius: '0.8rem',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.idNumber}
                             </Descriptions.Item>
-                            <Descriptions.Item label="姓名" span={3}>
+                            <Descriptions.Item
+                                label="姓名"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="身高" span={3}>
+                            <Descriptions.Item
+                                label="身高"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.height} 公分
                             </Descriptions.Item>
-                            <Descriptions.Item label="體重" span={3}>
+                            <Descriptions.Item
+                                label="體重"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.weight} 公斤
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動心率" span={3}>
+                            <Descriptions.Item
+                                label="運動心率"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.exerciseHeartRate} BPM
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動阻力" span={3}>
+                            <Descriptions.Item
+                                label="運動阻力"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.exerciseResist}
                             </Descriptions.Item>
-                            <Descriptions.Item label="運動速度" span={3}>
+                            <Descriptions.Item
+                                label="運動速度"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.exerciseSpeed}
                             </Descriptions.Item>
-                            <Descriptions.Item label="是否服用藥物" span={3}>
+                            <Descriptions.Item
+                                label="是否服用藥物"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedUserData?.medicine ? '是' : '否'}
                             </Descriptions.Item>
-                            <Descriptions.Item label="備註" span={3}>
+                            <Descriptions.Item
+                                label="備註"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottomLeftRadius: '0.8rem',
+                                }}
+                            >
                                 {selectedUserData?.note}
                             </Descriptions.Item>
                         </Descriptions>
@@ -541,16 +1061,57 @@ const PrepareWorkout = () => {
                             size="middle"
                             column={2}
                         >
-                            <Descriptions.Item label="難度名稱" span={1}>
+                            <Descriptions.Item
+                                label="難度名稱"
+                                span={1}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderTopLeftRadius: '0.8rem',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedDiffData?.name}
                             </Descriptions.Item>
-                            <Descriptions.Item label="目標騎乘時間" span={1}>
+                            <Descriptions.Item
+                                label="目標騎乘時間"
+                                span={1}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedDiffData?.targetWorkoutTime} 分
                             </Descriptions.Item>
-                            <Descriptions.Item label="目標心率數值" span={2}>
+                            <Descriptions.Item
+                                label="目標心率數值"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedDiffData?.targetHeartRate}
                             </Descriptions.Item>
-                            <Descriptions.Item label="上限心率數值" span={2}>
+                            <Descriptions.Item
+                                label="上限心率數值"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
                                 {selectedDiffData?.upperLimitHeartRate}
                             </Descriptions.Item>
                             <Descriptions.Item
@@ -569,6 +1130,13 @@ const PrepareWorkout = () => {
                                     </>
                                 }
                                 span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
                             >
                                 <Badge
                                     color="blue"
@@ -606,7 +1174,14 @@ const PrepareWorkout = () => {
                                     }}
                                 />
                             </Descriptions.Item>
-                            <Descriptions.Item label="備註" span={2}>
+                            <Descriptions.Item
+                                label="備註"
+                                span={2}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottomLeftRadius: '0.8rem',
+                                }}
+                            >
                                 {selectedDiffData?.note}
                             </Descriptions.Item>
                         </Descriptions>
@@ -614,64 +1189,72 @@ const PrepareWorkout = () => {
 
                     {pairId && (
                         <>
-                            <Divider
-                                dashed={true}
-                                style={{
-                                    minWidth: '90%',
-                                    width: '90%',
-                                    borderWidth: '2px',
-                                    margin: 'auto',
-                                    marginRight: 'auto',
-                                    marginTop: '4em',
-                                    marginBottom: '4em',
-                                }}
-                            />
-                            <Form {...formLayout}>
-                                <Form.Item
-                                    label={
-                                        <>
-                                            配對碼
-                                            <Popover
-                                                content={simulateAppCotent}
-                                                placement="bottomRight"
-                                                title="更多操作"
-                                                trigger="click"
-                                            >
-                                                <SettingOutlined
-                                                    width={'1em'}
-                                                />
-                                            </Popover>
-                                        </>
-                                    }
+                            <Form
+                                {...formLayout}
+                                className={styles.pairInfoGroup}
+                            >
+                                <div
                                     style={{
                                         display: 'flex',
+                                        flexDirection: 'row',
                                         alignItems: 'center',
                                     }}
                                 >
-                                    <div className={styles.pairIdWrapper}>
-                                        {pairId.split('').map((c, i) => (
-                                            <pre key={c + i}>{c}</pre>
-                                        ))}
+                                    <span
+                                        className={styles.pairLabel}
+                                        style={{
+                                            color: isAppConnected
+                                                ? '#D9D9D9'
+                                                : '#000',
+                                        }}
+                                    >
+                                        配對碼
+                                    </span>
+                                    <Popover
+                                        content={simulateAppCotent}
+                                        placement="right"
+                                        title="更多操作"
+                                        trigger={isAppConnected ? [] : 'click'}
+                                        disabled={isAppConnected}
+                                    >
+                                        <SettingOutlined
+                                            width={'1em'}
+                                            style={{
+                                                color: isAppConnected
+                                                    ? '#D9D9D9'
+                                                    : '#000',
+                                            }}
+                                        />
+                                    </Popover>
+                                </div>
 
-                                        {/* <Countdown
-                                            title="有效時間"
-                                            value={Date.now() + 1000 * 60 * 10}
-                                            onFinish={onDeadlineExpired}
-                                        /> */}
-                                        {pairDeadline && (
-                                            <Countdown
-                                                title="有效時間"
-                                                value={pairDeadline}
-                                                onFinish={onDeadlineExpired}
-                                            />
-                                        )}
-                                    </div>
-                                </Form.Item>
+                                <div className={styles.pairIdWrapper}>
+                                    {pairId.split('').map((c, i) => (
+                                        <pre
+                                            key={c + i}
+                                            style={{
+                                                color: isAppConnected
+                                                    ? '#D9D9D9'
+                                                    : '#F39700',
+                                            }}
+                                        >
+                                            {c}
+                                        </pre>
+                                    ))}
+                                </div>
+                                {pairDeadline && (
+                                    <Countdown
+                                        title="有效時間"
+                                        value={pairDeadline}
+                                        onFinish={onDeadlineExpired}
+                                    />
+                                )}
                                 {!isAppConnected && (
-                                    <Form.Item
-                                        label=" "
-                                        colon={false}
-                                        style={{ marginTop: '3em' }}
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            flexDirection: 'row',
+                                        }}
                                     >
                                         <Spin
                                             indicator={
@@ -685,32 +1268,25 @@ const PrepareWorkout = () => {
                                             }
                                         />
                                         等待配對中...
-                                    </Form.Item>
+                                    </div>
                                 )}
 
-                                <Form.Item
-                                    label=" "
-                                    colon={false}
-                                    style={{ marginTop: '5em' }}
+                                <Button
+                                    onClick={goMonitoring}
+                                    disabled={!isAppConnected}
+                                    size="large"
+                                    style={{
+                                        borderRadius: '34px',
+                                        background: isAppConnected
+                                            ? '#F39700'
+                                            : '#D9D9D9',
+                                        color: '#fff',
+                                        padding: '0em 3em',
+                                        letterSpacing: '0.2em',
+                                    }}
                                 >
-                                    <Button
-                                        onClick={goMonitoring}
-                                        type={
-                                            isAppConnected
-                                                ? 'primary'
-                                                : 'dashed'
-                                        }
-                                        disabled={!isAppConnected}
-                                        icon={
-                                            isAppConnected && (
-                                                <ArrowRightOutlined />
-                                            )
-                                        }
-                                        size="large"
-                                    >
-                                        前往監視畫面
-                                    </Button>
-                                </Form.Item>
+                                    前往監視畫面
+                                </Button>
                             </Form>
                         </>
                     )}
@@ -758,6 +1334,16 @@ const formLayout = {
 const tailLayout = {
     wrapperCol: {
         offset: 8,
+        span: 8,
+    },
+};
+
+const modalFormLayout = {
+    labelCol: {
+        span: 8,
+        // offset:,
+    },
+    wrapperCol: {
         span: 16,
     },
 };
