@@ -18,6 +18,7 @@ import {
     message,
     Modal,
     Space,
+    Form,
 } from 'antd';
 import {
     UserOutlined,
@@ -38,12 +39,14 @@ import configLineChart from '../../util/configLineChart';
 
 import { recordsRef, usersRef, difficultiesRef } from '../../services/firebase';
 
+import SixMinutesTest from '../../components/SixMinutesTest';
+
 import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
 import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
 import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
 import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
-import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
+// import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
 const sixSurveyJson = SixSurveyJson;
@@ -51,7 +54,7 @@ const copdSurveyJson = COPDSurveyJson;
 const sgrSurveyJson = SGRSurveyJson;
 const borgScaleSurveyJson = BorgScaleSurveyJson;
 const lungTherapyEvaSurveyJson = LungTherapyEvaSurveyJson;
-const sixSurveyNewJson = SixSurveyNewJson;
+// const sixSurveyNewJson = SixSurveyNewJson;
 
 const mySurveyCss = {
     text: {
@@ -67,6 +70,7 @@ const { Content } = Layout;
 const FinishedWorkout = () => {
     const navigate = useNavigate();
     const params = useParams();
+    const [sixMinutesForm] = Form.useForm();
 
     const [user, setUser] = useState();
     const [record, setRecord] = useState();
@@ -103,7 +107,7 @@ const FinishedWorkout = () => {
     survey.showCompletedPage = false;
 
     // survey METHODS
-    const saveResults = (sender) => {
+    const saveResults = async (sender) => {
         const results = sender.data;
 
         console.log(sender.data);
@@ -125,7 +129,17 @@ const FinishedWorkout = () => {
             setLungTherapyEvaData({ ...results, surveyCompleted: true });
         }
         if (curSurveyName === 'sixSurveyNew') {
-            setSixSurveyNewData({ ...results, surveyCompleted: true });
+            try {
+                const values = await sixMinutesForm.validateFields();
+                console.log(values);
+                setSixSurveyNewData({
+                    ...sixSurveyNewData,
+                    form: values,
+                    surveyCompleted: true,
+                });
+            } catch (e) {
+                console.log(e);
+            }
         }
     };
     survey.onComplete.add(saveResults);
@@ -178,12 +192,7 @@ const FinishedWorkout = () => {
             setSurvey(survey);
         }
         if (surveyName === 'sixSurveyNew') {
-            let survey = new Model(sixSurveyNewJson);
-
-            if (sixSurveyNewData) {
-                survey.data = sixSurveyNewData;
-            }
-            setSurvey(survey);
+            //
         }
 
         setCurSurveyName(surveyName);
@@ -191,12 +200,36 @@ const FinishedWorkout = () => {
     };
 
     const onOKSurvey = async () => {
-        let error = survey.hasErrors();
-        if (error) {
-            return;
+        if (curSurveyName === 'sixSurveyNew') {
+            try {
+                const orginValues = await sixMinutesForm.validateFields();
+                let submittedValues = {};
+                for (let key in orginValues) {
+                    if (_.isEmpty(orginValues[key])) {
+                        submittedValues[key] = '';
+                    } else {
+                        submittedValues[key] = orginValues[key];
+                    }
+                }
+                console.log(submittedValues);
+                setSixSurveyNewData({
+                    ...sixSurveyNewData,
+                    form: submittedValues,
+                    surveyCompleted: true,
+                });
+                setSurveyModalVisible(false);
+            } catch (e) {
+                console.log(e);
+            }
+        } else {
+            let error = survey.hasErrors();
+            if (error) {
+                console.log(error);
+                return;
+            }
+            survey.doComplete();
+            setSurveyModalVisible(false);
         }
-        survey.doComplete();
-        setSurveyModalVisible(false);
     };
 
     const onCancelSurvey = () => {
@@ -265,13 +298,13 @@ const FinishedWorkout = () => {
 
         console.log(user);
         // 初始化 填入問卷基本資料
-        setSixSurveyData({
-            question2: user?.name,
-            question3: user?.idNumber,
-            question5: moment(record?.beginWorkoutTime).format('L'),
-            question9: user?.height + ' cm',
-            question10: user?.weight + ' kg',
-        });
+        // setSixSurveyData({
+        //     question2: user?.name,
+        //     question3: user?.idNumber,
+        //     question5: moment(record?.beginWorkoutTime).format('L'),
+        //     question9: user?.height + ' cm',
+        //     question10: user?.weight + ' kg',
+        // });
         setSGRSurveyData({
             question1: {
                 text1: user?.idNumber,
@@ -292,32 +325,11 @@ const FinishedWorkout = () => {
             question2: moment(record?.beginWorkoutTime).format('L'),
         });
         setSixSurveyNewData({
-            question1: {
-                text1: user?.idNumber,
-                text2: user?.name,
-            },
-            question2: moment(record?.beginWorkoutTime).format('L'),
+            name: user?.name,
+            idNumber: user?.idNumber,
+            beginWorkoutTime: moment(record?.beginWorkoutTime).format('L'),
         });
     };
-
-    // 初始化 填入問卷基本資料
-    // const initSurveyData = () => {
-    //     console.log(record);
-    //     console.log(user);
-    //     console.log(difficulty);
-    //     setSixSurveyData({
-    //         question2: user?.name,
-    //         question3: user?.idNumber,
-    //         question5: moment(record?.beginWorkoutTime).format('L'),
-    //     });
-    //     setSGRSurveyData({
-    //         question1: {
-    //             text1: user?.idNumber,
-    //             text2: `${difficulty?.name}\n(目標心率：${difficulty?.targetHeartRate}／目標騎乘時間：${difficulty?.targetWorkoutTime})`,
-    //         },
-    //         question2: moment(record?.beginWorkoutTime).format('L'),
-    //     });
-    // };
 
     const onFormSubmit = async (e) => {
         e.preventDefault();
@@ -343,7 +355,6 @@ const FinishedWorkout = () => {
 
         if (
             !(
-                sixSurveyData?.surveyCompleted &&
                 copdSurveyData?.surveyCompleted &&
                 sgrSurveyData?.surveyCompleted &&
                 borgScaleSurveyData?.surveyCompleted &&
@@ -371,7 +382,6 @@ const FinishedWorkout = () => {
             hrVariabilityIndex: hrVariabilityIndex,
             spo2: spo2,
             comment: comment,
-            sixSurvey: sixSurveyData,
             borgScaleSurvey: borgScaleSurveyData,
             sgrSurvey: sgrSurveyData,
             copdSurvey: copdSurveyData,
@@ -390,8 +400,6 @@ const FinishedWorkout = () => {
         const end = moment(record.finishedWorkoutTime);
 
         const diff = moment.duration(end.diff(begin)).asMilliseconds();
-
-        console.log(diff);
 
         const h = ('0' + Math.floor(diff / 3600000)).slice(-2);
         const m = ('0' + Math.floor((diff / 60000) % 60)).slice(-2);
@@ -589,7 +597,7 @@ const FinishedWorkout = () => {
                     <div className={styles.surveys}>
                         <h3>請完成以下評估問卷</h3>
                         <Space>
-                            <Button
+                            {/* <Button
                                 onClick={() =>
                                     openSurveyModal('六分鐘呼吸測驗')
                                 }
@@ -607,7 +615,7 @@ const FinishedWorkout = () => {
                                 }}
                             >
                                 進行 六分鐘呼吸測驗
-                            </Button>
+                            </Button> */}
                             <Button
                                 onClick={() => openSurveyModal('copd')}
                                 type="primary"
@@ -660,6 +668,7 @@ const FinishedWorkout = () => {
                                 進行 Borg Scale 測驗
                             </Button>
                         </Space>
+                        <br />
                         <Space
                             style={{
                                 marginTop: '24px',
@@ -699,7 +708,7 @@ const FinishedWorkout = () => {
                                     padding: '0em 2em',
                                 }}
                             >
-                                進行 新 六分鐘呼吸測驗
+                                進行 六分鐘呼吸測驗
                             </Button>
                         </Space>
                     </div>
@@ -786,7 +795,7 @@ const FinishedWorkout = () => {
                     </div>
                 </div>
                 <Modal
-                    width={'70vw'}
+                    width={curSurveyName === 'sixSurveyNew' ? '90vw' : '70vw'}
                     className="surveyModalStyle" // 如果要覆寫 style 要這樣做
                     visible={surveyModalVisible}
                     onOk={onOKSurvey}
@@ -794,11 +803,19 @@ const FinishedWorkout = () => {
                     destroyOnClose
                     okText="送出儲存"
                 >
-                    <Survey
-                        id="surveyContainer"
-                        model={survey}
-                        css={mySurveyCss}
-                    />
+                    {curSurveyName === 'sixSurveyNew' ? (
+                        <SixMinutesTest
+                            formInstance={sixMinutesForm}
+                            sixSurveyNewData={sixSurveyNewData}
+                            readOnly={false}
+                        />
+                    ) : (
+                        <Survey
+                            id="surveyContainer"
+                            model={survey}
+                            css={mySurveyCss}
+                        />
+                    )}
                 </Modal>
             </Content>
         </Layout>

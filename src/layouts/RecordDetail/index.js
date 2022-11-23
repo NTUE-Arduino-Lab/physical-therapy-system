@@ -36,6 +36,8 @@ import configLineChart from '../../util/configLineChart';
 import IconBack from '../../components/IconBack';
 import IconCheck from '../../components/IconCheck';
 
+import SixMinutesTest from '../../components/SixMinutesTest';
+
 import SixSurveyJson from '../../assets/surveys/sixSurvey.json';
 import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
 import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
@@ -297,12 +299,10 @@ const RecordDetail = () => {
             setSurvey(survey);
         }
         if (surveyName === 'sixSurveyNew') {
-            let survey = new Model(sixSurveyNewJson);
-
-            survey.data = currRecord.sixSurveyNew;
-            survey.mode = 'display';
-
-            setSurvey(survey);
+            // let survey = new Model(sixSurveyNewJson);
+            // survey.data = currRecord.sixSurveyNew;
+            // survey.mode = 'display';
+            // setSurvey(survey);
         }
 
         setCurSurveyName(surveyName);
@@ -550,8 +550,10 @@ const RecordDetail = () => {
                                 {currRecord?.comment}
                             </Descriptions.Item>
                         </Descriptions>
-                        <Space style={{ marginTop: '24px' }}>
-                            <Button
+                        <Space
+                            style={{ marginTop: '24px', marginBottom: '24px' }}
+                        >
+                            {/* <Button
                                 onClick={() =>
                                     openSurveyModal('六分鐘呼吸測驗')
                                 }
@@ -563,7 +565,7 @@ const RecordDetail = () => {
                                 }}
                             >
                                 查看 六分鐘呼吸測驗結果
-                            </Button>
+                            </Button> */}
                             <Button
                                 onClick={() => openSurveyModal('copd')}
                                 type="primary"
@@ -597,13 +599,6 @@ const RecordDetail = () => {
                             >
                                 查看 Borg Scale 測驗結果
                             </Button>
-                        </Space>
-                        <Space
-                            style={{
-                                marginTop: '24px',
-                                marginBottom: '45px',
-                            }}
-                        >
                             <Button
                                 onClick={() =>
                                     openSurveyModal('lungTherapyEva')
@@ -626,23 +621,32 @@ const RecordDetail = () => {
                                     border: '0px',
                                 }}
                             >
-                                查看 新 六分鐘呼吸測驗結果
+                                查看 六分鐘呼吸測驗結果
                             </Button>
                         </Space>
                     </>
                     <Modal
-                        width={'70vw'}
+                        width={
+                            curSurveyName === 'sixSurveyNew' ? '90vw' : '70vw'
+                        }
                         className="surveyModalStyle" // 如果要覆寫 style 要這樣做
                         visible={surveyModalVisible}
                         footer={null} // no [Ok], [Cancel] button
                         destroyOnClose
                         onCancel={onCancelSurvey}
                     >
-                        <Survey
-                            id="surveyContainer"
-                            model={survey}
-                            css={mySurveyCss}
-                        />
+                        {curSurveyName === 'sixSurveyNew' ? (
+                            <SixMinutesTest
+                                sixSurveyNewData={currRecord?.sixSurveyNew}
+                                readOnly={true}
+                            />
+                        ) : (
+                            <Survey
+                                id="surveyContainer"
+                                model={survey}
+                                css={mySurveyCss}
+                            />
+                        )}
                     </Modal>
                 </div>
             </Content>
