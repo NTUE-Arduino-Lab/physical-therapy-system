@@ -22,7 +22,7 @@ const AppRoutes = () => {
         <Routes>
             <Route
                 path={ROUTE_PATH.home}
-                element={<Navigate replace to={ROUTE_PATH.sign_in} />}
+                element={<Navigate replace to={ROUTE_PATH.admin_dashbaord} />}
             />
             <Route path={ROUTE_PATH.sign_in} element={<SignIn />} />
             <Route path={ROUTE_PATH.unauthorized} element={<Unauthorized />} />
