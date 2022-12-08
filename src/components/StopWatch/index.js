@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -35,7 +36,7 @@ const StopWatch = ({ start, initialValue }) => {
 
     return (
         <div className={styles.container}>
-            <span className="digits">
+            <span className="digits" style={{ fontSize: '1em' }}>
                 {('0' + Math.floor(time / 3600000)).slice(-2)}:
             </span>
             <span className="digits">

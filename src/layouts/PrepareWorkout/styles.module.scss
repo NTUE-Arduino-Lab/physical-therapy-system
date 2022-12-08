@@ -52,7 +52,8 @@
 
     svg {
       position: absolute;
-      right: 5px;
+      right: 0px;
+      left: 140px;
       width: fit-content;
     }
   }
@@ -68,7 +69,8 @@
   align-items: center;
   justify-content: center;
   gap: 1.6em;
-  padding: 2.2em;
+  padding: 1.3em;
+  height: 100%;
 
   .pairLabel {
     font-size: 1.8em;

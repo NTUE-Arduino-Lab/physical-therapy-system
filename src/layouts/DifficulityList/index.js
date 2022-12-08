@@ -364,7 +364,7 @@ const DifficulityList = () => {
                         )}
                         dataSource={filteredDiffs}
                         pagination={{
-                            pageSize: 5,
+                            pageSize: 3,
                             position: ['bottomCenter'],
                         }}
                         style={{ marginLeft: 24, marginRight: 24 }}

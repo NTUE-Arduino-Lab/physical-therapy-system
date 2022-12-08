@@ -459,7 +459,7 @@ const MonitoringWorkout = () => {
                 </div>
                 <div className={`${styles.col} ${styles.col2}`}>
                     <div className={styles.stopWatchWrapper}>
-                        <span>騎乘進行了：</span>
+                        <span>騎乘時間：</span>
                         <StopWatch
                             start={beginStopWatch}
                             initialValue={getStopWatchInitialValue()}

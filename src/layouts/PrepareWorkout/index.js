@@ -565,7 +565,12 @@ const PrepareWorkout = () => {
                                         onClick={openSelectDiff}
                                     >
                                         {selectedDiffData?.displayName}
-                                        <IconArrowDown />
+                                        <IconArrowDown
+                                            styles={{
+                                                positon: 'absoulte',
+                                                right: '5px',
+                                            }}
+                                        />
                                     </div>
                                 </Col>
                                 <Col span={6}>
