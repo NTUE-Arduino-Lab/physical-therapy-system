@@ -551,7 +551,13 @@ const RecordDetail = () => {
                             </Descriptions.Item>
                         </Descriptions>
                         <Space
-                            style={{ marginTop: '24px', marginBottom: '24px' }}
+                            style={{
+                                marginTop: '24px',
+                                marginBottom: '24px',
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                            }}
                         >
                             {/* <Button
                                 onClick={() =>

@@ -10,8 +10,10 @@
 
 .antContent {
   padding: 150px 44px 42px;
+  padding-bottom: 50px;
   height: 100vh;
   background: #fff;
+  overflow-y: scroll;
 }
 
 h1 {
