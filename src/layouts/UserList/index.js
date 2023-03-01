@@ -36,6 +36,7 @@ import {
     ExclamationCircleOutlined,
 } from '@ant-design/icons';
 
+import _ from '../../util/helper';
 import { ROUTE_PATH } from '../../constants';
 import styles from './styles.module.scss';
 
@@ -110,6 +111,7 @@ const UserList = () => {
                 idNumber: values.idNumber,
                 height: values.height,
                 weight: values.weight,
+                age: values.age,
                 exerciseHeartRate: values.exerciseHeartRate,
                 exerciseResist: values.exerciseResist ?? null,
                 exerciseSpeed: values.exerciseSpeed ?? null,
@@ -149,6 +151,7 @@ const UserList = () => {
             await updateDoc(currUserRef, {
                 height: values.height,
                 weight: values.weight,
+                age: values.age,
                 exerciseHeartRate: values.exerciseHeartRate,
                 exerciseResist: values.exerciseResist ?? null,
                 exerciseSpeed: values.exerciseSpeed ?? null,
@@ -479,6 +482,21 @@ const UserList = () => {
                                 {currUser?.weight} 公斤
                             </Descriptions.Item>
                             <Descriptions.Item
+                                label="身體年齡"
+                                span={3}
+                                labelStyle={{
+                                    background: '#FCC976',
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                                contentStyle={{
+                                    borderBottom: '1px solid rgb(243, 151, 0)',
+                                }}
+                            >
+                                {_.isNotEmpty(currUser?.age)
+                                    ? currUser.age + '歲'
+                                    : ''}
+                            </Descriptions.Item>
+                            <Descriptions.Item
                                 label="運動心率"
                                 span={3}
                                 labelStyle={{
@@ -663,6 +681,22 @@ const UserList = () => {
                                 />
                             </Form.Item>
                             <Form.Item
+                                label="身體年齡"
+                                name="age"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上會員體重',
+                                //     },
+                                // ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={99}
+                                    addonAfter={'歲'}
+                                />
+                            </Form.Item>
+                            <Form.Item
                                 label="運動心率"
                                 name="exerciseHeartRate"
                                 rules={[
@@ -808,6 +842,22 @@ const UserList = () => {
                                     min={1}
                                     max={250}
                                     addonAfter={'公斤'}
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="身體年齡"
+                                name="age"
+                                // rules={[
+                                //     {
+                                //         required: true,
+                                //         message: '請填上會員體重',
+                                //     },
+                                // ]}
+                            >
+                                <InputNumber
+                                    min={1}
+                                    max={99}
+                                    addonAfter={'歲'}
                                 />
                             </Form.Item>
                             <Form.Item

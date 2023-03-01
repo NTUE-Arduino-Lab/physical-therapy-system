@@ -1,0 +1,41 @@
+{
+    "title": "mMRC問卷",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "radiogroup",
+        "name": "question1",
+        "title": "跟同年齡者相比，請勾選最符合的方格(限填一格)",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "mMRC  0 級─只有劇烈運動才會喘 "
+         },
+         {
+          "value": "Item 2",
+          "text": "mMRC  1 級─爬樓梯或走斜坡會喘"
+         },
+         {
+          "value": "Item 3",
+          "text": "mMRC  2 級─爬樓梯過程較緩慢或需要停下來喘氣"
+         },
+         {
+          "value": "Item 4",
+          "text": "mMRC  3 級─走一百公尺要停下來喘口氣"
+         },
+         {
+          "value": "Item 5",
+          "text": "mMRC  4 級─太喘無法出門、穿脫衣服都會喘"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "showPrevButton": false,
+    "showPageNumbers": true
+   }

@@ -1,0 +1,319 @@
+{
+    "title": "長期照護需求量表的建立-SF-36 中文版",
+    "logoPosition": "right",
+    "pages": [
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "text",
+        "name": "question1",
+        "title": "1.  總體來講，您的健康狀況是：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question2",
+        "title": "2. 跟1年前相比，您覺得您現在的健康狀況是：",
+        "hideNumber": true
+       },
+       {
+        "type": "expression",
+        "name": "question3",
+        "title": "健康和日常活動",
+        "hideNumber": true
+       },
+       {
+        "type": "checkbox",
+        "name": "question4",
+        "title": "3. 以下這些問題都與日常活動有關。請您想一想，您的健康狀況是否限制了這些活動？如果有限制，程度如何？",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "重體力活動，如：跑步、參加劇烈運動等"
+         },
+         {
+          "value": "Item 2",
+          "text": "適度的活動，如掃地、打太極拳、做簡單體操等"
+         },
+         {
+          "value": "Item 3",
+          "text": "手提日用品，如買菜、購物等"
+         },
+         {
+          "value": "Item 4",
+          "text": "上幾層樓梯："
+         },
+         {
+          "value": "Item 5",
+          "text": "上一層樓梯："
+         },
+         {
+          "value": "Item 6",
+          "text": "彎腰、屈膝、下蹲："
+         },
+         {
+          "value": "Item 7",
+          "text": "步行1500米以上的路程："
+         },
+         {
+          "value": "Item 8",
+          "text": "步行1000米的路程："
+         },
+         {
+          "value": "Item 9",
+          "text": "步行100米的路程："
+         },
+         {
+          "value": "Item 10",
+          "text": "自己洗澡、穿衣："
+         }
+        ]
+       },
+       {
+        "type": "text",
+        "name": "question5",
+        "visibleIf": "{question4} contains 'Item 4'",
+        "title": "上幾層樓梯：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question6",
+        "visibleIf": "{question4} contains 'Item 5'",
+        "title": "上一層樓梯：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question7",
+        "visibleIf": "{question4} contains 'Item 6'",
+        "title": "彎腰、屈膝、下蹲：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question8",
+        "visibleIf": "{question4} contains 'Item 7'",
+        "title": "步行1500米以上的路程：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question9",
+        "visibleIf": "{question4} contains 'Item 8'",
+        "title": "步行1000米的路程：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question10",
+        "visibleIf": "{question4} contains 'Item 8'",
+        "title": "步行100米的路程：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question11",
+        "visibleIf": "{question4} contains 'Item 10'",
+        "title": "自己洗澡、穿衣：",
+        "hideNumber": true
+       },
+       {
+        "type": "checkbox",
+        "name": "question12",
+        "title": "4. 過去4個星期裡，您的工作和日常活動有無因為身體健康的原因出現以下這些問題？",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "減少了工作或其他活動的時間："
+         },
+         {
+          "value": "Item 2",
+          "text": "本來想做的事情只能完成一部分："
+         },
+         {
+          "value": "Item 3",
+          "text": "想要幹的工作和活動的種類受到限制："
+         },
+         {
+          "value": "Item 4",
+          "text": "完成工作或其他活動的困難增多（如需要額外的努力）："
+         }
+        ]
+       },
+       {
+        "type": "text",
+        "name": "question13",
+        "visibleIf": "{question12} contains 'Item 1'",
+        "title": "減少了工作或其他活動的時間：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question14",
+        "visibleIf": "{question12} contains 'Item 2'",
+        "title": "本來想做的事情只能完成一部分：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question15",
+        "visibleIf": "{question12} contains 'Item 3'",
+        "title": "想要幹的工作和活動的種類受到限制：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question16",
+        "visibleIf": "{question12} contains 'Item 4'",
+        "title": "完成工作或其他活動的困難增多（如需要額外的努力）：",
+        "hideNumber": true
+       },
+       {
+        "type": "checkbox",
+        "name": "question17",
+        "title": "5. 在過去4個星期裡，您的工作和日常活動有無因為情緒的原因（如壓抑或憂慮）出現以下這些問題？",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "減少了工作或其他活動的時間："
+         },
+         {
+          "value": "Item 2",
+          "text": "本來想要做的事情只能完成一部分："
+         },
+         {
+          "value": "Item 3",
+          "text": "幹事情不如平時仔細："
+         }
+        ]
+       },
+       {
+        "type": "text",
+        "name": "question18",
+        "visibleIf": "{question17} contains 'Item 1'",
+        "title": "減少了工作或其他活動的時間：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question19",
+        "visibleIf": "{question17} contains 'Item 2'",
+        "title": "本來想要做的事情只能完成一部分：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question20",
+        "visibleIf": "{question17} contains 'Item 3'",
+        "title": "幹事情不如平時仔細：",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question21",
+        "title": "6. 在過去的4個星期裡，您的健康或情緒不好在多大程度上影響了您與家人、朋友、鄰居或集體的正常的社會交往？",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question22",
+        "title": "7. 在過去4個星期裡，您有身體疼痛嗎？",
+        "hideNumber": true
+       },
+       {
+        "type": "text",
+        "name": "question23",
+        "title": "8. 在過去4個星期裡，身體疼痛影響您的工作和家務嗎？",
+        "hideNumber": true
+       },
+       {
+        "type": "expression",
+        "name": "question24",
+        "title": "您的感覺",
+        "hideNumber": true
+       },
+       {
+        "type": "checkbox",
+        "name": "question25",
+        "title": "9. 以下這些問題是有關過去一個月裡您自己的感覺，對每一條問題所說的事情，您的情況是什麼樣的？",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "您覺得生活充實"
+         },
+         {
+          "value": "Item 2",
+          "text": "您是一個敏感的人"
+         },
+         {
+          "value": "Item 3",
+          "text": "您的情緒非常不好，什麼事都不能使您高興"
+         },
+         {
+          "value": "Item 4",
+          "text": "您的心裡很平靜"
+         },
+         {
+          "value": "Item 5",
+          "text": "您做事情精力充沛"
+         },
+         {
+          "value": "Item 6",
+          "text": "您的情緒低落"
+         },
+         {
+          "value": "Item 7",
+          "text": "您覺得筋疲力盡"
+         },
+         {
+          "value": "Item 8",
+          "text": "您是一個快樂的人"
+         },
+         {
+          "value": "Item 9",
+          "text": "您感到厭煩"
+         }
+        ]
+       },
+       {
+        "type": "comment",
+        "name": "question26",
+        "title": "10. 不健康影響了您的社會活動（如走親訪友）",
+        "hideNumber": true
+       },
+       {
+        "type": "radiogroup",
+        "name": "question27",
+        "title": "11. 請看下面每一條問題，哪一種答案最符合您的情況？",
+        "hideNumber": true,
+        "choices": [
+         {
+          "value": "Item 1",
+          "text": "我好像比別人容易生病"
+         },
+         {
+          "value": "Item 2",
+          "text": "我跟周圍人一樣健康"
+         },
+         {
+          "value": "Item 3",
+          "text": "我認為我的健康狀況在變壞"
+         },
+         {
+          "value": "Item 4",
+          "text": "我的健康狀況非常好"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    "showPrevButton": false,
+    "showPageNumbers": true
+   }

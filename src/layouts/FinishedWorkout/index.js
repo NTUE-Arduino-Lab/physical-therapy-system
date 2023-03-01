@@ -46,6 +46,8 @@ import COPDSurveyJson from '../../assets/surveys/copdSurvey.json';
 import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
 import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
+import Sf36SurveyJson from '../../assets/surveys/sf36Survey.json';
+import MMRCSurveyJson from '../../assets/surveys/mMRCSurvey.json';
 // import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
@@ -100,6 +102,8 @@ const FinishedWorkout = () => {
     const [borgScaleSurveyData, setBorgScaleSurveyData] = useState();
     const [lungTherapyEvaData, setLungTherapyEvaData] = useState();
     const [sixSurveyNewData, setSixSurveyNewData] = useState();
+    const [sf36SurveyData, setSf36SurveyData] = useState();
+    const [mMRCSurveyData, setMMRCSurveyData] = useState();
 
     // survey UI related!!
     survey.focusFirstQuestionAutomatic = false;
@@ -127,6 +131,12 @@ const FinishedWorkout = () => {
         }
         if (curSurveyName === 'lungTherapyEva') {
             setLungTherapyEvaData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'mMRC') {
+            setMMRCSurveyData({ ...results, surveyCompleted: true });
+        }
+        if (curSurveyName === 'sf36') {
+            setSf36SurveyData({ ...results, surveyCompleted: true });
         }
         if (curSurveyName === 'sixSurveyNew') {
             try {
@@ -188,6 +198,22 @@ const FinishedWorkout = () => {
 
             if (lungTherapyEvaData) {
                 survey.data = lungTherapyEvaData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'sf36') {
+            let survey = new Model(Sf36SurveyJson);
+
+            if (sf36SurveyData) {
+                survey.data = sf36SurveyData;
+            }
+            setSurvey(survey);
+        }
+        if (surveyName === 'mMRC') {
+            let survey = new Model(MMRCSurveyJson);
+
+            if (mMRCSurveyData) {
+                survey.data = mMRCSurveyData;
             }
             setSurvey(survey);
         }
@@ -359,7 +385,9 @@ const FinishedWorkout = () => {
                 sgrSurveyData?.surveyCompleted &&
                 borgScaleSurveyData?.surveyCompleted &&
                 lungTherapyEvaData?.surveyCompleted &&
-                sixSurveyNewData?.surveyCompleted
+                sixSurveyNewData?.surveyCompleted &&
+                sf36SurveyData?.surveyCompleted &&
+                mMRCSurveyData?.surveyCompleted
             )
         ) {
             message.error('尚有問卷未完成');
@@ -387,6 +415,8 @@ const FinishedWorkout = () => {
             copdSurvey: copdSurveyData,
             lungTherapyEva: lungTherapyEvaData,
             sixSurveyNew: sixSurveyNewData,
+            sf36: sf36SurveyData,
+            mMRC: mMRCSurveyData,
         });
 
         message.success({ content: '已提交！自動跳轉至選單畫面' });
@@ -507,7 +537,7 @@ const FinishedWorkout = () => {
                             {record.finishedWorkoutTime.toLocaleString()}
                         </Descriptions.Item>
                         <Descriptions.Item
-                            label="平均速率／平均心率"
+                            label="累積騎乘距離"
                             labelStyle={{
                                 background: '#FCC976',
                                 borderBottom: '1px solid rgb(243, 151, 0)',
@@ -515,11 +545,13 @@ const FinishedWorkout = () => {
                             contentStyle={{
                                 borderBottom: '1px solid rgb(243, 151, 0)',
                             }}
+                            span={2}
                         >
-                            20 BPM／30 RPM
+                            {(packets[packets.length - 1]?.distance).toFixed(2)}{' '}
+                            KM
                         </Descriptions.Item>
                         <Descriptions.Item
-                            label="運動強度"
+                            label="累積熱量消耗"
                             labelStyle={{
                                 background: '#FCC976',
                                 borderBottom: '1px solid rgb(243, 151, 0)',
@@ -528,19 +560,7 @@ const FinishedWorkout = () => {
                                 borderBottom: '1px solid rgb(243, 151, 0)',
                             }}
                         >
-                            23 WATTS
-                        </Descriptions.Item>
-                        <Descriptions.Item
-                            label="累積入熱量消耗"
-                            labelStyle={{
-                                background: '#FCC976',
-                                borderBottom: '1px solid rgb(243, 151, 0)',
-                            }}
-                            contentStyle={{
-                                borderBottom: '1px solid rgb(243, 151, 0)',
-                            }}
-                        >
-                            12 CAL
+                            {packets[packets.length - 1]?.calories} CAL
                         </Descriptions.Item>
                         <Descriptions.Item
                             label="騎乘關卡"
@@ -709,6 +729,48 @@ const FinishedWorkout = () => {
                                 }}
                             >
                                 進行 六分鐘呼吸測驗
+                            </Button>
+                        </Space>
+
+                        <br />
+                        <Space
+                            style={{
+                                marginTop: '24px',
+                            }}
+                        >
+                            <Button
+                                onClick={() => openSurveyModal('sf36')}
+                                type="primary"
+                                icon={
+                                    sf36SurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
+                            >
+                                進行 長期照護需求量表問卷
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('mMRC')}
+                                type="primary"
+                                icon={
+                                    mMRCSurveyData?.surveyCompleted ? (
+                                        <CheckOutlined />
+                                    ) : null
+                                }
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                    padding: '0em 2em',
+                                }}
+                            >
+                                進行 mMRC問卷
                             </Button>
                         </Space>
                     </div>

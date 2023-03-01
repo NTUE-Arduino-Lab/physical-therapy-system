@@ -468,10 +468,9 @@ const MonitoringWorkout = () => {
                     <caption>(開始於 {formatBeginWorkoutTime()})</caption>
                 </div>
                 <div className={`${styles.col} ${styles.col3}`}>
-                    <span>平均速率：20 <span className={styles.unit}>RPM</span></span>
-                    <span>平均心率：30 <span className={styles.unit}>BPM</span></span>
-                    <span>運動強度：23 <span className={styles.unit}>WATTS</span></span>
-                    <span>累積熱量消耗：12 <span className={styles.unit}>CAL</span></span>
+                    <span>瞬時功率：{packets[packets.length - 1]?.watt} <span className={styles.unit}> WATT</span></span>
+                    <span>累積熱量消耗：{packets[packets.length - 1]?.calories} <span className={styles.unit}>CAL</span></span>
+                    <span>累積騎乘距離：{(packets[packets.length - 1]?.distance).toFixed(2)} <span className={styles.unit}>KM</span></span>
                 </div>
                 <div className={`${styles.col} ${styles.difficulty}`}>
                     <Popover

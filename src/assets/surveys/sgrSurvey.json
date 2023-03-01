@@ -1,488 +1,717 @@
 {
-    "title": "ST. GEORGE’S RESPIRATORY QUESTIONNAIRE ",
-    "description": "This questionnaire is designed to help us learn much more about how your breathing is troubling you and how it affects your life. We are using it to find out which aspects of your illness cause you most problems, rather than what the doctors and nurses think your problems are. Please ask if you have difficulty understanding the questions. Do not spend too long deciding about your answers. ",
+    "title": "ST. GEORGE’S RESPIRATORY QUESTIONNAIRE 聖喬治醫院呼吸症狀問卷(SGRQ) ",
+    "description": "此問卷是設計來幫助我們瞭解更多有關您的呼吸問題如何困擾您以及它如何影響您的生活。我們用此問卷來找出您疾病的那些方面帶給您最多問題，而不是醫師和護士所認為您的問題所在。請仔細閱讀下列說明，如有任何不瞭解之處，請您發問。請不要花太多時間決定您的答案。",
     "logoPosition": "right",
     "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "panel",
-                    "name": "panel1",
-                    "elements": [
-                        {
-                            "type": "multipletext",
-                            "name": "question1",
-                            "titleLocation": "hidden",
-                            "items": [
-                                {
-                                    "name": "text1",
-                                    "title": "ID NUMBER"
-                                },
-                                {
-                                    "name": "text2",
-                                    "title": "Event"
-                                }
-                            ],
-                            "colCount": 2,
-                            "isRequired": true,
-                            "readOnly": true
-                        },
-                        {
-                            "type": "text",
-                            "name": "question2",
-                            "title": "Date of Collection",
-                            "titleLocation": "top",
-                            "hideNumber": true,
-                            "isRequired": true,
-                            "readOnly": true
-                        }
-                    ]
-                },
-                {
-                    "type": "panel",
-                    "name": "panel2",
-                    "elements": [
-                        {
-                            "type": "rating",
-                            "name": "question3",
-                            "title": "Please pick one response to show how you describe your current health:",
-                            "hideNumber": true,
-                            "rateValues": [
-                                "Very good",
-                                "Good",
-                                "Fair",
-                                "Poor",
-                                "Very Poor"
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "panel",
-                    "name": "panel3",
-                    "elements": [
-                        {
-                            "type": "expression",
-                            "name": "question4",
-                            "title": "Part 1:  The following questions ask about your chest trouble. Please answer as it applies to you.",
-                            "hideNumber": true
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question5",
-                            "title": "I cough:",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "Most days a week"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Several days a week"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "Only with respiratory infections"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "Not at all"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question6",
-                            "title": "I bring up phlegm (sputum):",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "Most days a week"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Several days a week"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "Only with respiratory infections"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "Not at all"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question7",
-                            "title": " I have shortness of breath:",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "Most days a week"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Several days a week"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "Not at all"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question8",
-                            "title": "I have attacks of wheezing:",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "Most days a week"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Several days a week"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "A few days a month"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "Only with respiratory infections"
-                                },
-                                {
-                                    "value": "item5",
-                                    "text": "Not at all"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question9",
-                            "title": "How many attacks of chest trouble did you have during the last year?",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "3 or more attacks"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "1 or 2 attacks"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "None"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question10",
-                            "title": "How often do you have good days (with few respiratory problems)?",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "No good days"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "A few good days"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "Most days are good"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "Every day is good"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question11",
-                            "title": "If you have a wheeze, is it worse when you get up in the morning?",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "No"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Yes"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "type": "panel",
-                    "name": "panel4",
-                    "elements": [
-                        {
-                            "type": "expression",
-                            "name": "question13",
-                            "title": "Part 2",
-                            "hideNumber": true
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question12",
-                            "title": "How would you describe your respiratory problems?",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "Cause me a lot of problems or are the most important physical problem I have"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "Cause me a few problems"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "Cause no problems"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "matrix",
-                            "name": "question14",
-                            "title": "Questions about what activities usually make you feel breathless. For each statement, please tell me which applies to you these days.",
-                            "columns": [
-                                {
-                                    "value": "Column 1",
-                                    "text": "False"
-                                },
-                                {
-                                    "value": "Column 2",
-                                    "text": "True"
-                                }
-                            ],
-                            "rows": [
-                                {
-                                    "value": "Row 1",
-                                    "text": "Washing or dressing yourself"
-                                },
-                                {
-                                    "value": "Row 2",
-                                    "text": "Walking around the house"
-                                },
-                                {
-                                    "value": "Row 3",
-                                    "text": "Walking outside on the level ground"
-                                },
-                                {
-                                    "value": "Row 4",
-                                    "text": "Walking up a flight of stairs"
-                                },
-                                {
-                                    "value": "Row 5",
-                                    "text": "Walking up hills"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "matrix",
-                            "name": "question15",
-                            "title": "Some more questions about your cough and breathlessness. For each statement, please tell me which applies to you these days.",
-                            "columns": [
-                                {
-                                    "value": "Column 1",
-                                    "text": "False"
-                                },
-                                {
-                                    "value": "Column 2",
-                                    "text": "True"
-                                }
-                            ],
-                            "rows": [
-                                {
-                                    "value": "Row 1",
-                                    "text": "Coughing hurts"
-                                },
-                                {
-                                    "value": "Row 2",
-                                    "text": "Coughing makes me tired"
-                                },
-                                {
-                                    "value": "Row 3",
-                                    "text": "I am short of breath when I talk"
-                                },
-                                {
-                                    "value": "Row 4",
-                                    "text": "I am short of breath when I bend over"
-                                },
-                                {
-                                    "value": "Row 5",
-                                    "text": "My cough or breathing disturbs my sleep"
-                                },
-                                {
-                                    "value": "Row 6",
-                                    "text": "I get exhausted easily"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "matrix",
-                            "name": "question16",
-                            "title": "Questions about other effects that your chest trouble may have on you. For each statement, please tell me which applies to you these days.",
-                            "columns": [
-                                {
-                                    "value": "Column 1",
-                                    "text": "False"
-                                },
-                                {
-                                    "value": "Column 2",
-                                    "text": "True"
-                                }
-                            ],
-                            "rows": [
-                                {
-                                    "value": "Row 1",
-                                    "text": "My cough or breathing is embarrassing in public"
-                                },
-                                {
-                                    "value": "Row 2",
-                                    "text": "My respiratory problems are a nuisance to my family, friends, or neighbors"
-                                },
-                                {
-                                    "value": "Row 3",
-                                    "text": "I get afraid or panic when I cannot catch my breath"
-                                },
-                                {
-                                    "value": "Row 4",
-                                    "text": "I feel that I am not in control of my respiratory problems"
-                                },
-                                {
-                                    "value": "Row 5",
-                                    "text": "I have become frail or an invalid because of my respiratory problems"
-                                },
-                                {
-                                    "value": "Row 6",
-                                    "text": "Exercise is not safe for me"
-                                },
-                                {
-                                    "value": "Row 7",
-                                    "text": "Everything seems too much of an effort"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "matrix",
-                            "name": "question17",
-                            "title": "These are questions about how your activities might be affected by your respiratory problems. For each statement, please tell me which applies to you because of your breathing.",
-                            "columns": [
-                                {
-                                    "value": "Column 1",
-                                    "text": "False"
-                                },
-                                {
-                                    "value": "Column 2",
-                                    "text": "True"
-                                }
-                            ],
-                            "rows": [
-                                {
-                                    "value": "Row 1",
-                                    "text": "I take a long time to get washed or dressed"
-                                },
-                                {
-                                    "value": "Row 2",
-                                    "text": "I cannot take a bath or shower, or I take a long time to do it"
-                                },
-                                {
-                                    "value": "Row 3",
-                                    "text": "I walk slower than other people, or I stop to rest"
-                                },
-                                {
-                                    "value": "Row 4",
-                                    "text": "Jobs such as house chores take a long time, or I have to stop to rest"
-                                },
-                                {
-                                    "value": "Row 5",
-                                    "text": "If I walk up one flight of stairs, I have to go slowly or stop"
-                                },
-                                {
-                                    "value": "Row 6",
-                                    "text": "If I hurry or walk fast, I have to stop or slow down"
-                                },
-                                {
-                                    "value": "Row 7",
-                                    "text": "My breathing makes it difficult to do things such as walk up hills, carry things up stairs, do light gardening such as weeding, dance, bowl, or play golf"
-                                },
-                                {
-                                    "value": "Row 8",
-                                    "text": "My breathing makes it difficult to do things such as carry heavy loads, dig the garden or shovel snow, jog or walk briskly (5 miles per hour), play tennis, or swim"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "matrix",
-                            "name": "question18",
-                            "title": "We would like to know how your chest usually affects your daily life. For each statement, please tell me which applies to you because of your breathing.",
-                            "columns": [
-                                {
-                                    "value": "Column 1",
-                                    "text": "False"
-                                },
-                                {
-                                    "value": "Column 2",
-                                    "text": "True"
-                                }
-                            ],
-                            "rows": [
-                                {
-                                    "value": "Row 1",
-                                    "text": "I cannot play sports or do other physical activities"
-                                },
-                                {
-                                    "value": "Row 2",
-                                    "text": "I cannot go out for entertainment or recreation"
-                                },
-                                {
-                                    "value": "Row 3",
-                                    "text": "I cannot go out of the house to do the shopping"
-                                },
-                                {
-                                    "value": "Row 4",
-                                    "text": "I cannot do household chores"
-                                },
-                                {
-                                    "value": "Row 5",
-                                    "text": "I cannot move far from my bed or chair"
-                                }
-                            ]
-                        },
-                        {
-                            "type": "radiogroup",
-                            "name": "question19",
-                            "title": "How do your respiratory problems affect you? Please pick one response.",
-                            "choices": [
-                                {
-                                    "value": "item1",
-                                    "text": "They do not stop me from doing anything I would like to do"
-                                },
-                                {
-                                    "value": "item2",
-                                    "text": "They stop me from doing one or two things I would like to do"
-                                },
-                                {
-                                    "value": "item3",
-                                    "text": "They stop me from doing most of the things I would like to do"
-                                },
-                                {
-                                    "value": "item4",
-                                    "text": "They stop me from doing everything I would like to do"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
+     {
+      "name": "page1",
+      "elements": [
+       {
+        "type": "panel",
+        "name": "panel1",
+        "elements": [
+         {
+          "type": "multipletext",
+          "name": "question1",
+          "titleLocation": "hidden",
+          "isRequired": true,
+          "readOnly": true,
+          "items": [
+           {
+            "name": "text1",
+            "title": "ID NUMBER"
+           },
+           {
+            "name": "text2",
+            "title": "Event"
+           }
+          ],
+          "colCount": 2
+         },
+         {
+          "type": "text",
+          "name": "question2",
+          "title": "Date of Collection",
+          "titleLocation": "top",
+          "hideNumber": true,
+          "isRequired": true,
+          "readOnly": true
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel2",
+        "elements": [
+         {
+          "type": "rating",
+          "name": "question3",
+          "title": "在完成問卷的其他部分之前，請勾選一格以表示您如何描述您目前的健康狀況",
+          "hideNumber": true,
+          "rateValues": [
+           {
+            "value": "Very good",
+            "text": "非常好"
+           },
+           {
+            "value": "Good",
+            "text": "好"
+           },
+           {
+            "value": "Fair",
+            "text": "普通"
+           },
+           {
+            "value": "Poor",
+            "text": "差"
+           },
+           {
+            "value": "Very Poor",
+            "text": "非常差"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel3",
+        "elements": [
+         {
+          "type": "expression",
+          "name": "question4",
+          "title": "第一部份：下列問題是有關在過去四週中，您曾經有過的呼吸方面的問題。",
+          "hideNumber": true
+         },
+         {
+          "type": "radiogroup",
+          "name": "question5",
+          "title": "1. 在過去四週中，我曾經咳嗽",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "一週中",
+            "text": "一週中幾乎每天"
+           },
+           {
+            "value": "幾乎每天",
+            "text": "一週中有好幾天"
+           },
+           {
+            "value": "item2",
+            "text": "一個月有好幾天"
+           },
+           {
+            "value": "item3",
+            "text": "只有呼吸道受到感染時"
+           },
+           {
+            "value": "item4",
+            "text": "完全沒有"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question6",
+          "title": "2. 在過去四週中，我曾經咳出痰",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "一週中幾乎每天"
+           },
+           {
+            "value": "item2",
+            "text": "一週中有好幾天"
+           },
+           {
+            "value": "item3",
+            "text": "一個月有好幾天"
+           },
+           {
+            "value": "item4",
+            "text": "只有呼吸道受到感染時"
+           },
+           {
+            "value": "item5",
+            "text": "完全沒有"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question7",
+          "title": "3. 在過去四週中，我曾經有喘不過氣來",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "一週中幾乎每天"
+           },
+           {
+            "value": "item2",
+            "text": "一週中有好幾天"
+           },
+           {
+            "value": "item4",
+            "text": "一個月有好幾天"
+           },
+           {
+            "value": "item5",
+            "text": "只有呼吸道受到感染時"
+           },
+           {
+            "value": "item6",
+            "text": "完全沒有"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question8",
+          "title": "4. 在過去四週中，我曾經有喘鳴發作",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "一週中幾乎每天"
+           },
+           {
+            "value": "item2",
+            "text": "一週中有好幾天"
+           },
+           {
+            "value": "item3",
+            "text": "一個月有好幾天"
+           },
+           {
+            "value": "item4",
+            "text": "只有呼吸道受到感染時"
+           },
+           {
+            "value": "item5",
+            "text": "完全沒有"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question9",
+          "title": "5. 在過去四週中，您曾經有過幾次嚴重或很不舒服的呼吸問題",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "超過三次"
+           },
+           {
+            "value": "item2",
+            "text": "三次"
+           },
+           {
+            "value": "item3",
+            "text": "二次"
+           },
+           {
+            "value": "item4",
+            "text": "一次"
+           },
+           {
+            "value": "item5",
+            "text": "從未"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question10",
+          "title": "6. 最嚴重的一次呼吸問題發作，曾持續多久？(如果沒有嚴重的呼吸問題，請直接回答第7 題)",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "一週或一週以上"
+           },
+           {
+            "value": "item2",
+            "text": "3 天或3 天以上"
+           },
+           {
+            "value": "item3",
+            "text": "1 或2 天"
+           },
+           {
+            "value": "item4",
+            "text": "少於1 天"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question11",
+          "title": "7. 在過去四週中，通常一週內您有幾天好日子？(很少有呼吸方面的問題)",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "都沒有好日子"
+           },
+           {
+            "value": "item2",
+            "text": "1 或2 天好日子"
+           },
+           {
+            "value": "item3",
+            "text": "3 或4 天好日子"
+           },
+           {
+            "value": "item4",
+            "text": "幾乎每天都好"
+           },
+           {
+            "value": "item5",
+            "text": "每天都好"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question20",
+          "title": "8. 假如您有喘鳴的話，是否在早晨起床時比較嚴重？",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "Item 1",
+            "text": "否"
+           },
+           {
+            "value": "Item 2",
+            "text": "是"
+           }
+          ]
+         }
+        ]
+       },
+       {
+        "type": "panel",
+        "name": "panel4",
+        "elements": [
+         {
+          "type": "expression",
+          "name": "question13",
+          "title": "第２部份",
+          "hideNumber": true
+         },
+         {
+          "type": "expression",
+          "name": "question26",
+          "title": "第１大題",
+          "hideNumber": true
+         },
+         {
+          "type": "radiogroup",
+          "name": "question12",
+          "title": "您會如何描述您的呼吸狀況？",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "我最重要的問題"
+           },
+           {
+            "value": "item2",
+            "text": "造成我很多的問題"
+           },
+           {
+            "value": "item3",
+            "text": "造成我些許問題"
+           },
+           {
+            "value": "item4",
+            "text": "並未造成我問題"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question21",
+          "title": "假如您曾有過有收入的工作。",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "我的呼吸問題，使我完全停止工作"
+           },
+           {
+            "value": "item2",
+            "text": "我的呼吸問題，干擾我的工作或令我更換工作"
+           },
+           {
+            "value": "item3",
+            "text": "我的呼吸問題，並未影響我的工作"
+           }
+          ]
+         },
+         {
+          "type": "radiogroup",
+          "name": "question27",
+          "title": "第２大題",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "我的呼吸問題，使我完全停止工作"
+           },
+           {
+            "value": "item2",
+            "text": "我的呼吸問題，干擾我的工作或令我更換工作"
+           },
+           {
+            "value": "item3",
+            "text": "我的呼吸問題，並未影響我的工作"
+           }
+          ]
+         },
+         {
+          "type": "matrix",
+          "name": "question15",
+          "title": "下列問題是有關最近幾天那些活動通常會讓您感到喘不過氣來。(請在每一子題，勾選一格符合您在最近幾天情形的答案：)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "坐著不動或躺著不動"
+           },
+           {
+            "value": "Row 2",
+            "text": "梳洗或穿衣"
+           },
+           {
+            "value": "Row 3",
+            "text": "在家中走動"
+           },
+           {
+            "value": "Row 4",
+            "text": "在戶外平地走動"
+           },
+           {
+            "value": "Row 5",
+            "text": "爬一層樓樓梯"
+           },
+           {
+            "value": "Row 6",
+            "text": "爬坡"
+           },
+           {
+            "value": "Row 7",
+            "text": "從事體育活動或戶外活動"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question28",
+          "title": "第３大題",
+          "hideNumber": true
+         },
+         {
+          "type": "matrix",
+          "name": "question14",
+          "title": "以下是更多有關最近幾天您的咳嗽及喘不過氣狀況的一些問題。(請在每一子題，勾選一格符合您在最近幾天情形的答案)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "我咳嗽時會痛"
+           },
+           {
+            "value": "Row 2",
+            "text": "咳嗽令我疲倦"
+           },
+           {
+            "value": "Row 3",
+            "text": "當我說話時，我會喘不過氣來"
+           },
+           {
+            "value": "Row 4",
+            "text": "當我彎身時，我會喘不過氣來"
+           },
+           {
+            "value": "Row 5",
+            "text": "我的咳嗽或呼吸問題會干擾我的睡眠"
+           },
+           {
+            "value": "Row 6",
+            "text": "我容易會筋疲力竭"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question29",
+          "title": "第４大題",
+          "hideNumber": true
+         },
+         {
+          "type": "matrix",
+          "name": "question16",
+          "title": "以下問題是有關最近幾天您的呼吸問題可能對您造成的影響。(請在每一子題，勾選一格符合您在最近幾天情形的答案：)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "在公眾場合，我的咳嗽和呼吸問題令我尷尬"
+           },
+           {
+            "value": "Row 2",
+            "text": "我的呼吸問題，對我的家人、朋友或鄰居是一種困擾"
+           },
+           {
+            "value": "Row 3",
+            "text": "當我喘不過氣來時，我會害怕或恐慌"
+           },
+           {
+            "value": "Row 4",
+            "text": "我覺得我無法控制我的呼吸問題"
+           },
+           {
+            "value": "Row 5",
+            "text": "我不期望我的呼吸問題會改善"
+           },
+           {
+            "value": "Row 6",
+            "text": "因為我的呼吸問題使我變得虛弱或需要他人照顧"
+           },
+           {
+            "value": "Row 7",
+            "text": "運動對我是有風險的"
+           },
+           {
+            "value": "Row 8",
+            "text": "每件事好像都很吃力"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question30",
+          "title": "第５大題",
+          "hideNumber": true
+         },
+         {
+          "type": "matrix",
+          "name": "question22",
+          "title": "以下問題是有關您的治療，如果您沒有接受治療，請直接回答第6 大題。(請在每一子題，勾選一格符合您在最近幾天情形的答案)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "我的治療對我並沒有多大幫助"
+           },
+           {
+            "value": "Row 2",
+            "text": "在公眾場合使用藥物，我會尷尬"
+           },
+           {
+            "value": "Row 3",
+            "text": "我的藥物治療會有不舒服的副作用"
+           },
+           {
+            "value": "Row 4",
+            "text": "我的治療干擾我的生活相當大"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question31",
+          "title": "第６大題",
+          "hideNumber": true
+         },
+         {
+          "type": "matrix",
+          "name": "question17",
+          "title": "以下問題是有關您的呼吸問題如何影響您的活動。(請在每一子題，勾選一格因為您的呼吸問題而符合您情形的答案)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "我會花費長時間在梳洗或穿衣上"
+           },
+           {
+            "value": "Row 2",
+            "text": "我不能泡澡或淋浴，或我會花長時間"
+           },
+           {
+            "value": "Row 3",
+            "text": "我走路比別人慢，或者我會停下來休息"
+           },
+           {
+            "value": "Row 4",
+            "text": "像家事類的工作會花費長時間，或是我必須停下來休息"
+           },
+           {
+            "value": "Row 5",
+            "text": "如果我爬一層樓樓梯時，我必須慢慢爬，或是停下來"
+           },
+           {
+            "value": "Row 6",
+            "text": "如果我趕時間或走得很快時，我必須停下來或者放慢速度"
+           },
+           {
+            "value": "Row 7",
+            "text": "我的呼吸問題讓我難以從事像爬坡、提物上樓、輕鬆的園藝如除草、跳舞、打保齡球或打太極拳"
+           },
+           {
+            "value": "Row 8",
+            "text": "我的呼吸問題讓我難以從事像提重物、在花園挖土、慢跑或快走(每小時8 公里的速度)、打網球或游泳"
+           },
+           {
+            "value": "我的呼吸問題讓我難以從事像非常耗力的工作、跑步、騎自行車",
+            "text": "我的呼吸問題讓我難以從事像非常耗力的工作、跑步、騎自行車、快泳或從事劇烈體育活動"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question32",
+          "title": "第７大題",
+          "hideNumber": true
+         },
+         {
+          "type": "matrix",
+          "name": "question18",
+          "title": "我們想知道您的呼吸問題通常如何影響您的日常生活。(請在每一子題，勾選一格因為您的呼吸問題而符合您情形的答案)",
+          "hideNumber": true,
+          "columns": [
+           {
+            "value": "Column 1",
+            "text": "是"
+           },
+           {
+            "value": "Column 2",
+            "text": "否"
+           }
+          ],
+          "rows": [
+           {
+            "value": "Row 1",
+            "text": "我不能從事體育活動或戶外活動"
+           },
+           {
+            "value": "Row 2",
+            "text": "我不能外出娛樂或休閒"
+           },
+           {
+            "value": "Row 3",
+            "text": "我不能外出購物"
+           },
+           {
+            "value": "Row 4",
+            "text": "我不能做家事"
+           },
+           {
+            "value": "Row 5",
+            "text": "我不能離開床或椅子太遠"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question24",
+          "title": "以下列出的活動為您的呼吸問題可能會讓您無法從事的其他活動。(您不需要勾選這些項目，這些項目只是提醒您，您喘不過氣的狀況可能會影響您的方式)：散步或遛狗、在家中或院子做事、性交、外出去廟宇或教堂，咖啡館或娛樂場所、在壞天氣時外出或者進入煙霧瀰漫的房間、拜訪家人朋友或與小孩玩",
+          "hideNumber": true
+         },
+         {
+          "type": "comment",
+          "name": "question23",
+          "title": "請寫下任何其他因為呼吸問題而可能使您不能從事的重要活動：",
+          "hideNumber": true
+         },
+         {
+          "type": "radiogroup",
+          "name": "question19",
+          "title": "現在，請您勾選一格(僅一格)您認為最適合描述您的呼吸問題如何影響您：",
+          "hideNumber": true,
+          "choices": [
+           {
+            "value": "item1",
+            "text": "它不會阻止我從事任何我想要做的事"
+           },
+           {
+            "value": "item2",
+            "text": "它會阻止我從事1 或2 項我想要做的事"
+           },
+           {
+            "value": "item3",
+            "text": "它會阻止我從事大部份我想要做的事"
+           },
+           {
+            "value": "item4",
+            "text": "它會阻止我從事每一件我想要做的事"
+           }
+          ]
+         },
+         {
+          "type": "expression",
+          "name": "question25",
+          "title": "謝謝您填寫這份問卷。在您完成前，請您檢查看看您是否已填答所有的問題。",
+          "hideNumber": true
+         }
+        ]
+       }
+      ]
+     }
     ]
-}
+   }

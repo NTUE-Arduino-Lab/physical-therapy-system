@@ -1,58 +1,279 @@
 {
-    "title": "How is your COPD? Take the COPD Assessment Test™ (CAT)",
-    "description": "This questionnaire will help you and your healthcare professional measure the impact COPD (Chronic ObstructivePulmonary Disease) is having on your wellbeing and daily life. Your answers, and test score, can be used by you andyour healthcare professional to help improve the management of your COPD and get the greatest benefit from treatment.",
+    "title": "CAT量表",
+    "description": "請填寫COPD 評估問卷(CAT)以評估你慢性阻塞肺病(COPD)的情況？這問卷幫助你及醫療人員評估慢性阻塞肺病﹝COPD﹞對你身心健康及日常生活的影響。測試結果及其分數可幫助你及醫療人員改善對你慢性阻塞肺病﹝COPD﹞的處理方法，及讓治療發揮最大的作用。請就以下每題，選出一個最符合你現況的一格，請確保每題只選一個答案。",
     "logoPosition": "right",
     "pages": [
      {
       "name": "page1",
       "elements": [
        {
-        "type": "rating",
+        "type": "image",
         "name": "question1",
-        "title": "\"I never cough\" is 1, \"I cough all the time\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "\"從不咳嗽\" 是 0, \"一直咳嗽\" 是 5.",
+        "description": "請選擇最適合您的情況",
+        "imageLink": "https://api.surveyjs.io/private/Surveys/files?name=97f81d34-4993-46ad-aabd-e4bbf998b315"
+       },
+       {
+        "type": "rating",
+        "name": "question9",
+        "title": "「從不咳嗽」是 0；「一直咳嗽」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        },
        {
         "type": "rating",
         "name": "question2",
-        "title": "\"I have no phlegm (mucus) in my chest at all\" is 1, \"My chest is completely full of phlegm (mucus)\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「沒有痰」是 0；「很多痰」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        },
        {
         "type": "rating",
         "name": "question3",
-        "title": "\"My chest does not feel tight at all\" is 1, \"My chest feels very tight\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「無胸悶」是 0；「胸口很緊」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        },
        {
         "type": "rating",
         "name": "question4",
-        "title": "\"When I walk up a hill or one flight of stairs I am not breathless\" is 1, \"When I walk up a hill or one flight of stairs I am very breathless\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「爬樓梯不喘」是 0；「爬一層樓就喘」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ]
        },
        {
         "type": "rating",
         "name": "question5",
-        "title": "\"I am not limited doing any activities at home\" is 1, \"I am very limited doing activities at home\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「在家活動自如」是 0；「活動受限」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ]
        },
        {
         "type": "rating",
         "name": "question6",
-        "title": "\"I am confident leaving my home despite my lung condition\" is 1, \"I am not at all confident leaving my home because of my lung condition\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「有信心外出」是 0；「不敢外出」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        },
        {
         "type": "rating",
         "name": "question7",
-        "title": "\"I sleep soundly\" is 1, \"I don't sleep soundly because of my lung condition\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「睡眠佳」是 0；「睡不安穩」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0 "
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        },
        {
         "type": "rating",
         "name": "question8",
-        "title": "\"I have lots of energy\" is 1, \"I have no energy at all\" is 5.",
-        "description": "Please select the box that best describes you currently."
+        "title": "「精力充沛」是 0；「沒有活力」是 5。",
+        "description": "請選擇最適合您的情況。",
+        "rateValues": [
+         {
+          "value": 1,
+          "text": "0"
+         },
+         {
+          "value": 2,
+          "text": "1"
+         },
+         {
+          "value": 3,
+          "text": "2"
+         },
+         {
+          "value": 4,
+          "text": "3"
+         },
+         {
+          "value": 5,
+          "text": "4"
+         },
+         {
+          "value": 6,
+          "text": "5"
+         }
+        ],
+        "rateMax": 6
        }
       ]
      }

@@ -44,6 +44,8 @@ import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
 import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
 import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
+import Sf36SurveyJson from '../../assets/surveys/sf36Survey.json';
+import MMRCSurveyJson from '../../assets/surveys/mMRCSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
 const sixSurveyJson = SixSurveyJson;
@@ -298,6 +300,23 @@ const RecordDetail = () => {
 
             setSurvey(survey);
         }
+        if (surveyName === 'sf36') {
+            let survey = new Model(Sf36SurveyJson);
+
+            survey.data = currRecord.sf36;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'mMRC') {
+            let survey = new Model(MMRCSurveyJson);
+
+            survey.data = currRecord.mMRC;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+
         if (surveyName === 'sixSurveyNew') {
             // let survey = new Model(sixSurveyNewJson);
             // survey.data = currRecord.sixSurveyNew;
@@ -628,6 +647,28 @@ const RecordDetail = () => {
                                 }}
                             >
                                 查看 六分鐘呼吸測驗結果
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('sf36')}
+                                type="primary"
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                }}
+                            >
+                                查看 長期照護需求量表問卷
+                            </Button>
+                            <Button
+                                onClick={() => openSurveyModal('mMRC')}
+                                type="primary"
+                                style={{
+                                    borderRadius: '34px',
+                                    background: '#F39700',
+                                    border: '0px',
+                                }}
+                            >
+                                查看 mMRC問卷
                             </Button>
                         </Space>
                     </>

@@ -42,6 +42,8 @@ import SGRSurveyJson from '../../assets/surveys/sgrSurvey.json';
 import BorgScaleSurveyJson from '../../assets/surveys/borgScaleSurvey.json';
 import LungTherapyEvaSurveyJson from '../../assets/surveys/lungTherapyEvaSurvey.json';
 import SixSurveyNewJson from '../../assets/surveys/6minSurvey.json';
+import Sf36SurveyJson from '../../assets/surveys/sf36Survey.json';
+import MMRCSurveyJson from '../../assets/surveys/mMRCSurvey.json';
 import 'survey-core/defaultV2.css';
 StylesManager.applyTheme('defaultV2');
 const sixSurveyJson = SixSurveyJson;
@@ -304,6 +306,22 @@ const RecordList = () => {
             let survey = new Model(sixSurveyNewJson);
 
             survey.data = currRecord.sixSurveyNew;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'sf36') {
+            let survey = new Model(Sf36SurveyJson);
+
+            survey.data = currRecord.sf36;
+            survey.mode = 'display';
+
+            setSurvey(survey);
+        }
+        if (surveyName === 'mMRC') {
+            let survey = new Model(MMRCSurveyJson);
+
+            survey.data = currRecord.mMRC;
             survey.mode = 'display';
 
             setSurvey(survey);
@@ -747,6 +765,27 @@ const RecordList = () => {
                                         icon={<CheckOutlined />}
                                     >
                                         查看 新 六分鐘呼吸測驗結果
+                                    </Button>
+                                </Space>
+                                <Space
+                                    style={{
+                                        marginLeft: '24px',
+                                        marginTop: '24px',
+                                    }}
+                                >
+                                    <Button
+                                        onClick={() => openSurveyModal('sf36')}
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 長期照護需求量表問卷
+                                    </Button>
+                                    <Button
+                                        onClick={() => openSurveyModal('mMRC')}
+                                        type="primary"
+                                        icon={<CheckOutlined />}
+                                    >
+                                        查看 mMRC問卷
                                     </Button>
                                 </Space>
                             </>
