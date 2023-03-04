@@ -427,7 +427,8 @@ const RecordDetail = () => {
                                 {currRecord?.finishedWorkoutTime.toLocaleString()}
                             </Descriptions.Item>
                             <Descriptions.Item
-                                label="平均速率／平均心率"
+                                span={2}
+                                label="累積騎乘距離"
                                 labelStyle={{
                                     background: '#FCC976',
                                     borderBottom: '1px solid rgb(243, 151, 0)',
@@ -436,10 +437,13 @@ const RecordDetail = () => {
                                     borderBottom: '1px solid rgb(243, 151, 0)',
                                 }}
                             >
-                                20 BPM／30 RPM
+                                {currReocrdPackets[
+                                    currReocrdPackets.length - 1
+                                ]?.distance?.toFixed(2)}{' '}
+                                KM
                             </Descriptions.Item>
                             <Descriptions.Item
-                                label="運動強度"
+                                label="累積熱量消耗"
                                 labelStyle={{
                                     background: '#FCC976',
                                     borderBottom: '1px solid rgb(243, 151, 0)',
@@ -448,19 +452,10 @@ const RecordDetail = () => {
                                     borderBottom: '1px solid rgb(243, 151, 0)',
                                 }}
                             >
-                                23 WATTS
-                            </Descriptions.Item>
-                            <Descriptions.Item
-                                label="累積入熱量消耗"
-                                labelStyle={{
-                                    background: '#FCC976',
-                                    borderBottom: '1px solid rgb(243, 151, 0)',
-                                }}
-                                contentStyle={{
-                                    borderBottom: '1px solid rgb(243, 151, 0)',
-                                }}
-                            >
-                                12 CAL
+                                {currReocrdPackets[
+                                    currReocrdPackets.length - 1
+                                ]?.calories?.toFixed(2)}{' '}
+                                CAL
                             </Descriptions.Item>
                             <Descriptions.Item
                                 label="騎乘關卡"
